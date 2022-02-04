@@ -69,7 +69,7 @@ const db_funcs = {
         nodeConnect.connect();
         
         /*
-            nodeConnect.query("SELECT * FROM movies", function (err, result, fields) {
+        nodeConnect.query("SELECT * FROM movies", function (err, result, fields) {
             if (err) return console.error(err)
             console.log(result);
         });
@@ -77,13 +77,13 @@ const db_funcs = {
     },
 
     // for executing a general query in MySQL
-    execute_query: function (query, func) {
+    execute_query: function (query, callback) {
         nodeConnect.query(query, function (err, res) {
             if (error) {
                 console.error(`error in query: ` + err);
                 throw error;
             } else {
-                return func (res);
+                return callback (res);
             }
         });
     },
@@ -91,6 +91,18 @@ const db_funcs = {
     insert: function () {
 
     },
+
+    update: function () {
+
+    },
+
+    delete: function () {
+
+    },
+
+    select: function (id, callback) {
+        var query = `DELETE FROM movies WHERE id = ` + id + `;`;
+    }
 };
 
 module.exports = db_funcs;
