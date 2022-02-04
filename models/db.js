@@ -10,7 +10,8 @@ dotenv.config();
 var nodeConnect;
 var nodeNumber = process.env.NODE;
 var path = require('path');
-const serverCa = [fs.readFileSync(path.resolve("models/DigiCertGlobalRootCA.crt.pem"))];
+// certificate provided by AZURE Database
+const serverCa = [fs.readFileSync(path.resolve("models/DigiCertGlobalRootCA.crt.pem"))]; 
 
 switch (nodeNumber) 
 {
