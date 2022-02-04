@@ -97,11 +97,20 @@ const db_funcs = {
     },
 
     delete: function () {
+        var query = `DELETE FROM movies WHERE id = ` + id + `;`;
 
+        nodeConnect.query(query, function (err, res) {
+            if (error) {
+                console.error(`error in select: ` + err);
+                throw error;
+            } else {
+                return callback (res);
+            }
+        });
     },
 
     select: function (id, callback) {
-        var query = `DELETE FROM movies WHERE id = ` + id + `;`;
+        
     }
 };
 
