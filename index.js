@@ -13,6 +13,8 @@ app.use(express.urlencoded({ extended: false }));
 //parse incoming json payload
 app.use(express.json());
 
+db.connect();
+
 //bind the server to a port and a host
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     console.log(
