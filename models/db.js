@@ -1,11 +1,12 @@
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+// process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
-var fs = require('fs');
+var fs = require('fs'); // for reading of certificate for connection
 
 dotenv.config(); 
 
+/* configuring the connection to the node */
 var nodeConnect;
 var nodeNumber = process.env.NODE;
 var path = require('path');
@@ -32,7 +33,11 @@ switch (nodeNumber)
             port: process.env.PORT2,
             user: process.env.USERNAME2,
             password: process.env.PASSWORD2,
-            database: process.env.NAME2
+            database: process.env.NAME2, 
+            ssl: {
+                rejectUnauthorized: true,
+                ca: serverCa
+            }
         });
             break;
     case '3':
@@ -41,7 +46,11 @@ switch (nodeNumber)
             port: process.env.PORT3,
             user: process.env.USERNAME3,
             password: process.env.PASSWORD3,
-            database: process.env.NAME3
+            database: process.env.NAME3, 
+            ssl: {
+                rejectUnauthorized: true,
+                ca: serverCa
+            }
         });
             break;
 }
@@ -54,13 +63,28 @@ const db_funcs = {
         rank: 'rank'
     },
 
+    // starting a connection with one node
     connect: function () {
         
         nodeConnect.connect();
         
-        nodeConnect.query("SELECT * FROM movies", function (err, result, fields) {
-            if (err) return console.log(err)
+        /*
+            nodeConnect.query("SELECT * FROM movies", function (err, result, fields) {
+            if (err) return console.error(err)
             console.log(result);
+        });
+        */
+    },
+
+    // for executing a general query in MySQL
+    execute_query: function (query, func) {
+        nodeConnect.query(query, function (err, res) {
+            if (error) {
+                console.error(`error in query: ` + err);
+                throw error;
+            } else {
+                return func (res);
+            }
         });
     },
 
