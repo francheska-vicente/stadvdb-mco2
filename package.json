@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/francheska-vicente/stadvdb-mco2/issues"
   },
-  "homepage": "https://github.com/francheska-vicente/stadvdb-mco2#readme"
+  "homepage": "https://github.com/francheska-vicente/stadvdb-mco2#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2"
+  }
 }
