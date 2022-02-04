@@ -27,3 +27,34 @@ const NODE3 = {
     database: process.env.NAME3
 }
 
+var nodeConnect;
+var nodeNumber = process.env.NODE;
+
+switch (nodeNumber) 
+{
+    case '1':
+            break;
+    case '2':
+            break;
+    case '3':
+            break;
+}
+
+const db_funcs = {
+    attri: {
+        id: 'id',
+        name: 'name', 
+        year: 'year',
+        rank: 'rank'
+    },
+
+    connect: function () {
+        nodeConnect.connect();
+    },
+
+    insert: function () {
+
+    },
+};
+
+module.exports = db_funcs;
