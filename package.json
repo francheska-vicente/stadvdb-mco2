@@ -18,6 +18,8 @@
   "homepage": "https://github.com/francheska-vicente/stadvdb-mco2#readme",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "hbs": "^4.2.0",
+    "mysql": "^2.18.1"
   }
 }
