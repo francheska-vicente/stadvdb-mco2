@@ -89,15 +89,40 @@ const db_funcs = {
         });
     },
 
-    insert: function () {
+    insert: function (movies, callback) {
+        var name = `NULL`;
+        var rank = `NULL`;
+        var year = `NULL`;
+       
+        if (movies.name) {
+            name = movies.name;
+        } 
 
+        if (movies.rank) {
+            rank = movies.rank;
+        }
+
+        if (movies.year) {
+            year = movies.year;
+        }
+        
+        var query = `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
+        nodeConnect.query(query, function (err, res) {
+            if (err) {
+                console.error(`error in query: ` + err);
+                throw err;
+            } else {
+                console.log(`insert: ` + res);
+                return callback (res);
+            }
+        });
     },
 
     update: function () {
 
     },
 
-    delete: function () {
+    delete: function (id, callback) {
         var query = `DELETE FROM movies WHERE id = ` + id + `;`;
 
         nodeConnect.query(query, function (err, res) {
