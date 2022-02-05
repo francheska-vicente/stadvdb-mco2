@@ -15,10 +15,6 @@ app.use(express.json());
 
 db.connect();
 
-db.select([`name`], [`id = 1`], function (callback) {
-    console.log (callback);
-});
-
 //bind the server to a port and a host
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     console.log(
