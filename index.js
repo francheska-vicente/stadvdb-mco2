@@ -15,6 +15,11 @@ app.use(express.json());
 
 db.connect();
 
+
+db.update(0, "#28", '', 2002, function (res) {
+
+});
+
 //bind the server to a port and a host
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     console.log(
