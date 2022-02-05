@@ -13,6 +13,7 @@ var path = require('path');
 // certificate provided by AZURE Database
 const serverCa = [fs.readFileSync(path.resolve("models/DigiCertGlobalRootCA.crt.pem"))]; 
 
+// switching between nodes
 switch (nodeNumber) 
 {
     case '1':
@@ -118,17 +119,45 @@ const db_funcs = {
         });
     },
 
-    update: function () {
+    update: function (id, name, rank, year, callback) {
+        var query = `UPDATE movies SET`; 
+        
+        if (name != '') {
+            query = query + ` name = '` + name + `'`;
 
+            if (rank != '') {
+                query = query + `, \`rank\` = ` + rank;
+
+                if (year != '') {
+                    query = query + `, year = ` + year;
+                }
+            } else if (year != '') {
+                query = query + `, year = ` + year;
+            }
+        } else {
+                query = query + ` \`rank\` = ` + rank;
+                query = query + `year = ` + year;
+        }
+        
+        query = query + ` WHERE id = ` + id + `;`;
+
+        nodeConnect.query(query, function (err, res) {
+            if (err) {
+                console.error(`error in update: ` + err);
+                throw err;
+            } else {
+                return callback (res);
+            }
+        });
     },
 
     delete: function (id, callback) {
         var query = `DELETE FROM movies WHERE id = ` + id + `;`;
 
         nodeConnect.query(query, function (err, res) {
-            if (error) {
+            if (err) {
                 console.error(`error in select: ` + err);
-                throw error;
+                throw err;
             } else {
                 return callback (res);
             }
