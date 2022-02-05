@@ -15,9 +15,8 @@ app.use(express.json());
 
 db.connect();
 
-
-db.update(0, "#28", '', 2002, function (res) {
-
+db.select([`name`], [`id = 1`], function (callback) {
+    console.log (callback);
 });
 
 //bind the server to a port and a host

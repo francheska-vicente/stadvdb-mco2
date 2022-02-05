@@ -110,7 +110,7 @@ const db_funcs = {
         var query = `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
         nodeConnect.query(query, function (err, res) {
             if (err) {
-                console.error(`error in query: ` + err);
+                console.error(`error in insert: ` + err);
                 throw err;
             } else {
                 console.log(`insert: ` + res);
@@ -156,7 +156,7 @@ const db_funcs = {
 
         nodeConnect.query(query, function (err, res) {
             if (err) {
-                console.error(`error in select: ` + err);
+                console.error(`error in delete: ` + err);
                 throw err;
             } else {
                 return callback (res);
@@ -164,8 +164,41 @@ const db_funcs = {
         });
     },
 
-    select: function (id, callback) {
-        
+    select: function (select, where, callback) {
+        var query = `SELECT `;
+
+        for (var i = 0; i < select.length; i++) {
+            if (i != 0) {
+                query = query + `, ` + select [i];
+            } else {
+                query = query + select [i];
+            }
+        }
+
+        if (select.length == 0) {
+            query = query + '*';
+        }
+
+        query = query + ` FROM movies `;
+
+        for (var i = 0; i < where.length; i++) {
+            if (i != 0) {
+                query = query + `, ` + where [i];
+            } else {
+                query = query + ` WHERE ` + where [i];
+            }
+        }
+
+        query = query + `;`;
+
+        nodeConnect.query(query, function (err, res) {
+            if (err) {
+                console.error(`error in select: ` + err);
+                throw err;
+            } else {
+                return callback (res);
+            }
+        });
     }
 };
 
