@@ -782,7 +782,6 @@ const db_funcs = {
         query = query + `;`;
 
         var result = [];
-        console.log (node2_checker + ` ` + node3_checker);
         if (node2_checker && node3_checker) {
             node2.query(query, function (err, res) {
                 if (err) {
@@ -819,13 +818,37 @@ const db_funcs = {
     selectAllMovies: function (callback) {
         var query = `SELECT * from movies;`;
 
-        node2.query(query, function (err, res) {
-            if (err) {
-                throw err;
-            } else {
-                return callback (res);
-            }
-        });
+        var result = [];
+        if (node2_checker && node3_checker) {
+            node2.query(query, function (err, res) {
+                if (err) {
+                    throw err;
+                } else {
+                    result.push(res);
+
+                    node3.query (query, function (err, res) {
+                        if (err) {
+                            throw err;
+                        } else {
+                            result.push(res);
+                            callback(result);
+                        }
+                    });
+                }
+            });
+        } else if (node1_checker) {
+            node1.query(query, function (err, res) {
+                if (err) {
+                    throw err;
+                } else {
+                    callback(res);
+                }
+            });
+        } else {
+            var err = `All nodes are inaccessible.`
+
+            throw err;
+        }
     }
 };
 
