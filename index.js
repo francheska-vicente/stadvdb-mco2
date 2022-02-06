@@ -13,13 +13,17 @@ app.use(express.urlencoded({ extended: false }));
 //parse incoming json payload
 app.use(express.json());
 
-db.connect();
+var port = process.env.PORT;
+var hostname = process.env.HOSTNAME;
 
-//bind the server to a port and a host
-app.listen(process.env.PORT, process.env.HOSTNAME, function () {
-    console.log(
-        `Server is running at http://${process.env.HOSTNAME}:${process.env.PORT}`
-    );
+/* The page should only be accessible once the database is connected. */
+db.connect(`2`, function (result) {
+    //bind the server to a port and a host
+    app.listen(process.env.PORT, process.env.HOSTNAME, function () {
+        console.log(
+            `Server is running at http://${hostname}:${port}`
+        );
+    });
 });
 
 module.exports = app;
