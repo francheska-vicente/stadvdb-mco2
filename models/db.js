@@ -250,7 +250,7 @@ const db_funcs = {
             } else {
                 node1.query (query, function (err, result) {
                     if (err) {
-                        nodeConnect.rollback (function () {
+                        node1.rollback (function () {
                             console.error (`error in insert: ` + err);
 
                             if (movies.year < 1980) {
@@ -449,7 +449,7 @@ const db_funcs = {
             } else {
                 node1.query (query, function (err, result) {
                     if (err) {
-                        nodeConnect.rollback (function () {
+                        node1.rollback (function () {
                             console.error (`error in insert: ` + err);
 
                             if (year < 1980) {
@@ -566,33 +566,183 @@ const db_funcs = {
                     }
                 });
             }
-        })
+        });
     },
 
-    delete: function (id, callback) {
+    delete: function (id, year, callback) {
         var query = `DELETE FROM movies WHERE id = ` + id + `;`;
 
-        nodeConnect.beginTransaction (function (err) {
+        node1.beginTransaction (function (err) {
             if (err) {
-                console.error (`error in beginning transaction:` + err);
-                throw err;
-            } else {
-                nodeConnect.query (query, function (err, result) {
-                    if (err) {
-                        nodeConnect.rollback (function () {
-                            console.error (`error in delete: ` + err);
+                if (year < 1980) {
+                    node2.beginTransaction (function (err) {
+                        if (err) {
+                            console.error (`error in beginning transaction:` + err);
                             throw err;
+                        } else {
+                            node2.query (query, function (err, result) {
+                                if (err) {
+                                    node2.rollback (function () {
+                                        console.error (`error in deleting: ` + err);
+                                        throw err;
+                                    });
+                                } else {
+                                    node2.commit (function (err) {
+                                        if (err) {
+                                            console.error (`error in committing:` + err);
+                                            throw err;
+                                        }
+                                    });
+                                }
+            
+                                return callback (result);
+                            });
+                        }
+                    })
+                } else {
+                    node3.beginTransaction (function (err) {
+                        if (err) {
+                            console.error (`error in beginning transaction:` + err);
+                            throw err;
+                        } else {
+                            node3.query (query, function (err, result) {
+                                if (err) {
+                                    node3.rollback (function () {
+                                        console.error (`error in deleting: ` + err);
+                                        throw err;
+                                    });
+                                } else {
+                                    node3.commit (function (err) {
+                                        if (err) {
+                                            console.error (`error in committing:` + err);
+                                            throw err;
+                                        } else {
+                                            return callback (result);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    })
+                }
+            } else {
+                node1.query (query, function (err, result) {
+                    if (err) {
+                        node1.rollback (function () {
+                            console.error (`error in insert: ` + err);
+
+                            if (year < 1980) {
+                                node2.beginTransaction (function (err) {
+                                    if (err) {
+                                        console.error (`error in beginning transaction:` + err);
+                                        throw err;
+                                    } else {
+                                        node2.query (query, function (err, result) {
+                                            if (err) {
+                                                node2.rollback (function () {
+                                                    console.error (`error in deleting: ` + err);
+                                                    throw err;
+                                                });
+                                            } else {
+                                                node2.commit (function (err) {
+                                                    if (err) {
+                                                        console.error (`error in committing:` + err);
+                                                        throw err;
+                                                    }
+                                                });
+                                            }
+                        
+                                            return callback (result);
+                                        });
+                                    }
+                                })
+                            } else {
+                                node3.beginTransaction (function (err) {
+                                    if (err) {
+                                        console.error (`error in beginning transaction:` + err);
+                                        throw err;
+                                    } else {
+                                        node3.query (query, function (err, result) {
+                                            if (err) {
+                                                node2.rollback (function () {
+                                                    console.error (`error in deleting: ` + err);
+                                                    throw err;
+                                                });
+                                            } else {
+                                                node3.commit (function (err) {
+                                                    if (err) {
+                                                        console.error (`error in committing:` + err);
+                                                        throw err;
+                                                    }
+                                                });
+                                            }
+                        
+                                            return callback (result);
+                                        });
+                                    }
+                                })
+                            }
                         });
                     } else {
-                        nodeConnect.commit (function (err) {
+                        node1.commit (function (err) {
                             if (err) {
-                                console.error (`error in committing:` + err);
-                                throw err;
+                                if (year < 1980) {
+                                    node2.beginTransaction (function (err) {
+                                        if (err) {
+                                            console.error (`error in beginning transaction:` + err);
+                                            throw err;
+                                        } else {
+                                            node2.query (query, function (err, result) {
+                                                if (err) {
+                                                    node2.rollback (function () {
+                                                        console.error (`error in update: ` + err);
+                                                        throw err;
+                                                    });
+                                                } else {
+                                                    node2.commit (function (err) {
+                                                        if (err) {
+                                                            console.error (`error in committing:` + err);
+                                                            throw err;
+                                                        }
+                                                    });
+                                                }
+                            
+                                                return callback (result);
+                                            });
+                                        }
+                                    })
+                                } else {
+                                    node3.beginTransaction (function (err) {
+                                        if (err) {
+                                            console.error (`error in beginning transaction:` + err);
+                                            throw err;
+                                        } else {
+                                            node3.query (query, function (err, result) {
+                                                if (err) {
+                                                    node2.rollback (function () {
+                                                        console.error (`error in update: ` + err);
+                                                        throw err;
+                                                    });
+                                                } else {
+                                                    node3.commit (function (err) {
+                                                        if (err) {
+                                                            console.error (`error in committing:` + err);
+                                                            throw err;
+                                                        }
+                                                    });
+                                                }
+                            
+                                                return callback (result);
+                                            });
+                                        }
+                                    })
+                                }
+                            } else {
+                                console.log (`data was committed/inserted to node1\n.`);
+                                return callback (result);
                             }
                         });
                     }
-
-                    return callback (result);
                 });
             }
         })
