@@ -26,8 +26,6 @@ db.connect(function () {
             `Server is running at http://${hostname}:${port}`
         );
     });
-
-    db.checkIfConnected ();
 });
 
 module.exports = app;

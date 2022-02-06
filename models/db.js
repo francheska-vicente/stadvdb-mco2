@@ -23,6 +23,8 @@ const e = require('express');
 // certificate provided by AZURE Database
 const serverCa = [fs.readFileSync(path.resolve("models/DigiCertGlobalRootCA.crt.pem"))]; 
 
+
+
 const db_funcs = {
     attri: {
         id: 'id',
@@ -118,7 +120,37 @@ const db_funcs = {
             node3 = NULL;
         }
         
-        callback();
+        var myTimer = setInterval (function () {
+            node1.ping((err)=> {
+                if (err) {
+                    node1_checker = false;
+                } else {
+                    node1_checker = true;
+                }
+            });
+
+            node2.ping((err)=> {
+                if (err) {
+                    node2_checker = false;
+                } else {
+                    node2_checker = true;
+                }
+            });
+
+            node3.ping((err)=> {
+                if (err) {
+                    node3_checker = false;
+                } else {
+                    node3_checker = true;
+                }
+            });
+        }, 1000);
+
+        // TODO: temporary; for testing! remove if for deployment
+        setTimeout(function() {
+            callback();
+        }, 3000);
+        
         /*
         nodeConnect.query("SELECT * FROM movies", function (err, result, fields) {
             if (err) return console.error(err)
@@ -126,34 +158,6 @@ const db_funcs = {
         });
         */
     },
-
-    checkIfConnected: function () {
-        var query = `SELECT * FROM movies`;
-
-        node1.query(query, function (err, res) {
-            if (err) {
-                node1_checker = false;
-            } else {
-                node1_checker = true;
-            }
-        });
-
-        node2.query(query, function (err, res) {
-            if (err) {
-                node2_checker = false;
-            } else {
-                node2_checker = true;
-            }
-        });
-
-        node3.query(query, function (err, res) {
-            if (err) {
-                node3_checker = false;
-            } else {
-                node3_checker = true;
-            }
-        });
-    }, 
 
     // for executing a general query in MySQL
     execute_query: function (query, callback) {
@@ -752,8 +756,10 @@ const db_funcs = {
         var query = `SELECT `;
 
         for (var i = 0; i < select.length; i++) {
-            if (i != 0) {
+            if (i != 0 && select[i].split(" "). join("") != `rank`) {
                 query = query + `, ` + select [i];
+            } else if (i != 0) {
+                query = query + `, \`` + select [i] + `\``;
             } else {
                 query = query + select [i];
             }
@@ -775,14 +781,39 @@ const db_funcs = {
 
         query = query + `;`;
 
-        nodeConnect.query(query, function (err, res) {
-            if (err) {
-                console.error(`error in select: ` + err);
-                throw err;
-            } else {
-                return callback (res);
-            }
-        });
+        var result = [];
+        console.log (node2_checker + ` ` + node3_checker);
+        if (node2_checker && node3_checker) {
+            node2.query(query, function (err, res) {
+                if (err) {
+                    throw err;
+                } else {
+                    result.push(res);
+
+                    node3.query (query, function (err, res) {
+                        if (err) {
+                            throw err;
+                        } else {
+                            result.push(res);
+                            callback(result);
+                        }
+                    });
+                }
+            });
+        } else if (node1_checker) {
+            node1.query(query, function (err, res) {
+                if (err) {
+                    throw err;
+                } else {
+                    callback(res);
+                }
+            });
+        } else {
+            var err = `All nodes are inaccessible.`
+
+            throw err;
+        }
+
     },
 
     selectAllMovies: function (callback) {
@@ -790,7 +821,7 @@ const db_funcs = {
 
         node2.query(query, function (err, res) {
             if (err) {
-
+                throw err;
             } else {
                 return callback (res);
             }
