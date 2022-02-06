@@ -84,7 +84,6 @@ const db_funcs = {
         }
 
         nodeConnect.connect();
-
         callback (connection);
         /*
         nodeConnect.query("SELECT * FROM movies", function (err, result, fields) {

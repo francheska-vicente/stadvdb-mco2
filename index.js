@@ -17,7 +17,7 @@ var port = process.env.PORT;
 var hostname = process.env.HOSTNAME;
 
 /* The page should only be accessible once the database is connected. */
-db.connect(`2`, function (result) {
+db.connect(`1`, function (result) {
     app.use('/', routes);
 
     //bind the server to a port and a host
