@@ -17,15 +17,20 @@ var port = process.env.PORT;
 var hostname = process.env.HOSTNAME;
 
 /* The page should only be accessible once the database is connected. */
-db.connect(function () {
-    app.use('/', routes);
+app.use('/', routes);
+app.listen(process.env.PORT, process.env.HOSTNAME, function () {
+    console.log(
+        `Server is running at http://${hostname}:${port}`
+    );
+    //db.connect(1, function (result) { console.log(result) });
+    // db.execute_query(`SELECT * FROM movies`).then(data => {
+    //     console.log(data);
+    // });
 
-    //bind the server to a port and a host
-    app.listen(process.env.PORT, process.env.HOSTNAME, function () {
-        console.log(
-            `Server is running at http://${hostname}:${port}`
-        );
+    db.execute_query(`INSERT INTO movies (name, \`rank\`,  year) VALUES ( 'Yohoo', 8.5, 1980);`).then(data => {
+        console.log(data);
     });
 });
+
 
 module.exports = app;
