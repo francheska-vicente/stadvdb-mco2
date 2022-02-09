@@ -11,6 +11,8 @@ These two nodes are follower nodes, which is mostly used for reading in the data
 Before this process would be started, the program would check a "checker" ("WRITING", "READING", or "NONE") in the table if there is a transaction that is currently using a specific entry. If the checker is currently "WRITING," no other transaction can happen. If it is only "READING," reading transactions can happen.
 
 Before putting the changes in the log, the checker for that entry must be turned into "WRITING."
+##### NOTE: Even if we are writing on Node 1, we should not still be able to read that specific row in Node 2 and Node 3.
+
 #### 1. Changes would be put in the log in the node that the changes would happen.
 Each of the instances/nodes would have one table that would act as the logger. The logger would include the timestamp wherein the changes happening on that node would be written. This would allow the web application to "redo" all of these changes to the other nodes.
 #### 2. Changes would be reflected on the current writing node.
