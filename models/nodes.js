@@ -64,7 +64,7 @@ const nodes_funcs = {
     },
 
     // starting a connection with the nodes
-    connect_node: async function (node, callback) {
+    connect_node: async function (node) {
         switch (node) {
             case 1: return await node1.getConnection();
             case 2: return await node2.getConnection();
