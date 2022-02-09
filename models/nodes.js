@@ -6,12 +6,6 @@ var fs = require('fs'); // for reading of certificate for connection
 
 dotenv.config(); 
 
-var nodeConnect;
-
-var node1_checker = false;
-var node2_checker = false;
-var node3_checker = false;
-
 var path = require('path');
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const e = require('express');
@@ -51,6 +45,7 @@ const node2 = mysql.createPool({
         ca: serverCa
     }
 });
+
 const node3 = mysql.createPool({
     host: process.env.HOSTNAME3,
     port: process.env.PORT3,
@@ -93,12 +88,16 @@ const nodes_funcs = {
         return await Promise.all([node2.query(query), node3.query(query)]);
     },
 
-    select_query_node: async function (query) {
+    select_query_node: async function (node, query) {
         switch (node) {
             case 1: return await Promise.all([node1.query(query)]);
             case 2: return await Promise.all([node2.query(query)]);
             case 3: return await Promise.all([node3.query(query)]);
         }
+    },
+
+    query_pool: async function (conn, query) {
+        return await conn.query(query);
     },
 
     insert: function (movies, callback) {

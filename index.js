@@ -27,7 +27,7 @@ app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     //     console.log(data);
     // });
 
-    db.execute_query(`INSERT INTO movies (name, \`rank\`,  year) VALUES ( 'Yohoo', 8.5, 1980);`).then(data => {
+    db.insert_query({ name: `Pia was here hehe`, year: 1979, rank: 4.0 }).then(data => {
         console.log(data);
     });
 });
