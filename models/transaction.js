@@ -1,5 +1,3 @@
-
-const mysql = require('mysql2/promise');
 const nodes = require('../models/nodes.js');
 
 const transactions_funcs = {
