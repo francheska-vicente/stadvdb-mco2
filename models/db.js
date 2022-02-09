@@ -1,7 +1,7 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const nodes = require('../models/nodes.js');
 const transaction = require('../models/transaction.js');
-const queryHelper = require('../models/queryHelper.js');
+const queryHelper = require('../helpers/queryHelper.js');
 
 const db_functions = {
     select_query: async function (query) {
