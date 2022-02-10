@@ -64,8 +64,10 @@ const query_funcs = {
         return `DELETE FROM movies WHERE id = ` + id + `;`;
     },
 
-    to_create_log_query: function (id) {
-        
+    to_create_log_query: function (id, name, year, rank, node, type) {
+        return `SET @@session.time_zone = "+08:00";
+        INSERT INTO log_table(\`type\`, node_to, done, id, \`name\`, \`year\`, \`rank\`) VALUES ('` +
+        type + `', ` + node `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
     }
 }
 module.exports = query_funcs;
