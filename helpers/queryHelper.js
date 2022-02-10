@@ -29,16 +29,16 @@ const query_funcs = {
         return query + `;`;
     },
 
-    to_insert_query: function (table, movies) {
+    to_insert_query: function (movies) {
         var name = movies.name;
         var rank = (movies.rank) ? movies.rank : `NULL`;
         var year = movies.year;
 
-        return `INSERT INTO ` + table + ` (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
+        return `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
     },
 
-    to_update_query: function (table, id, name, rank, year) {
-        var query = `UPDATE ` + table + ` SET`;
+    to_update_query: function (id, name, rank, year) {
+        var query = `UPDATE movies SET`;
 
         if (name != '') {
             query = query + ` name = '` + name + `'`;
@@ -60,8 +60,12 @@ const query_funcs = {
         return query + ` WHERE id = ` + id + `;`;
     },
 
-    to_delete_query: function (table, id) {
-        return `DELETE FROM ` + table + ` WHERE id = ` + id + `;`;
+    to_delete_query: function (id) {
+        return `DELETE FROM movies WHERE id = ` + id + `;`;
+    },
+
+    to_create_log_query: function (id) {
+        
     }
 }
 module.exports = query_funcs;
