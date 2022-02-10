@@ -89,7 +89,7 @@ const nodes_funcs = {
         }
     },
 
-    query_pool: async function (conn, query) {
+    execute_query: async function (conn, query) {
         return await conn.query(query);
     }
 };
