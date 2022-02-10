@@ -1,20 +1,43 @@
+const { NULL } = require('mysql/lib/protocol/constants/types');
+
 const db = require('./db.js');
 const log = require('./logs.js');
+const transaction = require('./transaction.js');
+const queryHelper = require('../helpers/queryHelper.js');
 
 const sync_funcs = {
-    sync_data: async function () {
-        var logs = log.get_unreplicated_rows;
+    sync_data: async function (node) {
+        let conn = NULL;
         try {
-            for (const log of logs) {
-                switch (log.action) {
-                    case "UPDATE": await db.update_query(log.data);
-                    case "DELETE": await db.delete_query(log.data);
+            conn = await transaction.start_transaction(node);
+            var logs = await log.get_unreplicated_rows(node);
+            console.log(logs)
+            if (logs)
+                for (const log of logs) {
+                    switch (log.type) {
+                        case "UPDATE":
+                            try {
+                                await conn.execute_query(queryHelper.to_update_query('log_table', log.id, log.name, log.rank, log.year));
+                                log.finish_sync(node, 1);
+                            }
+                            catch (error) {
+                                console.log(error);
+                            }
+                            break;
+                        case "DELETE":
+                            try {
+                                await conn.execute_query(queryHelper.to_delete_query('log_table', log.id));
+                                log.finish_sync(node, 1);
+                            }
+                            catch (error) {
+                                console.log(error);
+                            }
+                            break;
+                    }
                 }
-            }
         }
         catch (error) {
             console.log(error)
-            throw (error)
         }
     }
 }

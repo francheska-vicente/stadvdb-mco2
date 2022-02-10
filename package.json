@@ -24,6 +24,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "mysql2-timeout-additions": "^1.1.2",
+    "node-cron": "^3.0.0",
     "path": "^0.12.7"
   }
 }

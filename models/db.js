@@ -13,197 +13,104 @@ const db_functions = {
             throw `All nodes are inaccessible.`
     },
 
-    insert_query: async function (movies) {
-        var query = queryHelper.to_insert_query(movies);
-        let conn = NULL;
+    insert_query: async function (table, movies) {
+        var query = queryHelper.to_insert_query(table, movies);
         try {
-            conn = await transaction.start_transaction(1);
+            transaction.make_transaction(1, query).then(value => {
+                console.log('1 ' + value);
+            });
         }
         catch (error) {
             console.log(error)
             if (movies.year < 1980) {
                 try {
-                    conn = await transaction.start_transaction(2);
+                    transaction.make_transaction(2, query).then(value => {
+                        console.log('2 ' + value);
+                    });
                 }
                 catch (error) {
                     console.log(error)
-                    throw (error)
-                }
-                finally {
-                    try {
-                        var result = await nodes.execute_query(conn, query);
-                        await conn.commit();
-                        return result;
-                    }
-                    catch (error) {
-                        console.log(error)
-                        conn.rollback();
-                        throw (error);
-                    }
+                    conn.rollback();
                 }
             }
             else {
                 try {
-                    conn = await transaction.start_transaction(2);
+                    transaction.make_transaction(3, query).then(value => {
+                        console.log('3 ' + value);
+                    });
                 }
                 catch (error) {
                     console.log(error)
-                    throw (error)
+                    conn.rollback();
                 }
-                finally {
-                    try {
-                        var result = await nodes.execute_query(conn, query);
-                        await conn.commit();
-                        return result;
-                    }
-                    catch (error) {
-                        console.log(error)
-                        conn.rollback();
-                        throw (error);
-                    }
-                }
-            }
-        }
-        finally {
-            try {
-                var result = await nodes.execute_query(conn, query);
-                await conn.commit();
-                return result;
-            }
-            catch (error) {
-                console.log(error)
-                conn.rollback();
-                throw (error);
             }
         }
     },
 
     update_query: async function (id, name, rank, year) {
-        var query = queryHelper.to_update_query(id, name, rank, year);
-        let conn = NULL;
+        var query = queryHelper.to_update_query(table, id, name, rank, year);
         try {
-            conn = await transaction.start_transaction(1);
+            transaction.make_transaction(1, query).then(value => {
+                console.log(value);
+            });
         }
         catch (error) {
             console.log(error)
             if (movies.year < 1980) {
                 try {
-                    conn = await transaction.start_transaction(2);
+                    transaction.make_transaction(2, query).then(value => {
+                        console.log(value);
+                    });
                 }
                 catch (error) {
                     console.log(error)
-                    throw (error)
-                }
-                finally {
-                    try {
-                        var result = await nodes.execute_query(conn, query);
-                        await conn.commit();
-                        return result;
-                    }
-                    catch (error) {
-                        console.log(error)
-                        conn.rollback();
-                        throw (error);
-                    }
+                    conn.rollback();
                 }
             }
             else {
                 try {
-                    conn = await transaction.start_transaction(2);
+                    transaction.make_transaction(3, query).then(value => {
+                        console.log(value);
+                    });
                 }
                 catch (error) {
                     console.log(error)
-                    throw (error)
+                    conn.rollback();
                 }
-                finally {
-                    try {
-                        var result = await nodes.execute_query(conn, query);
-                        await conn.commit();
-                        return result;
-                    }
-                    catch (error) {
-                        console.log(error)
-                        conn.rollback();
-                        throw (error);
-                    }
-                }
-            }
-        }
-        finally {
-            try {
-                var result = await nodes.execute_query(conn, query);
-                await conn.commit();
-                return result;
-            }
-            catch (error) {
-                console.log(error)
-                conn.rollback();
-                throw (error);
             }
         }
     },
 
-    delete_query: async function (id, name, rank, year) {
-        var query = queryHelper.to_delete_query(id);
-        let conn = NULL;
+    delete_query: async function (id) {
+        var query = queryHelper.to_delete_query(table, id);
         try {
-            conn = await transaction.start_transaction(1);
+            transaction.make_transaction(1, query).then(value => {
+                console.log(value);
+            });
         }
         catch (error) {
             console.log(error)
             if (movies.year < 1980) {
                 try {
-                    conn = await transaction.start_transaction(2);
+                    transaction.make_transaction(2, query).then(value => {
+                        console.log(value);
+                    });
                 }
                 catch (error) {
                     console.log(error)
-                    throw (error)
-                }
-                finally {
-                    try {
-                        var result = await nodes.execute_query(conn, query);
-                        await conn.commit();
-                        return result;
-                    }
-                    catch (error) {
-                        console.log(error)
-                        conn.rollback();
-                        throw (error);
-                    }
+                    conn.rollback();
                 }
             }
             else {
                 try {
-                    conn = await transaction.start_transaction(2);
+                    transaction.make_transaction(3, query).then(value => {
+                        console.log(value);
+                    });
                 }
                 catch (error) {
                     console.log(error)
-                    throw (error)
+                    conn.rollback();
                 }
-                finally {
-                    try {
-                        var result = await nodes.execute_query(conn, query);
-                        await conn.commit();
-                        return result;
-                    }
-                    catch (error) {
-                        console.log(error)
-                        conn.rollback();
-                        throw (error);
-                    }
-                }
-            }
-        }
-        finally {
-            try {
-                var result = await nodes.execute_query(conn, query);
-                await conn.commit();
-                return result;
-            }
-            catch (error) {
-                console.log(error)
-                conn.rollback();
-                throw (error);
             }
         }
     }
