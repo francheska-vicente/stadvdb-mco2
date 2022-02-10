@@ -31,7 +31,7 @@ const db_functions = {
                 }
                 finally {
                     try {
-                        var result = await nodes.query_pool(conn, query);
+                        var result = await nodes.execute_query(conn, query);
                         await conn.commit();
                         return result;
                     }
@@ -52,7 +52,7 @@ const db_functions = {
                 }
                 finally {
                     try {
-                        var result = await nodes.query_pool(conn, query);
+                        var result = await nodes.execute_query(conn, query);
                         await conn.commit();
                         return result;
                     }
@@ -66,7 +66,7 @@ const db_functions = {
         }
         finally {
             try {
-                var result = await nodes.query_pool(conn, query);
+                var result = await nodes.execute_query(conn, query);
                 await conn.commit();
                 return result;
             }
@@ -96,7 +96,7 @@ const db_functions = {
                 }
                 finally {
                     try {
-                        var result = await nodes.query_pool(conn, query);
+                        var result = await nodes.execute_query(conn, query);
                         await conn.commit();
                         return result;
                     }
@@ -117,7 +117,7 @@ const db_functions = {
                 }
                 finally {
                     try {
-                        var result = await nodes.query_pool(conn, query);
+                        var result = await nodes.execute_query(conn, query);
                         await conn.commit();
                         return result;
                     }
@@ -131,7 +131,7 @@ const db_functions = {
         }
         finally {
             try {
-                var result = await nodes.query_pool(conn, query);
+                var result = await nodes.execute_query(conn, query);
                 await conn.commit();
                 return result;
             }
@@ -161,7 +161,7 @@ const db_functions = {
                 }
                 finally {
                     try {
-                        var result = await nodes.query_pool(conn, query);
+                        var result = await nodes.execute_query(conn, query);
                         await conn.commit();
                         return result;
                     }
@@ -182,7 +182,7 @@ const db_functions = {
                 }
                 finally {
                     try {
-                        var result = await nodes.query_pool(conn, query);
+                        var result = await nodes.execute_query(conn, query);
                         await conn.commit();
                         return result;
                     }
@@ -196,7 +196,7 @@ const db_functions = {
         }
         finally {
             try {
-                var result = await nodes.query_pool(conn, query);
+                var result = await nodes.execute_query(conn, query);
                 await conn.commit();
                 return result;
             }
