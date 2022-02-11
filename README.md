@@ -26,3 +26,15 @@ However, we still cannot use this node for reading/writing until it is finish up
 1. It is possible to change the movie year, which means that we might have to move a movie from Node 2 to Node 3.
 2. A checker might need to be added to the database to determine if there is a transaction writing to it. This would avoid concurrency problems that might occur when a transaction reads it while it is being updated.
 3. Since the ID used in the DB is auto-incrementing, it might include issues wherein an ID used by Node 2 and Node 3 might refer to different movies.
+# MCO2: Transaction Management: Pia Edition
+
+### Models
+Execution of functions were done asynchronously with promises.
+| Model Files                                 | Description                                                 |
+|---------------------------------------------|-------------------------------------------------------------|
+| [`db.js`](models/db.js)                     | Handles query concurrency (supposedly) and failover         |
+| [`nodes.js`](models/nodes.js)               | Connects to nodes, executes queries for specific nodes      |
+| [`transaction.js`](models/transaction.js)   | Starts transactions                                         |
+| [`logs.js`](models/logs.js)                 | Connects to log table, retrieves and updates log table rows |
+| [`sync.js`](models/sync.js)                 | Iterates through unreplicated rows and updates nodes        |
+| [`replicator.js`](models/replicator.js)     | Handles when data replication occurs                        |
