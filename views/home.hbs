@@ -14,78 +14,71 @@
         <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="/js/jquery-ui.js"></script>
         <script type="text/javascript" src="/js/validator.min.js"></script>
-        <script type="text/javascript" src="/js/home.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+        <script type="text/javascript" src="/js/home.js"></script>       
     </head>
 
-    <body style="background-color:#EE9595;" class="col-12 d-flex flex-column">
-        <div class="flex-fill bg-light m-5 p-5 d-flex flex-column justify-content-center">
+    <body style="background-color:#EE9595;" class="col-12 h-100 d-flex flex-column">
+        <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
             {{!-- HEADER --}}
-            <div class="col-12 pb-4 d-flex flex-row"> 
-                <div class="col-6 movie-title-quote d-flex flex-column justify-content-center align-items-center" style="background-color:#FFCDA3;">
+            <div class="rounded-3 col-12 mb-5 d-flex flex-row"> 
+                <div class="rounded-start col-6 p-3 movie-title-quote d-flex flex-column justify-content-center align-items-center" style="background-color:#FFCDA3;">
                     <span class="material-icons md-48">movie_filter</span>
                     <div id="title" class="col-6">
                         <p class="h1 text-center">IMDb Movies</p>
                     </div>  
                     <figure>
                         <blockquote class="blockquote">
-                            <p class="text-center fst-italic fw-bolder">Kasalanan to ni Solomon See.</p>
+                            <p class="text-center p-2 fst-italic fw-bolder">Please respect our health break by not sending any more questions regarding MCO2.</p>
                         </blockquote>
                         <figcaption class=" text-center blockquote-footer">
-                            Someone famous in <cite title="Source Title">Source Title</cite>
+                            Someone famous in <cite title="Source Title">Canvas Announcements</cite>
                         </figcaption>
                     </figure>
                 </div>
 
-                <div class="col-6 movie-header">
-                    <img src="/images/bg1.jpeg" alt="movies">
+                <div class="rounded-end col-6 movie-header">
+                    <img src="/images/bg1.jpeg" class="rounded-end" alt="movies">
                 </div>
             </div>
             {{!-- SEARCH BAR --}}
-            <div class="form-floating border-primary justify-content-center">
+            <div class="form-floating border-primary mb-5 justify-content-center">
                 <textarea class="form-control border border-dark" placeholder="Enter the query here..." id="query" style="height: 90px;"></textarea>
                 <label for="query" class="">Query</label>
-                <div class="col-12 d-flex flex-row">
-                    <div id="event-notes-help" name class="col-6 form-text">
-                        Enter your query here. The box can be resized by dragging the lower-right corner.
+                <div class="row col-12 m-0 d-flex flex-row">
+                    <div id="event-notes-help" class="col-8 px-0 form-text">Enter your query here. The box can be resized by dragging the lower-right corner.
                     </div>
-                    <div class="col-6 d-grid d-md-flex pt-2 justify-content-md-end align-items-end">
-                        <button class="btn" id="search" type="button" disabled>Search</button>
+                    <div class="col-4 px-0 pt-2">
+                        <button class="btn col-12" id="search" type="button" disabled>Search</button>
                     </div>
                 </div>
             </div>
-            <br>
-
             {{!-- TABLE --}}
-            <table class="table table-hover table-bordered border-dark">
-            <thead class="table-danger">
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td>Skap</td>
-                <td>Bupbap</td>
-                <td>@twitter</td>
-                </tr>
-            </tbody>
-            </table>
+            <div id="title" class="col-6">
+                <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
+            </div>  
+            <div id="movies-table"></div>
         </div>
     </body>
+<!-- The script element is used to define the Handlebars template -->
+<script type="text/x-handlebars-template" id="tableTemplate">
+    <table>
+    <thead>
+    <tr>
+        {{#each array.[0]}}
+            <th>{{@key}}</th>
+        {{/each}}
+    </tr>
+    </thead>
+    <tbody>
+        {{#each array}}
+            <tr>
+                {{#each this}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+    </tbody>
+    </table>
+</script> 
 </html>

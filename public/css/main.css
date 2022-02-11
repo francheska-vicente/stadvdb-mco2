@@ -21,8 +21,10 @@ textarea {
     border-color: #20b2aa;
 }
 .movie-header img {
-    width: 100%;
     opacity: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 } 
 
 .movie-title-quote {
@@ -34,4 +36,18 @@ textarea {
 #search {
     background-color: #20b2aa;
     color: white;
+    font-weight: 600;
 }
+
+table {
+    width: 100%;
+  }
+  
+  table, th, td {
+    border: 1px solid lightgrey;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 2px 4px;
+  }
