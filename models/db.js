@@ -62,7 +62,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Inserted into Node 3');
-                        
+
                         // create log for future sync to central node
                         var log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
                         transaction.make_transaction(2, log).then(value => {
@@ -71,8 +71,6 @@ const db_functions = {
                         });
                     }
                 });
-
-
             }
         }
     },
@@ -84,53 +82,57 @@ const db_functions = {
         try {
             // if central node is up, update row in central node
             transaction.make_transaction(1, query).then(value => {
-                if (value) console.log('Updated in Node 1');
-                console.log(value);
-            });
+                if (value) {
+                    console.log('Updated in Node 1');
 
-            // create log for future sync to follower node based on year
-            if (year < 1980) {
-                var log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
-                transaction.make_transaction(2, log).then(value => {
-                    if (value) console.log('Created log: node_to: 2, node_from: 1');
-                    console.log(value);
-                });
-            }
-            else {
-                var log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
-                transaction.make_transaction(3, log).then(value => {
-                    if (value) console.log('Created log: node_to: 3, node_from: 1');
-                    console.log(value);
-                });
-            }
+                    // create log for future sync to follower node based on year
+                    if (year < 1980) {
+                        var log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
+                        transaction.make_transaction(2, log).then(value => {
+                            if (value) console.log('Created log: node_to: 2, node_from: 1');
+                            console.log(value);
+                        });
+                    }
+                    else {
+                        var log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
+                        transaction.make_transaction(3, log).then(value => {
+                            if (value) console.log('Created log: node_to: 3, node_from: 1');
+                            console.log(value);
+                        });
+                    }
+                }
+            });
         }
         catch (error) {
             // if central node is down, insert row to follower node based on year
             console.log(error)
             if (year < 1980) {
                 transaction.make_transaction(2, query).then(value => {
-                    if (value) console.log('Updated in Node 2');
-                    console.log(value);
+                    if (value) {
+                        console.log('Updated in Node 2');
+
+                        // create log for future sync to central node
+                        var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
+                        transaction.make_transaction(2, log).then(value => {
+                            if (value) console.log('Created log: node_to: 1, node_from: 2');
+                            console.log(value);
+                        });
+                    }
                 });
 
-                // create log for future sync to central node
-                var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
-                transaction.make_transaction(2, log).then(value => {
-                    if (value) console.log('Created log: node_to: 1, node_from: 2');
-                    console.log(value);
-                });
             }
             else {
                 transaction.make_transaction(2, query).then(value => {
-                    if (value) console.log('Updated in Node 3');
-                    console.log(value);
-                });
+                    if (value) {
+                        console.log('Updated in Node 3');
 
-                // create log for future sync to central node
-                var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
-                transaction.make_transaction(2, log).then(value => {
-                    if (value) console.log('Created log: node_to: 1, node_from: 3');
-                    console.log(value);
+                        // create log for future sync to central node
+                        var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
+                        transaction.make_transaction(2, log).then(value => {
+                            if (value) console.log('Created log: node_to: 1, node_from: 3');
+                            console.log(value);
+                        });
+                    }
                 });
             }
         }
@@ -143,53 +145,56 @@ const db_functions = {
         try {
             // if central node is up, update row in central node
             transaction.make_transaction(1, query).then(value => {
-                if (value) console.log('Deleted from Node 1');
-                console.log(value);
-            });
+                if (value) {
+                    console.log('Deleted from Node 1');
 
-            // create log for future sync to follower node based on year
-            if (year < 1980) {
-                var log = queryHelper.to_delete_query_log(id, 2, 1);
-                transaction.make_transaction(2, log).then(value => {
-                    if (value) console.log('Created log: node_to: 2, node_from: 1');
-                    console.log(value);
-                });
-            }
-            else {
-                var log = queryHelper.to_delete_query_log(id, 3, 1);
-                transaction.make_transaction(3, log).then(value => {
-                    if (value) console.log('Created log: node_to: 3, node_from: 1');
-                    console.log(value);
-                });
-            }
+                    // create log for future sync to follower node based on year
+                    if (year < 1980) {
+                        var log = queryHelper.to_delete_query_log(id, 2, 1);
+                        transaction.make_transaction(2, log).then(value => {
+                            if (value) console.log('Created log: node_to: 2, node_from: 1');
+                            console.log(value);
+                        });
+                    }
+                    else {
+                        var log = queryHelper.to_delete_query_log(id, 3, 1);
+                        transaction.make_transaction(3, log).then(value => {
+                            if (value) console.log('Created log: node_to: 3, node_from: 1');
+                            console.log(value);
+                        });
+                    }
+                }
+            });
         }
         catch (error) {
             // if central node is down, insert row to follower node based on year
             console.log(error)
             if (year < 1980) {
                 transaction.make_transaction(2, query).then(value => {
-                    if (value) console.log('Deleted from Node 2');
-                    console.log(value);
-                });
+                    if (value) {
+                        console.log('Deleted from Node 2');
 
-                // create log for future sync to central node
-                var log = queryHelper.to_delete_query_log(id, 1, 2);
-                transaction.make_transaction(2, log).then(value => {
-                    if (value) console.log('Created log: node_to: 1, node_from: 2');
-                    console.log(value);
+                        // create log for future sync to central node
+                        var log = queryHelper.to_delete_query_log(id, 1, 2);
+                        transaction.make_transaction(2, log).then(value => {
+                            if (value) console.log('Created log: node_to: 1, node_from: 2');
+                            console.log(value);
+                        });
+                    }
                 });
             }
             else {
                 transaction.make_transaction(2, query).then(value => {
-                    if (value) console.log('Deleted from Node 3');
-                    console.log(value);
-                });
+                    if (value) {
+                        console.log('Deleted from Node 3');
 
-                // create log for future sync to central node
-                var log = queryHelper.to_delete_query_log(id, 1, 3);
-                transaction.make_transaction(2, log).then(value => {
-                    if (value) console.log('Created log: node_to: 1, node_from: 3');
-                    console.log(value);
+                        // create log for future sync to central node
+                        var log = queryHelper.to_delete_query_log(id, 1, 3);
+                        transaction.make_transaction(2, log).then(value => {
+                            if (value) console.log('Created log: node_to: 1, node_from: 3');
+                            console.log(value);
+                        });
+                    }
                 });
             }
         }
