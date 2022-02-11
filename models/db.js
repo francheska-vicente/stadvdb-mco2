@@ -73,7 +73,7 @@ const db_functions = {
     },
 
     update_query: async function (id, name, rank, year) {
-        // creates SQL statement for inserting row
+        // creates SQL statement for updating row
         var query = queryHelper.to_update_query(id, name, rank, year);
 
         try {
@@ -132,7 +132,7 @@ const db_functions = {
     },
 
     delete_query: async function (id) {
-        // creates SQL statement for inserting row
+        // creates SQL statement for deleting row
         var query = queryHelper.to_delete_query(id);
 
         try {
