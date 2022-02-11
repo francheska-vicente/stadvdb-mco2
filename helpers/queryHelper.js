@@ -72,9 +72,9 @@ const query_funcs = {
             + node_to + `, '` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
     },
 
-    to_delete_query_log: function (id, name, year, rank, node_to, node_from) {
-        return `SET @@session.time_zone = "+08:00"; INSERT INTO log_table(type, node_to, node_from, done, id, name, year, \`rank\`) VALUES ('DELETE', `
-            + node_to + `, '` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
+    to_delete_query_log: function (id, node_to, node_from) {
+        return `SET @@session.time_zone = "+08:00"; INSERT INTO log_table(type, node_to, node_from, done, id) VALUES ('DELETE', `
+            + node_to + `, '` + node_from + `, false, ` + id`);`
     },
 
     to_finish_log: function (id) {
