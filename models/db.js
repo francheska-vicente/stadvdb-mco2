@@ -62,14 +62,14 @@ const db_functions = {
                 });
             }
             else {
-                transaction.make_transaction(2, query).then(value => {
+                transaction.make_transaction(3, query).then(value => {
                     if (value) {
                         console.log('Inserted into Node 3');
                         console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
-                        transaction.make_transaction(2, log).then(value => {
+                        transaction.make_transaction(3, log).then(value => {
                             if (value) console.log('Created log: node_to: 1, node_from: 3');
                             console.log(value);
                         });
@@ -128,14 +128,14 @@ const db_functions = {
                 });
             }
             else {
-                transaction.make_transaction(2, query).then(value => {
+                transaction.make_transaction(3, query).then(value => {
                     if (value) {
                         console.log('Updated in Node 3');
                         console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
-                        transaction.make_transaction(2, log).then(value => {
+                        transaction.make_transaction(3, log).then(value => {
                             if (value) console.log('Created log: node_to: 1, node_from: 3');
                             console.log(value);
                         });
@@ -194,14 +194,14 @@ const db_functions = {
                 });
             }
             else {
-                transaction.make_transaction(2, query).then(value => {
+                transaction.make_transaction(3, query).then(value => {
                     if (value) {
                         console.log('Deleted from Node 3');
                         console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_delete_query_log(id, 1, 3);
-                        transaction.make_transaction(2, log).then(value => {
+                        transaction.make_transaction(3, log).then(value => {
                             if (value) console.log('Created log: node_to: 1, node_from: 3');
                             console.log(value);
                         });
