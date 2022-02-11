@@ -1,8 +1,6 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const mysql = require('mysql2/promise');
 
-const db = require('./db.js');
-const log = require('./logs.js');
 const nodes = require('./nodes.js');
 const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
