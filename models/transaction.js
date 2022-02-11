@@ -10,6 +10,7 @@ const transactions_funcs = {
             if (conn)
                 try {
                     await conn.beginTransaction();
+                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
                     var result = await nodes.execute_query(conn, query);
                     console.log('Executed query!');
                     await conn.commit();
