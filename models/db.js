@@ -17,24 +17,34 @@ const db_functions = {
         var query = queryHelper.to_insert_query(name, rank, year);
         try {
             var log = queryHelper.to_insert_query_log(name, rank, year, 1);
-            transaction.make_transaction(1, query, log).then(value => {
-                console.log('Inserted into Node 1');
+            transaction.make_transaction(1, query).then(value => {
+                if (value) console.log('Inserted into Node 1');
                 console.log(value);
             });
+            if (year < 1980) {
+                transaction.make_transaction(2, log).then(value => {
+                    if (value) console.log('Created log 2');
+                    console.log(value);
+                });
+            }
+            else {
+
+            }
+            
         }
         catch (error) {
             console.log(error)
             if (year < 1980) {
                 var log = queryHelper.to_insert_query_log(name, rank, year, 2);
                 transaction.make_transaction(2, query, log).then(value => {
-                    console.log('Inserted into Node 2');
+                    if (value) console.log('Inserted into Node 2');
                     console.log(value);
                 });
             }
             else {
                 var log = queryHelper.to_insert_query_log(name, rank, year, 3);
                 transaction.make_transaction(3, query, log).then(value => {
-                    console.log('Inserted into Node 3');
+                    if (value) console.log('Inserted into Node 3');
                     console.log(value);
                 });
             }
@@ -46,7 +56,7 @@ const db_functions = {
         try {
             var log = queryHelper.to_update_query_log(id, name, rank, year, 1);
             transaction.make_transaction(1, query, log).then(value => {
-                console.log('Updated in Node 1');
+                if (value) console.log('Updated in Node 1');
                 console.log(value);
             });
         }
@@ -55,14 +65,14 @@ const db_functions = {
             if (year < 1980) {
                 var log = queryHelper.to_update_query_log(id, name, rank, year, 2);
                 transaction.make_transaction(2, query, log).then(value => {
-                    console.log('Updated in Node 2');
+                    if (value) console.log('Updated in Node 2');
                     console.log(value);
                 });
             }
             else {
                 var log = queryHelper.to_update_query_log(id, name, rank, year, 3);
                 transaction.make_transaction(3, query, log).then(value => {
-                    console.log('Updated in Node 3');
+                    if (value) console.log('Updated in Node 3');
                     console.log(value);
                 }); n.rollback();
             }
@@ -74,7 +84,7 @@ const db_functions = {
         try {
             var log = queryHelper.to_delete_query_log(id, name, rank, year, 1);
             transaction.make_transaction(3, query, log).then(value => {
-                console.log('Deleted from Node 1');
+                if (value) console.log('Deleted from Node 1');
                 console.log(value);
             });
         }
@@ -83,14 +93,14 @@ const db_functions = {
             if (year < 1980) {
                 var log = queryHelper.to_delete_query_log(id, name, rank, year, 2);
                 transaction.make_transaction(3, query, log).then(value => {
-                    console.log('Deleted from Node 2');
+                    if (value) console.log('Deleted from Node 2');
                     console.log(value);
                 });
             }
             else {
                 var log = queryHelper.to_delete_query_log(id, name, rank, year, 3);
                 transaction.make_transaction(3, query, log).then(value => {
-                    console.log('Deleted from Node 3');
+                    if (value) console.log('Deleted from Node 3');
                     console.log(value);
                 });
             }

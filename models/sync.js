@@ -1,48 +1,67 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
+const mysql = require('mysql2/promise');
 
 const db = require('./db.js');
 const log = require('./logs.js');
+const nodes = require('./nodes.js');
 const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
 
 const sync_funcs = {
-    sync_data: async function (node) {
-        let conn = NULL;
+    sync_leader_node: async function () {
+        let logs = [];
+        let logs2 = [];
+        let logs3 = [];
         try {
-            conn = await transaction.start_transaction(node);
-            var logs = await log.get_unreplicated_rows(node);
-            console.log(logs)
-            if (logs)
-                for (const log of logs) {
-                    switch (log.type) {
-                        case "UPDATE":
-                            try {
-                                await conn.execute_query(queryHelper.to_update_query('log_table', log.id, log.name, log.rank, log.year));
-                                log.finish_sync(node, 1);
-                            }
-                            catch (error) {
-                                console.log(error);
-                            }
-                            break;
-                        case "DELETE":
-                            try {
-                                await conn.execute_query(queryHelper.to_delete_query('log_table', log.id));
-                                log.finish_sync(node, 1);
-                            }
-                            catch (error) {
-                                console.log(error);
-                            }
-                            break;
-                    }
+            logs = await nodes.select_query_follower_node(queryHelper.to_retrieve_logs(1));
+            
+            logs2 = logs[0][0];
+            logs3 = logs[1][0];
+            logs = logs2.concat(logs3);
+            logs.sort((a, b) => a.date.getTime() - b.date.getTime());
+            for (let i = 0; i < logs.length; i++) {
+                let query;
+                switch (logs[i].type) {
+                    case 'INSERT':
+                        query = queryHelper.to_insert_query(logs[i].name, logs[i].year, logs[i].rank); break;
+                    case 'UPDATE':
+                        query = queryHelper.to_update_query(logs[i].id, logs[i].name, logs[i].rank, logs[i].year); break;
+                    case 'DELETE':
+                        query = queryHelper.to_insert_query(logs[i].id); break;
                 }
+                await transaction.make_transaction(logs[i].node_to, query);
+                //await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id));
+            }
         }
         catch (error) {
             console.log(error)
         }
     },
 
-    create_log: async function (node) {
-        
+    sync_follower_node: async function (node) {
+        let logs = [];
+        try {
+            logs = await nodes.select_query_leader_node(queryHelper.to_retrieve_logs(node));
+            logs = logs[0][0];
+
+            for (let i = 0; i < logs.length; i++) {
+                let query;
+                
+                switch (logs[i].type) {
+                    case 'INSERT':
+                        query = queryHelper.to_insert_query(logs[i].name, logs[i].year, logs[i].rank); break;
+                    case 'UPDATE':
+                        query = queryHelper.to_update_query(logs[i].id, logs[i].name, logs[i].rank, logs[i].year); break;
+                    case 'DELETE':
+                        query = queryHelper.to_insert_query(logs[i].id); break;
+                }
+                await transaction.make_transaction(logs[i].node_to, query);
+                //await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id));
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
     }
 }
 module.exports = sync_funcs;

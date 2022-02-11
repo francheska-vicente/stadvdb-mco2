@@ -1,13 +1,6 @@
 const nodes = require('./nodes.js');
 
 const logs_funcs = {
-    // select * from logs where logs.done != true order by queued_at, sync_to
-    get_unreplicated_rows: async function (node) {
-        var query = `SELECT * FROM log_table WHERE done=0 ORDER BY statement_id, node_to;`;
-        if (nodes.connect_node(node))
-            return await nodes.select_query_node(node, query);
-    },
-
     // update log.done to true 
     finish_sync: async function (node, id) {
         var query = `UPDATE log_table SET done=1 WHERE statement_id=` + id + `;`

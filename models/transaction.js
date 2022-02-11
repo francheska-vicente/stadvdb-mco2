@@ -4,7 +4,34 @@ const mysql = require('mysql2/promise');
 const nodes = require('../models/nodes.js');
 
 const transactions_funcs = {
-    make_transaction: async function (node, query, log) {
+    make_transaction: async function (node, query) {
+        try {
+            let conn = await nodes.connect_node(node);
+            if (conn)
+                try {
+                    await conn.beginTransaction();
+                    var result = await nodes.execute_query(conn, query);
+                    console.log('Executed query!');
+                    await conn.commit();
+                    await conn.release();
+                    return result;
+                }
+                catch (error) {
+                    console.log(error)
+                    console.log('Rollbacking data!')
+                    conn.rollback(node);
+                }
+            else {
+                console.log('Unable to connect!')
+            }
+        }
+        catch (error) {
+            console.log(error)
+            console.log('Unable to connect!')
+        }
+    },
+
+    create_log: async function (node, query) {
         let conn = NULL;
         try {
             conn = await nodes.connect_node(node);
@@ -12,22 +39,19 @@ const transactions_funcs = {
                 await conn.beginTransaction();
                 var result = await nodes.execute_query(conn, query);
                 console.log('Executed query!');
-                await nodes.execute_query(conn, log);
-                console.log('Created log!');
                 await conn.commit();
                 return result;
             }
             catch (error) {
                 console.log(error)
+                console.log('Rollbacking data!')
                 conn.rollback(node);
             }
         }
         catch (error) {
             console.log(error)
+            console.log('Unable to connect!')
         }
-
-
-
     },
 
     rollback: async function (node) {

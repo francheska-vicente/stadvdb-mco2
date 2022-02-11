@@ -21,9 +21,14 @@ var hostname = process.env.HOSTNAME;
 app.use('/', routes);
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     console.log(`Server is running at http://${hostname}:${port}`);
-    db.insert_query(`Pia was here hehe`, 1979, 4.0).then(data => {
-        console.log(data);
-    });
+    // db.insert_query(`Pia was here hehe`, 1979, 4.0).then(data => {
+    //     console.log(data);
+    // });
+    //sync.sync_leader_node();
+    //db.insert_query('raur', 1990, 4)
+    //sync.sync_follower_node(2);
+    repl.replicate();
+    
 });
 
 

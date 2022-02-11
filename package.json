@@ -21,6 +21,7 @@
     "express": "^4.17.2",
     "fs": "0.0.1-security",
     "hbs": "^4.2.0",
+    "luxon": "^2.3.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "mysql2-timeout-additions": "^1.1.2",
