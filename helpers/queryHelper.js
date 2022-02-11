@@ -65,8 +65,7 @@ const query_funcs = {
     },
 
     to_create_log_query: function (id, name, year, rank, node, type) {
-        return `SET @@session.time_zone = "+08:00";
-        INSERT INTO log_table(\`type\`, node_to, done, id, \`name\`, \`year\`, \`rank\`) VALUES ('` +
+        return `SET @@session.time_zone = "+08:00"; INSERT INTO log_table(\`type\`, node_to, done, id, \`name\`, \`year\`, \`rank\`) VALUES ('` +
         type + `', ` + node `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
     }
 }
