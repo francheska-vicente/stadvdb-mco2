@@ -31,29 +31,6 @@ const transactions_funcs = {
         }
     },
 
-    create_log: async function (node, query) {
-        let conn = NULL;
-        try {
-            conn = await nodes.connect_node(node);
-            try {
-                await conn.beginTransaction();
-                var result = await nodes.execute_query(conn, query);
-                console.log('Executed query!');
-                await conn.commit();
-                return result;
-            }
-            catch (error) {
-                console.log(error)
-                console.log('Rollbacking data!')
-                conn.rollback(node);
-            }
-        }
-        catch (error) {
-            console.log(error)
-            console.log('Unable to connect!')
-        }
-    },
-
     rollback: async function (node) {
         await conn.rollback();
     }
