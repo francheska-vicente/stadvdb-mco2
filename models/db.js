@@ -18,6 +18,7 @@ const db_functions = {
         var query = queryHelper.to_insert_query(name, rank, year);
 
         try {
+            await nodes.connect_node(1)
             // if central node is up, insert row to central node
             transaction.make_transaction(1, query).then(value => {
                 if (value) {
@@ -119,7 +120,6 @@ const db_functions = {
                         });
                     }
                 });
-
             }
             else {
                 transaction.make_transaction(2, query).then(value => {
