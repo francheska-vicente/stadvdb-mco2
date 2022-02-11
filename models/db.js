@@ -18,11 +18,12 @@ const db_functions = {
         var query = queryHelper.to_insert_query(name, rank, year);
 
         try {
-            await nodes.connect_node(1)
+            await nodes.connect_node(1);
             // if central node is up, insert row to central node
             transaction.make_transaction(1, query).then(value => {
                 if (value) {
                     console.log('Inserted into Node 1');
+                    console.log(value);
 
                     // create log for future sync to follower node based on year
                     if (year < 1980) {
@@ -49,6 +50,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Inserted into Node 2');
+                        console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
@@ -63,6 +65,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Inserted into Node 3');
+                        console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
@@ -81,10 +84,12 @@ const db_functions = {
         var query = queryHelper.to_update_query(id, name, rank, year);
 
         try {
+            await nodes.connect_node(1);
             // if central node is up, update row in central node
             transaction.make_transaction(1, query).then(value => {
                 if (value) {
                     console.log('Updated in Node 1');
+                    console.log(value);
 
                     // create log for future sync to follower node based on year
                     if (year < 1980) {
@@ -111,6 +116,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Updated in Node 2');
+                        console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
@@ -125,6 +131,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Updated in Node 3');
+                        console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
@@ -143,10 +150,12 @@ const db_functions = {
         var query = queryHelper.to_delete_query(id);
 
         try {
+            await nodes.connect_node(1);
             // if central node is up, update row in central node
             transaction.make_transaction(1, query).then(value => {
                 if (value) {
                     console.log('Deleted from Node 1');
+                    console.log(value);
 
                     // create log for future sync to follower node based on year
                     if (year < 1980) {
@@ -173,6 +182,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Deleted from Node 2');
+                        console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_delete_query_log(id, 1, 2);
@@ -187,6 +197,7 @@ const db_functions = {
                 transaction.make_transaction(2, query).then(value => {
                     if (value) {
                         console.log('Deleted from Node 3');
+                        console.log(value);
 
                         // create log for future sync to central node
                         var log = queryHelper.to_delete_query_log(id, 1, 3);
