@@ -4,7 +4,6 @@ const sync = require('./sync.js');
 const replicator_funcs = {
     replicate: async function () {
         cron.schedule('5 * * * * *', () => {
-            console.log('wow')
             try {
                 sync.sync_data(1);
                 console.log('Replicated to Node 1!');

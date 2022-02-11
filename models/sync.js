@@ -39,6 +39,10 @@ const sync_funcs = {
         catch (error) {
             console.log(error)
         }
+    },
+
+    create_log: async function (node) {
+        
     }
 }
 module.exports = sync_funcs;

@@ -10,107 +10,89 @@ const db_functions = {
         else if (nodes.connect_node(1))
             return await nodes.select_query_leader_node(query)
         else
-            throw `All nodes are inaccessible.`
+            console.log(`All nodes are inaccessible.`);
     },
 
-    insert_query: async function (table, movies) {
-        var query = queryHelper.to_insert_query(table, movies);
+    insert_query: async function (name, rank, year) {
+        var query = queryHelper.to_insert_query(name, rank, year);
         try {
-            transaction.make_transaction(1, query).then(value => {
-                console.log('1 ' + value);
+            var log = queryHelper.to_insert_query_log(name, rank, year, 1);
+            transaction.make_transaction(1, query, log).then(value => {
+                console.log('Inserted into Node 1');
+                console.log(value);
             });
         }
         catch (error) {
             console.log(error)
-            if (movies.year < 1980) {
-                try {
-                    transaction.make_transaction(2, query).then(value => {
-                        console.log('2 ' + value);
-                    });
-                }
-                catch (error) {
-                    console.log(error)
-                    conn.rollback();
-                }
+            if (year < 1980) {
+                var log = queryHelper.to_insert_query_log(name, rank, year, 2);
+                transaction.make_transaction(2, query, log).then(value => {
+                    console.log('Inserted into Node 2');
+                    console.log(value);
+                });
             }
             else {
-                try {
-                    transaction.make_transaction(3, query).then(value => {
-                        console.log('3 ' + value);
-                    });
-                }
-                catch (error) {
-                    console.log(error)
-                    conn.rollback();
-                }
+                var log = queryHelper.to_insert_query_log(name, rank, year, 3);
+                transaction.make_transaction(3, query, log).then(value => {
+                    console.log('Inserted into Node 3');
+                    console.log(value);
+                });
             }
         }
     },
 
     update_query: async function (id, name, rank, year) {
-        var query = queryHelper.to_update_query(table, id, name, rank, year);
+        var query = queryHelper.to_update_query(id, name, rank, year);
         try {
-            transaction.make_transaction(1, query).then(value => {
+            var log = queryHelper.to_update_query_log(id, name, rank, year, 1);
+            transaction.make_transaction(1, query, log).then(value => {
+                console.log('Updated in Node 1');
                 console.log(value);
             });
         }
         catch (error) {
             console.log(error)
-            if (movies.year < 1980) {
-                try {
-                    transaction.make_transaction(2, query).then(value => {
-                        console.log(value);
-                    });
-                }
-                catch (error) {
-                    console.log(error)
-                    conn.rollback();
-                }
+            if (year < 1980) {
+                var log = queryHelper.to_update_query_log(id, name, rank, year, 2);
+                transaction.make_transaction(2, query, log).then(value => {
+                    console.log('Updated in Node 2');
+                    console.log(value);
+                });
             }
             else {
-                try {
-                    transaction.make_transaction(3, query).then(value => {
-                        console.log(value);
-                    });
-                }
-                catch (error) {
-                    console.log(error)
-                    conn.rollback();
-                }
+                var log = queryHelper.to_update_query_log(id, name, rank, year, 3);
+                transaction.make_transaction(3, query, log).then(value => {
+                    console.log('Updated in Node 3');
+                    console.log(value);
+                }); n.rollback();
             }
         }
     },
 
-    delete_query: async function (id) {
-        var query = queryHelper.to_delete_query(table, id);
+    delete_query: async function (id, name, rank, year) {
+        var query = queryHelper.to_delete_query(id);
         try {
-            transaction.make_transaction(1, query).then(value => {
+            var log = queryHelper.to_delete_query_log(id, name, rank, year, 1);
+            transaction.make_transaction(3, query, log).then(value => {
+                console.log('Deleted from Node 1');
                 console.log(value);
             });
         }
         catch (error) {
             console.log(error)
-            if (movies.year < 1980) {
-                try {
-                    transaction.make_transaction(2, query).then(value => {
-                        console.log(value);
-                    });
-                }
-                catch (error) {
-                    console.log(error)
-                    conn.rollback();
-                }
+            if (year < 1980) {
+                var log = queryHelper.to_delete_query_log(id, name, rank, year, 2);
+                transaction.make_transaction(3, query, log).then(value => {
+                    console.log('Deleted from Node 2');
+                    console.log(value);
+                });
             }
             else {
-                try {
-                    transaction.make_transaction(3, query).then(value => {
-                        console.log(value);
-                    });
-                }
-                catch (error) {
-                    console.log(error)
-                    conn.rollback();
-                }
+                var log = queryHelper.to_delete_query_log(id, name, rank, year, 3);
+                transaction.make_transaction(3, query, log).then(value => {
+                    console.log('Deleted from Node 3');
+                    console.log(value);
+                });
             }
         }
     }
