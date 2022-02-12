@@ -4,36 +4,73 @@ const mysql = require('mysql2/promise');
 const nodes = require('../models/nodes.js');
 
 const transactions_funcs = {
-    make_transaction: async function (node, query) {
+    make_transaction_with_log: async function (node, query, log) {
         try {
             let conn = await nodes.connect_node(node);
             if (conn)
                 try {
                     await conn.beginTransaction();
+
                     await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
+                    
                     var result = await nodes.execute_query(conn, query);
                     console.log('Executed query!');
+                    
+                    var log = await nodes.execute_query(conn, log);
+                    console.log('Created log!');
+                    
                     await conn.commit();
                     await conn.release();
                     return result;
                 }
                 catch (error) {
                     console.log(error)
-                    console.log('Rollbacking data!')
+                    console.log('Rolled back the data.');
                     conn.rollback(node);
+                    return error;
                 }
             else {
-                console.log('Unable to connect!')
+                console.log('Unable to connect!');
             }
         }
         catch (error) {
-            console.log(error)
-            console.log('Unable to connect!')
+            console.log(error);
+            console.log('Unable to connect!');
+            return error;
         }
     },
 
-    rollback: async function (node) {
-        await conn.rollback();
+    make_transaction: async function (node, query) {
+        try {
+            let conn = await nodes.connect_node(node);
+            if (conn)
+                try {
+                    await conn.beginTransaction();
+
+                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
+
+                    var result = await nodes.execute_query(conn, query);
+                    console.log('Executed query!');
+
+                    await conn.commit();
+                    await conn.release();
+                    return result;
+                }
+                catch (error) {
+                    console.log(error)
+                    console.log('Rolled back the data.');
+                    conn.rollback(node);
+                    return error;
+                }
+            else {
+                console.log('Unable to connect!');
+            }
+        }
+        catch (error) {
+            console.log(error);
+            console.log('Unable to connect!');
+            return error;
+        }
     }
 }
 module.exports = transactions_funcs;
