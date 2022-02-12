@@ -6,6 +6,7 @@ body {
 
 label,
 h1,
+h5,
 div,
 p {
     font-family: "Raleway";
@@ -38,16 +39,3 @@ textarea {
     color: white;
     font-weight: 600;
 }
-
-table {
-    width: 100%;
-  }
-  
-  table, th, td {
-    border: 1px solid lightgrey;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 2px 4px;
-  }

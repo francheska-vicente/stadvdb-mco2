@@ -20,3 +20,7 @@ function submitQuery() {
         
     });
 }
+
+function validateQuery() {
+    
+}
