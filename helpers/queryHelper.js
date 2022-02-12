@@ -103,6 +103,14 @@ const query_funcs = {
         return `SELECT * FROM log_table
                 WHERE done=false AND node_to=`+ node + ` AND date < '` + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + `' 
                 ORDER BY date ASC;`
+    },
+
+    to_get_next_id: function () {
+        return `SELECT \`auto_increment\` FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'movies';`;
+    },
+
+    to_select_for_update: function (id) {
+        return `SELECT * FROM movies WHERE id=` + id + ` FOR UPDATE;`
     }
 }
 module.exports = query_funcs;
