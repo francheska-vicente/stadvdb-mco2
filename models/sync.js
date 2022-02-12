@@ -1,8 +1,6 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const mysql = require('mysql2/promise');
 
-const db = require('./db.js');
-const log = require('./logs.js');
 const nodes = require('./nodes.js');
 const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
@@ -29,8 +27,9 @@ const sync_funcs = {
                     case 'DELETE':
                         query = queryHelper.to_insert_query(logs[i].id); break;
                 }
+                console.log(query);
                 await transaction.make_transaction(logs[i].node_to, query);
-                //await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id));
+                return await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id));
             }
         }
         catch (error) {
@@ -55,8 +54,9 @@ const sync_funcs = {
                     case 'DELETE':
                         query = queryHelper.to_insert_query(logs[i].id); break;
                 }
+                console.log(query);
                 await transaction.make_transaction(logs[i].node_to, query);
-                //await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id));
+                return await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id));
             }
         }
         catch (error) {

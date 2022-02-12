@@ -63,18 +63,18 @@ const query_funcs = {
     },
 
     to_insert_query_log: function (name, year, rank, node_to, node_from) {
-        return `INSERT INTO log_table(type, node_to, done, name, year, \`rank\`) VALUES ('INSERT', ` 
-            + node_to + `, '` + node_from + `, false, '` + name + `', ` + year + `, ` + rank + `);`
+        return `INSERT INTO log_table(type, node_to, node_from, done, name, year, \`rank\`) VALUES ('INSERT', ` 
+            + node_to + `, ` + node_from + `, false, '` + name + `', ` + year + `, ` + rank + `);`
     },
 
     to_update_query_log: function (id, name, year, rank, node_to, node_from) {
-        return `SET @@session.time_zone = "+08:00"; INSERT INTO log_table(type, node_to, node_from, done, id, name, year, \`rank\`) VALUES ('UPDATE', ` 
-            + node_to + `, '` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
+        return `INSERT INTO log_table(type, node_to, node_from, done, id, name, year, \`rank\`) VALUES ('UPDATE', ` 
+            + node_to + `, ` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
     },
 
-    to_delete_query_log: function (id, name, year, rank, node_to, node_from) {
-        return `SET @@session.time_zone = "+08:00"; INSERT INTO log_table(type, node_to, node_from, done, id, name, year, \`rank\`) VALUES ('DELETE', `
-            + node_to + `, '` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
+    to_delete_query_log: function (id, node_to, node_from) {
+        return `INSERT INTO log_table(type, node_to, node_from, done, id) VALUES ('DELETE', `
+            + node_to + `, '` + node_from + `, false, ` + id`);`
     },
 
     to_finish_log: function (id) {

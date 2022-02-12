@@ -10,6 +10,7 @@ const transactions_funcs = {
             if (conn)
                 try {
                     await conn.beginTransaction();
+                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
                     var result = await nodes.execute_query(conn, query);
                     console.log('Executed query!');
                     await conn.commit();
@@ -23,29 +24,6 @@ const transactions_funcs = {
                 }
             else {
                 console.log('Unable to connect!')
-            }
-        }
-        catch (error) {
-            console.log(error)
-            console.log('Unable to connect!')
-        }
-    },
-
-    create_log: async function (node, query) {
-        let conn = NULL;
-        try {
-            conn = await nodes.connect_node(node);
-            try {
-                await conn.beginTransaction();
-                var result = await nodes.execute_query(conn, query);
-                console.log('Executed query!');
-                await conn.commit();
-                return result;
-            }
-            catch (error) {
-                console.log(error)
-                console.log('Rollbacking data!')
-                conn.rollback(node);
             }
         }
         catch (error) {
