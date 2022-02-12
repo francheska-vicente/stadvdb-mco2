@@ -12,8 +12,7 @@
 
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
-    {{!--
-    <script type="text/javascript" src="/js/validator.min.js"></script> --}}
+    {{!-- <script type="text/javascript" src="/js/validator.min.js"></script> --}}
     <script src="/js/handlebars.min.js"></script>
     <script type="text/javascript" src="/js/home.js"></script>
 </head>
@@ -30,8 +29,10 @@
                 </div>
                 <figure>
                     <blockquote class="blockquote">
-                        <p class="text-center p-2 fst-italic fw-bolder">Please respect our health break by not sending
-                            any more questions regarding MCO2.</p>
+                        <p class="text-center p-2 fst-italic fw-bolder">GRRRRRRR WOOF WOOF BARK BARK ARF ARF BARK WOOF
+                            WOOF
+                            GRRRRR SNARL SNARL HSSSSSSS GRRRRRRR WOOF BARK ARF BARK SNARL WOOF WOOF BARK ARF GRRRRRRR
+                            WOOF WOOF BARK BARK ARF ARF BARK WOOF WOOF GRRRR</p>
                     </blockquote>
                     <figcaption class=" text-center blockquote-footer">
                         Someone famous in <cite title="Source Title">Canvas Announcements</cite>
@@ -57,19 +58,29 @@
                 </div>
             </div>
         </div>
-        {{!-- TABLE --}}
-        <div id="title" class="col-6">
-            <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
+        {{!-- TABLE HEADER --}}
+        <div class="col-12 d-flex flex-row">
+            <div id="title" class="col-4">
+                <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
+            </div>
+            <div id="movies-num-rows" class="col-4 position-relative">
+                <p class="h5 col-12 pb-0 fst-italic text-start position-absolute bottom-0 start-0">Result: {{resultlen}} rows.</p>
+            </div>
+            <div id="insert-btn" class="col-4 d-flex position-relative mb-2">
+                <button class="btn col-4 btn-warning insertBtn position-absolute bottom-0 end-0 fw-bold border border-dark border-2"
+                    data-toggle="modal" id="insert-movie-btn">Add a movie</button>
+            </div>
         </div>
-        {{!-- <div id="movies-table"></div> --}}
-        <table class="table table-danger table-hover table-bordered table-striped" id="Table">
-            <thead>
+
+        {{!-- TABLE --}}
+        <table class="table table-danger table-hover table-bordered table-striped border-dark border-2" id="movies-table">
+            <thead class="table-dark">
                 <tr>
                     {{#each uniqueKeys}}
                     <th>{{this}}</th>
                     {{/each}}
-                    <th></th>
-                    <th></th>
+                    <th class="text-center">update</th>
+                    <th class="text-center">delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,14 +89,14 @@
                     {{#each this}}
                     <td>{{this}}</td>
                     {{/each}}
-                    <th>
+                    <th class="text-center">
                         <button data-id={{id}} type="button"
-                            class="btn btn-info updateBtn material-icons-outlined md-24" data-toggle="modal"
+                            class="btn btn-primary updateBtn material-icons-outlined md-24 border" data-toggle="modal"
                             id="update-movie-btn">
                             <span class="material-icons-outlined">edit_note</span></button>
                     </th>
-                    <th>
-                        <button data-id={{id}} class="btn btn-danger deleteBtn material-icons-outlined md-24"
+                    <th class="text-center">
+                        <button data-id={{id}} class="btn btn-danger deleteBtn material-icons-outlined md-24 border"
                             data-toggle="modal" id="delete-movie-btn">
                             <span class="material-icons-outlined">delete_forever</span></button>
                     </th>
