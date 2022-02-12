@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 dotenv.config(); 
 
 var path = require('path');
-const { NULL } = require('mysql/lib/protocol/constants/types');
 var fs = require('fs'); // for reading of certificate for connection
 const serverCa = [fs.readFileSync(path.resolve("models/DigiCertGlobalRootCA.crt.pem"))]; // certificate provided by AZURE Database
 
@@ -14,7 +13,6 @@ const node1 = mysql.createPool({
     password: process.env.PASSWORD1,
     database: process.env.NAME1,
     connectTimeout: 5000,
-    acquireTimeout: 5000,
     waitForConnections: true,
     queueLimit: 0,
     ssl: {
@@ -30,7 +28,6 @@ const node2 = mysql.createPool({
     password: process.env.PASSWORD2,
     database: process.env.NAME2,
     connectTimeout: 5000,
-    acquireTimeout: 5000,
     waitForConnections: true,
     queueLimit: 0,
     ssl: {
@@ -46,7 +43,6 @@ const node3 = mysql.createPool({
     password: process.env.PASSWORD3,
     database: process.env.NAME3,
     connectTimeout: 5000,
-    acquireTimeout: 5000,
     waitForConnections: true,
     queueLimit: 0,
     ssl: {
