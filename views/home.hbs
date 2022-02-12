@@ -1,84 +1,99 @@
 <html>
-    <head>
-        <title> IMDb Movies </title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/css/main.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        
-        <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="/js/validator.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-        <script type="text/javascript" src="/js/home.js"></script>       
-    </head>
 
-    <body style="background-color:#EE9595;" class="col-12 h-100 d-flex flex-column">
-        <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
-            {{!-- HEADER --}}
-            <div class="rounded-3 col-12 mb-5 d-flex flex-row"> 
-                <div class="rounded-start col-6 p-3 movie-title-quote d-flex flex-column justify-content-center align-items-center" style="background-color:#FFCDA3;">
-                    <span class="material-icons md-48">movie_filter</span>
-                    <div id="title" class="col-6">
-                        <p class="h1 text-center">IMDb Movies</p>
-                    </div>  
-                    <figure>
-                        <blockquote class="blockquote">
-                            <p class="text-center p-2 fst-italic fw-bolder">Please respect our health break by not sending any more questions regarding MCO2.</p>
-                        </blockquote>
-                        <figcaption class=" text-center blockquote-footer">
-                            Someone famous in <cite title="Source Title">Canvas Announcements</cite>
-                        </figcaption>
-                    </figure>
-                </div>
+<head>
+    <title> IMDb Movies </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-                <div class="rounded-end col-6 movie-header">
-                    <img src="/images/bg1.jpeg" class="rounded-end" alt="movies">
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+    {{!--
+    <script type="text/javascript" src="/js/validator.min.js"></script> --}}
+    <script src="/js/handlebars.min.js"></script>
+    <script type="text/javascript" src="/js/home.js"></script>
+</head>
+
+<body style="background-color:#EE9595;" class="col-12 h-100 d-flex flex-column">
+    <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
+        {{!-- HEADER --}}
+        <div class="rounded-3 col-12 mb-5 d-flex flex-row">
+            <div class="rounded-start col-6 p-3 movie-title-quote d-flex flex-column justify-content-center align-items-center"
+                style="background-color:#FFCDA3;">
+                <span class="material-icons md-48">movie_filter</span>
+                <div id="title" class="col-6">
+                    <p class="h1 text-center">IMDb Movies</p>
                 </div>
+                <figure>
+                    <blockquote class="blockquote">
+                        <p class="text-center p-2 fst-italic fw-bolder">Please respect our health break by not sending
+                            any more questions regarding MCO2.</p>
+                    </blockquote>
+                    <figcaption class=" text-center blockquote-footer">
+                        Someone famous in <cite title="Source Title">Canvas Announcements</cite>
+                    </figcaption>
+                </figure>
             </div>
-            {{!-- SEARCH BAR --}}
-            <div class="form-floating border-primary mb-5 justify-content-center">
-                <textarea class="form-control border border-dark" placeholder="Enter the query here..." id="query" style="height: 90px;"></textarea>
-                <label for="query" class="">Query</label>
-                <div class="row col-12 m-0 d-flex flex-row">
-                    <div id="event-notes-help" class="col-8 px-0 form-text">Enter your query here. The box can be resized by dragging the lower-right corner.
-                    </div>
-                    <div class="col-4 px-0 pt-2">
-                        <button class="btn col-12" id="search" type="button" disabled>Search</button>
-                    </div>
-                </div>
+
+            <div class="rounded-end col-6 movie-header">
+                <img src="/images/bg1.jpeg" class="rounded-end" alt="movies">
             </div>
-            {{!-- TABLE --}}
-            <div id="title" class="col-6">
-                <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
-            </div>  
-            <div id="movies-table"></div>
         </div>
-    </body>
-<!-- The script element is used to define the Handlebars template -->
-<script type="text/x-handlebars-template" id="tableTemplate">
-    <table>
-    <thead>
-    <tr>
-        {{#each array.[0]}}
-            <th>{{@key}}</th>
-        {{/each}}
-    </tr>
-    </thead>
-    <tbody>
-        {{#each array}}
-            <tr>
-                {{#each this}}
+        {{!-- SEARCH BAR --}}
+        <div class="form-floating border-primary mb-5 justify-content-center">
+            <textarea class="form-control border border-dark" placeholder="Enter the query here..." id="query"
+                style="height: 90px;"></textarea>
+            <label for="query" class="">Query</label>
+            <div class="row col-12 m-0 d-flex flex-row">
+                <div id="event-notes-help" class="col-8 px-0 form-text">Enter your query here. The box can be resized by
+                    dragging the lower-right corner.
+                </div>
+                <div class="col-4 px-0 pt-2">
+                    <button class="btn col-12" id="search" type="button" disabled>Search</button>
+                </div>
+            </div>
+        </div>
+        {{!-- TABLE --}}
+        <div id="title" class="col-6">
+            <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
+        </div>
+        {{!-- <div id="movies-table"></div> --}}
+        <table class="table table-danger table-hover table-bordered table-striped" id="Table">
+            <thead>
+                <tr>
+                    {{#each uniqueKeys}}
+                    <th>{{this}}</th>
+                    {{/each}}
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each result}}
+                <tr>
+                    {{#each this}}
                     <td>{{this}}</td>
+                    {{/each}}
+                    <th>
+                        <button data-id={{id}} type="button"
+                            class="btn btn-info updateBtn material-icons-outlined md-24" data-toggle="modal"
+                            id="update-movie-btn">
+                            <span class="material-icons-outlined">edit_note</span></button>
+                    </th>
+                    <th>
+                        <button data-id={{id}} class="btn btn-danger deleteBtn material-icons-outlined md-24"
+                            data-toggle="modal" id="delete-movie-btn">
+                            <span class="material-icons-outlined">delete_forever</span></button>
+                    </th>
+                </tr>
                 {{/each}}
-            </tr>
-        {{/each}}
-    </tbody>
-    </table>
-</script> 
+            </tbody>
+        </table>
+    </div>
+</body>
+
 </html>
