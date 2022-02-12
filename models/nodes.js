@@ -74,7 +74,8 @@ const nodes_funcs = {
     },
 
     select_query_follower_node: async function (query) {
-        return await Promise.all([node2.query(query), node3.query(query)]);
+        var rows = await Promise.all([node2.query(query), node3.query(query)]);
+        return rows[0][0].concat(rows[1][0]);
     },
 
     select_query_node: async function (node, query) {
