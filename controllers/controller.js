@@ -3,7 +3,7 @@ const controller = {
     getIndex: async function (req, res) {
         console.log('hello');
         var result = [];
-        result = await db.select_query('SELECT id,`rank`,name FROM movies;');
+        result = await db.select_query('SELECT * FROM movies;');
         var uniqueKeys = result.reduce(function (acc, obj) {
             return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
         }, []);  
