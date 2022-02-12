@@ -16,65 +16,33 @@ const db_functions = {
     insert_query: async function (name, rank, year) {
         // creates SQL statement for inserting row
         var query = queryHelper.to_insert_query(name, rank, year);
+        var log;
 
         try {
+            // if central node is up, insert row to central node and insert log based on year
             await nodes.connect_node(1);
-            // if central node is up, insert row to central node
-            transaction.make_transaction(1, query).then(value => {
-                if (value) {
-                    console.log('Inserted into Node 1');
-                    console.log(value);
 
-                    // create log for future sync to follower node based on year
-                    if (year < 1980) {
-                        var log = queryHelper.to_insert_query_log(name, year, rank, 2, 1);
-                        transaction.make_transaction(2, log).then(value => {
-                            if (value) console.log('Created log: node_to: 2, node_from: 1');
-                            console.log(value);
-                        });
-                    }
-                    else {
-                        var log = queryHelper.to_insert_query_log(name, year, rank, 3, 1);
-                        transaction.make_transaction(3, log).then(value => {
-                            if (value) console.log('Created log: node_to: 3, node_from: 1');
-                            console.log(value);
-                        });
-                    }
-                }
-            });
+            if (year < 1980)   
+                log = queryHelper.to_insert_query_log(name, year, rank, 2, 1);
+            else 
+                log = queryHelper.to_insert_query_log(name, year, rank, 3, 1);
+
+            var result = transaction.make_transaction_with_log(1, query, log);
+            return (result instanceof Error) ? false : true;
         }
         catch (error) {
-            // if central node is down, insert row to follower node based on year
+            // if central node is down, insert row to follower node based on year and insert log to central
             console.log(error)
+            
             if (year < 1980) {
-                transaction.make_transaction(2, query).then(value => {
-                    if (value) {
-                        console.log('Inserted into Node 2');
-                        console.log(value);
-
-                        // create log for future sync to central node
-                        var log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
-                        transaction.make_transaction(2, log).then(value => {
-                            if (value) console.log('Created log: node_to: 1, node_from: 2');
-                            console.log(value);
-                        });
-                    }
-                });
+                log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
+                var result = transaction.make_transaction_with_log(2, query, log);
+                return (result instanceof Error) ? false : true;
             }
             else {
-                transaction.make_transaction(3, query).then(value => {
-                    if (value) {
-                        console.log('Inserted into Node 3');
-                        console.log(value);
-
-                        // create log for future sync to central node
-                        var log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
-                        transaction.make_transaction(3, log).then(value => {
-                            if (value) console.log('Created log: node_to: 1, node_from: 3');
-                            console.log(value);
-                        });
-                    }
-                });
+                log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
+                var result = transaction.make_transaction_with_log(3, query, log);
+                return (result instanceof Error) ? false : true;
             }
         }
     },
@@ -82,65 +50,33 @@ const db_functions = {
     update_query: async function (id, name, rank, year) {
         // creates SQL statement for updating row
         var query = queryHelper.to_update_query(id, name, rank, year);
-
+        var log;
+        
         try {
+            // if central node is up, insert row to central node and insert log based on year
             await nodes.connect_node(1);
-            // if central node is up, update row in central node
-            transaction.make_transaction(1, query).then(value => {
-                if (value) {
-                    console.log('Updated in Node 1');
-                    console.log(value);
 
-                    // create log for future sync to follower node based on year
-                    if (year < 1980) {
-                        var log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
-                        transaction.make_transaction(2, log).then(value => {
-                            if (value) console.log('Created log: node_to: 2, node_from: 1');
-                            console.log(value);
-                        });
-                    }
-                    else {
-                        var log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
-                        transaction.make_transaction(3, log).then(value => {
-                            if (value) console.log('Created log: node_to: 3, node_from: 1');
-                            console.log(value);
-                        });
-                    }
-                }
-            });
+            if (year < 1980)
+                log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
+            else
+                log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
+            
+            var result = transaction.make_transaction_with_log(1, query, log);
+            return (result instanceof Error) ? false : true;
         }
         catch (error) {
             // if central node is down, insert row to follower node based on year
             console.log(error)
-            if (year < 1980) {
-                transaction.make_transaction(2, query).then(value => {
-                    if (value) {
-                        console.log('Updated in Node 2');
-                        console.log(value);
 
-                        // create log for future sync to central node
-                        var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
-                        transaction.make_transaction(2, log).then(value => {
-                            if (value) console.log('Created log: node_to: 1, node_from: 2');
-                            console.log(value);
-                        });
-                    }
-                });
+            if (year < 1980) {
+                log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
+                var result = transaction.make_transaction_with_log(2, query, log);
+                return (result instanceof Error) ? false : true;
             }
             else {
-                transaction.make_transaction(3, query).then(value => {
-                    if (value) {
-                        console.log('Updated in Node 3');
-                        console.log(value);
-
-                        // create log for future sync to central node
-                        var log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
-                        transaction.make_transaction(3, log).then(value => {
-                            if (value) console.log('Created log: node_to: 1, node_from: 3');
-                            console.log(value);
-                        });
-                    }
-                });
+                log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
+                var result = transaction.make_transaction_with_log(3, query, log);
+                return (result instanceof Error) ? false : true;
             }
         }
     },
@@ -148,65 +84,33 @@ const db_functions = {
     delete_query: async function (id) {
         // creates SQL statement for deleting row
         var query = queryHelper.to_delete_query(id);
+        var log;
 
         try {
+            // if central node is up, insert row to central node and insert log based on year
             await nodes.connect_node(1);
-            // if central node is up, update row in central node
-            transaction.make_transaction(1, query).then(value => {
-                if (value) {
-                    console.log('Deleted from Node 1');
-                    console.log(value);
 
-                    // create log for future sync to follower node based on year
-                    if (year < 1980) {
-                        var log = queryHelper.to_delete_query_log(id, 2, 1);
-                        transaction.make_transaction(2, log).then(value => {
-                            if (value) console.log('Created log: node_to: 2, node_from: 1');
-                            console.log(value);
-                        });
-                    }
-                    else {
-                        var log = queryHelper.to_delete_query_log(id, 3, 1);
-                        transaction.make_transaction(3, log).then(value => {
-                            if (value) console.log('Created log: node_to: 3, node_from: 1');
-                            console.log(value);
-                        });
-                    }
-                }
-            });
+            if (year < 1980)
+                log = queryHelper.to_delete_query_log(id, 2, 1);
+            else
+                log = queryHelper.to_delete_query_log(id, 3, 1);
+
+            var result = transaction.make_transaction_with_log(1, query, log);
+            return (result instanceof Error) ? false : true;
         }
         catch (error) {
             // if central node is down, insert row to follower node based on year
             console.log(error)
-            if (year < 1980) {
-                transaction.make_transaction(2, query).then(value => {
-                    if (value) {
-                        console.log('Deleted from Node 2');
-                        console.log(value);
 
-                        // create log for future sync to central node
-                        var log = queryHelper.to_delete_query_log(id, 1, 2);
-                        transaction.make_transaction(2, log).then(value => {
-                            if (value) console.log('Created log: node_to: 1, node_from: 2');
-                            console.log(value);
-                        });
-                    }
-                });
+            if (year < 1980) {
+                log = queryHelper.to_delete_query_log(id, 1, 2);
+                var result = transaction.make_transaction_with_log(2, query, log);
+                return (result instanceof Error) ? false : true;
             }
             else {
-                transaction.make_transaction(3, query).then(value => {
-                    if (value) {
-                        console.log('Deleted from Node 3');
-                        console.log(value);
-
-                        // create log for future sync to central node
-                        var log = queryHelper.to_delete_query_log(id, 1, 3);
-                        transaction.make_transaction(3, log).then(value => {
-                            if (value) console.log('Created log: node_to: 1, node_from: 3');
-                            console.log(value);
-                        });
-                    }
-                });
+                log = queryHelper.to_delete_query_log(id, 1, 3);
+                var result = transaction.make_transaction_with_log(3, query, log);
+                return (result instanceof Error) ? false : true;
             }
         }
     }
