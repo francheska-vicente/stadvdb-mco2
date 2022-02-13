@@ -12,9 +12,7 @@ const transactions_funcs = {
                 try {
                     await conn.beginTransaction();
 
-                    if (type === 'SELECT')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_shared());
-                    else if (type === 'UPDATE' || type === 'DELETE')
+                    if (type === 'UPDATE' || type === 'DELETE')
                         await nodes.execute_query(conn, queryHelper.to_select_for_update());
 
 
@@ -53,9 +51,7 @@ const transactions_funcs = {
                 try {
                     await conn.beginTransaction();
 
-                    if (type === 'SELECT')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_shared());
-                    else if (type === 'UPDATE' || type === 'DELETE')
+                    if (type === 'UPDATE' || type === 'DELETE')
                         await nodes.execute_query(conn, queryHelper.to_select_for_update());
 
                     await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
