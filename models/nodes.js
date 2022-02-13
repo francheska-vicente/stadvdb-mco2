@@ -70,7 +70,8 @@ const nodes_funcs = {
 
     // for executing a general query in MySQL
     select_query_leader_node: async function (query) {
-        return await Promise.all([node1.query(query)]);
+        var rows = await Promise.all([node1.query(query)]);
+        return rows[0][0];
     },
 
     select_query_follower_node: async function (query) {
