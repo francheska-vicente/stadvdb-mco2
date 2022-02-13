@@ -1,8 +1,6 @@
 # MCO2: Transaction Management
 This project is a website that simulates transaction management in distributed database systems that support concurrent multi-user access, which is used as a major course output for a database systems class. 
 
-The deployed web application can be access through http://mco2-imdb-movies.herokuapp.com/.
-
 ## Project Files
 ### Models
 Execution of functions were done asynchronously with promises.
@@ -27,6 +25,9 @@ npm install
 5. We may now run the server by typing ```node app.js```
 6. Since the web application is running on localhost:3000, type ```http://localhost:3000``` on your browser of choice.
 7. Now, you would be able to see and use the application!
+
+### Online
+The deployed web application can be access through [link](http://mco2-imdb-movies.herokuapp.com/).
 
 ## Authors
 - **Sophia Louisse L. Eguaras**
