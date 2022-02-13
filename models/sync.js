@@ -22,21 +22,22 @@ const sync_funcs = {
                         id = id[0][0].AUTO_INCREMENT;
                         query = queryHelper.to_insert_query(logs[i].name, logs[i].year, logs[i].rank); 
                         var log = queryHelper.to_update_query_log(id, logs[i].name, logs[i].year, logs[i].rank, logs[i].node_from, 1); 
-                        await transaction.make_transaction_with_log(logs[i].node_to, query, log, 'INSERT', '');
-                        break;
+                        var result = await transaction.make_2transaction_with_log(logs[i].node_to, query, query2, log, 'INSERT', '');
+                        return (result instanceof Error) ? false : true;
 
                     case 'UPDATE':
                         query = queryHelper.to_update_query(logs[i].id, logs[i].name, logs[i].rank, logs[i].year); 
-                        await transaction.make_transaction(logs[i].node_to, query, 'UPDATE', id);
-                        break;
+                        var query2 = queryHelper.to_finish_log(logs[i].statement_id);
+                        var result =  await transaction.make_2transaction(logs[i].node_to, query, query2, 'UPDATE', id);
+                        return (result instanceof Error) ? false : true;
 
                     case 'DELETE':
                         query = queryHelper.to_insert_query(logs[i].id); 
-                        await transaction.make_transaction(logs[i].node_to, query, 'DELETE', id);
-                        break;
+                        var query2 = queryHelper.to_finish_log(logs[i].statement_id);
+                        var result = await transaction.make_2transaction(logs[i].node_to, query, query2, 'DELETE', id);
+                        return (result instanceof Error) ? false : true;
                 }
                 
-                return await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id), '', '');
             }
         }
         catch (error) {
@@ -52,7 +53,6 @@ const sync_funcs = {
 
             for (let i = 0; i < logs.length; i++) {
                 let query;
-                
                 switch (logs[i].type) {
                     case 'INSERT':
                         query = queryHelper.to_insert_query(logs[i].name, logs[i].year, logs[i].rank); break;
@@ -61,9 +61,8 @@ const sync_funcs = {
                     case 'DELETE':
                         query = queryHelper.to_insert_query(logs[i].id); break;
                 }
-                console.log(query);
-                await transaction.make_transaction(logs[i].node_to, query);
-                return await transaction.make_transaction(logs[i].node_from, queryHelper.to_finish_log(logs[i].statement_id), '', '');
+                var result = await transaction.make_2transaction(logs[i].node_to, query, queryHelper.to_finish_log(logs[i].statement_id), '', '');
+                return (result instanceof Error) ? false : true;
             }
         }
         catch (error) {
