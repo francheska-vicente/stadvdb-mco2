@@ -48,17 +48,19 @@
         </div>
         {{!-- SEARCH BAR --}}
         <form method="get" action="/query-search/results">
-            <div class="form-floating border-primary mb-5 justify-content-center">
-                <textarea class="form-control border border-dark" placeholder="Enter the query here..." id="query"
-                    style="height: 90px;" name="query_holder"></textarea>
+            <div class="form-floating border-primary mb-5 justify-content-center" id="query-area">
+                <textarea class="form-control" placeholder="Enter the query here..." id="query" style="height: 90px;"
+                    name="query_holder"></textarea>
                 <label for="query" class="">Query</label>
                 <div class="row col-12 m-0 d-flex flex-row">
-                    <div id="event-notes-help" class="col-8 px-0 form-text">Enter SELECT your query here. The box can be
+                    <div id="event-notes-help" class="col-6 px-0 form-text">Enter SELECT your query here. The box can be
                         resized by
                         dragging the lower-right corner.
                     </div>
+                    <div class="col-2 pe-2 pt-3 text-end text-danger fw-bolder" id="query-error"></div>
                     <div class="col-4 px-0 pt-2">
-                        <button class="btn col-12 border-light border-2" id="search" type="submit" disabled>Search</button>
+                        <button class="btn col-12 border-light border-2" id="search" type="submit"
+                            disabled>Search</button>
                     </div>
                 </div>
             </div>
@@ -199,7 +201,8 @@
                         </div>
                     </th>
                     <th class="text-center">
-                        <button data-id={{id}} class="btn btn-danger deleteBtn material-icons-outlined md-24 border-light border-2"
+                        <button data-id={{id}}
+                            class="btn btn-danger deleteBtn material-icons-outlined md-24 border-light border-2"
                             data-bs-toggle="modal" id="{{id}}-delete-movie-btn" data-bs-target="#modal-{{id}}-delete">
                             <span class="material-icons-outlined">delete_forever</span>
                         </button>
