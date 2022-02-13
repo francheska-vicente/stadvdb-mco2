@@ -39,7 +39,16 @@ const controller = {
                     if (!(checker1 || checker2 || checker3 || checker4)) {
                         query = query.substring(0, 6) + " id, " + query.substring(6, query.length); 
                     } 
+
+                    var position = query.search(/rank/i);
+                    if(position != -1) {
+                        if (query.charAt(position - 1) != '`') {
+                            query = query.substring (0, position) + '`rank`' + query.substring(position + 4, query.length);
+                        }
+                    }
                 }
+                
+                console.log(query);
 
                 try {
                         result = await db.select_query(query);
