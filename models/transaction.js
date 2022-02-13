@@ -15,7 +15,6 @@ const transactions_funcs = {
                     if (type === 'UPDATE' || type === 'DELETE')
                         await nodes.execute_query(conn, queryHelper.to_select_for_update());
 
-
                     await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
                     var result = await nodes.execute_query(conn, query);
                     console.log('Executed query!');
