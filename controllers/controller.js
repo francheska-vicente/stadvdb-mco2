@@ -28,7 +28,7 @@ const controller = {
             
             if (query.split(" ")[0].toUpperCase () == 'SELECT') {
                 var queryChecker = query.split('FROM')[0].split(" ");
-                
+                // console.log ("hello" + queryChecker [0] + " " + queryChecker[1] + "hello");
                 if (!queryChecker.includes("*\n") && !queryChecker.includes("*")) {
                     queryChecker = queryChecker.join(',').split(',');
                     var checker1 = queryChecker.includes("id");
@@ -47,7 +47,9 @@ const controller = {
                         }
                     }
                 }
-            
+                
+                // console.log(query);
+
                 try {
                         result = await db.select_query(query);
 
