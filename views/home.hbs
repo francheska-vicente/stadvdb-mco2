@@ -79,47 +79,49 @@
                     class="btn col-4 btn-warning insertBtn position-absolute bottom-0 end-0 fw-bold border border-dark border-2"
                     data-bs-toggle="modal" id="insert-movie-btn" data-bs-target="#modal-insert">Add a movie</button>
                 {{!-- ADD A MOVIE(INSERT) MODAL --}}
-                <div class="modal fade" id="modal-insert" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header bg-warning border-dark">
-                                <h5 class="modal-title" id="add-movie-modal-header"><strong>Add a
-                                        Movie</strong></h5>
-                            </div>
-                            <div class="modal-body p-4">
-                                <div class="text-center fw-normal">Enter the movie's details (name,
-                                    year, and rank) before
-                                    clicking <strong>Add Movie</strong>. Discard entry by clicking the
-                                    <strong>Cancel</strong> button.
+                <form action = "/add" method="post">
+                    <div class="modal fade" id="modal-insert" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-warning border-dark">
+                                    <h5 class="modal-title" id="add-movie-modal-header"><strong>Add a
+                                            Movie</strong></h5>
                                 </div>
-                                <div class="form-group my-3">
-                                    <label for="add-movie-name">Movie Name</label>
-                                    <input type="text" class="form-control" id="add-movie-name" name="add-movie-name">
-                                </div>
-                                <div class="form-group my-3">
-                                    <label for="add-movie-year">Year</label>
-                                    <input type="number" class="form-control" id="add-movie-year" name="add-movie-year"
-                                        min="1700" max="2099" step="1" value="2022">
-                                </div>
-                                <div class="form-group my-3">
-                                    <label for="add-movie-rank">Rank</label>
-                                    <input type="number" class="form-control" id="add-movie-rank" name="add-movie-rank"
-                                        step="any">
-                                </div>
-                                <strong>
-                                    <div class="mx-5 p-3 text-center text-danger error" id="add-movie-error">
+                                <div class="modal-body p-4">
+                                    <div class="text-center fw-normal">Enter the movie's details (name,
+                                        year, and rank) before
+                                        clicking <strong>Add Movie</strong>. Discard entry by clicking the
+                                        <strong>Cancel</strong> button.
                                     </div>
-                                </strong>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary me-auto"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-warning add-movie-button" disabled>Add
-                                    Movie</button>
+                                    <div class="form-group my-3">
+                                        <label for="add-movie-name">Movie Name</label>
+                                        <input type="text" class="form-control" id="add-movie-name" name="add-movie-name">
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label for="add-movie-year">Year</label>
+                                        <input type="number" class="form-control" id="add-movie-year" name="add-movie-year"
+                                            min="1700" max="2099" step="1" value="2022">
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label for="add-movie-rank">Rank</label>
+                                        <input type="number" class="form-control" id="add-movie-rank" name="add-movie-rank"
+                                            step="any">
+                                    </div>
+                                    <strong>
+                                        <div class="mx-5 p-3 text-center text-danger error" id="add-movie-error">
+                                        </div>
+                                    </strong>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary me-auto"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-warning add-movie-button" disabled>Add
+                                        Movie</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
