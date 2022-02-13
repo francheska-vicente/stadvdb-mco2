@@ -1,4 +1,5 @@
 const db = require ('../models/db.js');
+
 const controller = {
         getIndex: async function (req, res) {
                 var result = [];
@@ -18,6 +19,7 @@ const controller = {
                         result: result,
                         resultlen: resultlen
                 };
+                
 
                 res.render ('home', data);
         },
