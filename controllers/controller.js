@@ -130,8 +130,15 @@ const controller = {
         var name = req.body['add-movie-name'];
         var year = req.body['add-movie-year'];
         var rank = req.body['add-movie-rank'];
+
+        if (rank == '') {
+                rank = 'null';
+        } else {
+                rank = parseFloat(rank);
+        }
+
         try {
-            const result = await db.insert_query(name, parseFloat(rank), parseInt(year)).then(value => {
+            const result = await db.insert_query(name, rank, parseInt(year)).then(value => {
                 if (value) {
                     // insert successful
                     // temporary: res.redirect()
