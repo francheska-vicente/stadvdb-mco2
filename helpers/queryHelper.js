@@ -43,8 +43,8 @@ const query_funcs = {
     },
 
     to_delete_query_log: function (id, node_to, node_from) {
-        return `INSERT INTO log_table(type, node_to, node_from, done, id) VALUES ('DELETE', `
-            + node_to + `, '` + node_from + `, false, ` + id`);`
+        return `INSERT INTO log_table(type, node_to, node_from, done, id, name) VALUES ('DELETE', `
+            + node_to + `, ` + node_from + `, false, ` + id + `, NULL);`
     },
 
     to_finish_log: function (id) {
