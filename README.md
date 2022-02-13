@@ -17,7 +17,7 @@ Execution of functions were done asynchronously with promises.
 
 ## Setting up
 ### How to set up and run the project locally through a NodeJS Server:
-1. Extract the folder from the zipped file that you can download through [here](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/francheska-vicente/stadvdb-mco2)
+1. Extract the folder from the zipped file that you can download through this DownGit [link](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/francheska-vicente/stadvdb-mco2).
 3. Naviate to the project folder (using the cd command) 
 (i.e. the main folder containing the file app.js)
 4. Run the command in order to install all the modules needed in order to run the project successfully:
