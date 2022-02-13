@@ -124,13 +124,13 @@ const controller = {
                 }
         },
 
-        insertMovie: async function (req, res) {
-                var name = req.body.name;
-                var year = req.body.year;
-                var rank = req.body.rank;
-
+        postInsertMovie: async function (req, res) {
+                var name = req.body.add-movie-name;
+                var year = req.body.add-movie-year;
+                var rank = req.body.add-movie-rank;
+                console.log(req.body);
                 try {
-                        var result = db.insert_query(name, rank, year);
+                        var result = await db.insert_query(name, rank, year);
                         // this means successful
                 } catch (err) {
                         // this means fail; err holds the error message
