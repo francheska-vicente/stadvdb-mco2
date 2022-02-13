@@ -3,7 +3,7 @@ This project is a website that simulates transaction management in distributed d
 
 The deployed web application can be access through http://mco2-imdb-movies.herokuapp.com/.
 
-# Project Stucture
+## Project Files
 ### Models
 Execution of functions were done asynchronously with promises.
 | Model Files                                 | Description                                                 |
