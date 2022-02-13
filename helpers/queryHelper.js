@@ -1,36 +1,6 @@
 const { DateTime } = require("luxon");
 
 const query_funcs = {
-    to_select_query: function (movies) {
-        var query = `SELECT `;
-
-        for (var i = 0; i < select.length; i++) {
-            if (i != 0 && select[i].split(" ").join("") != `rank`) {
-                query = query + `, ` + select[i];
-            } else if (i != 0) {
-                query = query + `, \`` + select[i] + `\``;
-            } else {
-                query = query + select[i];
-            }
-        }
-
-        if (select.length == 0) {
-            query = query + '*';
-        }
-
-        query = query + ` FROM movies `;
-
-        for (var i = 0; i < where.length; i++) {
-            if (i != 0) {
-                query = query + `, ` + where[i];
-            } else {
-                query = query + ` WHERE ` + where[i];
-            }
-        }
-
-        return query + `;`;
-    },
-
     to_insert_query: function (name, year, rank) {
         return `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
     },
