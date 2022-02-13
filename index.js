@@ -4,6 +4,7 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const handlebars_helper = require(`./views/hbs-helper.js`);
 const routes = require('./routes/routes.js');
 const db = require('./models/db.js');
 const repl = require('./models/replicator.js');
