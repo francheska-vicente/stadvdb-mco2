@@ -107,7 +107,7 @@ const db_functions = {
             else
                 log = queryHelper.to_delete_query_log(id, 3, 1);
 
-            var result = transaction.make_transaction_with_log(1, query, log, 'DELETE');
+            var result = transaction.make_transaction_with_log(1, query, log, 'DELETE', id);
             return (result instanceof Error) ? false : true;
         }
         catch (error) {
@@ -116,12 +116,12 @@ const db_functions = {
 
             if (year < 1980) {
                 log = queryHelper.to_delete_query_log(id, 1, 2);
-                var result = transaction.make_transaction_with_log(2, query, log, 'DELETE');
+                var result = transaction.make_transaction_with_log(2, query, log, 'DELETE', id);
                 return (result instanceof Error) ? false : true;
             }
             else {
                 log = queryHelper.to_delete_query_log(id, 1, 3);
-                var result = transaction.make_transaction_with_log(3, query, log, 'DELETE');
+                var result = transaction.make_transaction_with_log(3, query, log, 'DELETE', id);
                 return (result instanceof Error) ? false : true;
             }
         }
