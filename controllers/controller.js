@@ -47,9 +47,7 @@ const controller = {
                         }
                     }
                 }
-                
-                console.log(query);
-
+            
                 try {
                         result = await db.select_query(query);
 
@@ -111,12 +109,13 @@ const controller = {
                 }
         },
 
-        deleteMovie: async function (req, res) {
+        postDeleteMovie: async function (req, res) {
                 var id = req.body.id;
+                var year = req.body.year;
 
                 try {
-                        var result = await db.delete_query(id);
-                        // this means successful
+                        var result = await db.delete_query(id, year);
+                        res.redirect('/');
                 } catch (err) {
                         // this means fail; err holds the error message
                 }
