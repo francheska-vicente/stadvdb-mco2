@@ -115,9 +115,9 @@ const controller = {
         },
 
         postDeleteMovie: async function (req, res) {
-                var id = req.body.id;
-                var year = req.body.year;
-
+                var id = parseInt(req.params.id);
+                var year = parseInt(req.params.year);
+                console.log("id: " + id);
                 try {
                         var result = await db.delete_query(id, year);
                         res.redirect('/');
