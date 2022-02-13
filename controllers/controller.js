@@ -27,10 +27,11 @@ const controller = {
             var query = req.query.query_holder.trim();
             
             if (query.split(" ")[0].toUpperCase () == 'SELECT') {
-                var queryChecker = query.split('FROM')[0].split(" ");
-                // console.log ("hello" + queryChecker [0] + " " + queryChecker[1] + "hello");
+                var queryChecker = query.split('FROM')[0].split("\n").join(" ");
+
+                console.log ("hello" + queryChecker [0] + " " + queryChecker[1] + "hello");
                 if (!queryChecker.includes("*\n") && !queryChecker.includes("*")) {
-                    queryChecker = queryChecker.join(',').split(',');
+                    queryChecker = queryChecker.split(" ").join(',').split(',');
                     var checker1 = queryChecker.includes("id");
                     var checker2 = queryChecker.includes("ID");
                     var checker3 = queryChecker.includes("Id");
@@ -48,7 +49,7 @@ const controller = {
                     }
                 }
                 
-                // console.log(query);
+                console.log(query);
 
                 try {
                         result = await db.select_query(query);
