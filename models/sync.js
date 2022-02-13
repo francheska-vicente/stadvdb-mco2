@@ -11,7 +11,7 @@ const sync_funcs = {
         try {
             var logs2 = await transaction.make_transaction(2, queryHelper.to_retrieve_logs(1), 'SELECT');
             var logs3 = await transaction.make_transaction(3, queryHelper.to_retrieve_logs(1), 'SELECT');
-            var logs = logs2[0][0].concat(logs3[0][0]);
+            logs = logs2[0][0].concat(logs3[0][0]);
             logs.sort((a, b) => a.date.getTime() - b.date.getTime());
 
             for (let i = 0; i < logs.length; i++) {
