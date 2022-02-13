@@ -5,12 +5,21 @@ const queryHelper = require('../helpers/queryHelper.js');
 
 const db_functions = {
     select_query: async function (query) {
-        if (nodes.connect_node(2) && nodes.connect_node(3))
+        try {
+            await nodes.connect_node(2)
+            await nodes.connect_node(3)
             return await nodes.select_query_follower_node(query)
-        else if (nodes.connect_node(1))
-            return await nodes.select_query_leader_node(query)
-        else
-            console.log(`All nodes are inaccessible.`);
+        }
+        catch (error) {
+            try {
+                console.log(`One or more follower nodes are down.`);
+                await nodes.connect_node(1)
+                return await nodes.select_query_leader_node(query)
+            }
+            catch (error) {
+                console.log(`All nodes are inaccessible.`);
+            }
+        } 
     },
 
     insert_query: async function (name, rank, year) {
