@@ -14,3 +14,22 @@ Execution of functions were done asynchronously with promises.
 | [`logs.js`](models/logs.js)                 | Connects to log table, retrieves and updates log table rows |
 | [`sync.js`](models/sync.js)                 | Iterates through unreplicated rows and updates nodes        |
 | [`replicator.js`](models/replicator.js)     | Handles when data replication occurs                        |
+
+## Setting up
+### How to set up and run the project locally through a NodeJS Server:
+1. Extract the folder from the zipped file that you can download through [here](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/francheska-vicente/stadvdb-mco2)
+3. Naviate to the project folder (using the cd command) 
+(i.e. the main folder containing the file app.js)
+4. Run the command in order to install all the modules needed in order to run the project successfully:
+```
+npm install 
+```
+5. We may now run the server by typing ```node app.js```
+6. Since the web application is running on localhost:3000, type ```http://localhost:3000``` on your browser of choice.
+7. Now, you would be able to see and use the application!
+
+## Authors
+- **Sophia Louisse L. Eguaras**
+- **Andrea Jean Marcelo**
+- **Francheska Josefa Vicente**
+- **Sophia Danielle S. Vista**
