@@ -30,7 +30,11 @@ npm install
 The deployed web application can be access through [link](http://mco2-imdb-movies.herokuapp.com/).
 
 ## Authors
-- **Sophia Louisse L. Eguaras**
-- **Andrea Jean Marcelo**
-- **Francheska Josefa Vicente**
-- **Sophia Danielle S. Vista**
+- **Sophia Louisse L. Eguaras** <br/>
+sophia_eguaras@dlsu.edu.ph
+- **Andrea Jean Marcelo**  <br/>
+andrea_marcelo@dlsu.edu.ph
+- **Francheska Josefa Vicente**  <br/>
+francheska_vicente@dlsu.edu.ph
+- **Sophia Danielle S. Vista** <br/>
+sophia_danielle_vista@dlsu.edu.ph
