@@ -6,15 +6,18 @@ const queryHelper = require('../helpers/queryHelper.js');
 const db_functions = {
     select_query: async function (query) {
         try {
-            await nodes.connect_node(2)
-            await nodes.connect_node(3)
-            return await nodes.select_query_follower_node(query)
+            await nodes.connect_node(2);
+            await nodes.connect_node(3);
+            var rows2 = await transaction.make_transaction(2, query, 'SELECT');
+            var rows3 = await transaction.make_transaction(3, query, 'SELECT');
+            return rows2[0][0].concat(rows3[0][0]);
         }
         catch (error) {
             try {
                 console.log(`One or more follower nodes are down.`);
-                await nodes.connect_node(1)
-                return await nodes.select_query_leader_node(query)
+                await nodes.connect_node(1);
+                var rows = await transaction.make_transaction(1, query, 'SELECT');
+                return rows[0][0];
             }
             catch (error) {
                 console.log(`All nodes are inaccessible.`);
@@ -36,7 +39,7 @@ const db_functions = {
             else 
                 log = queryHelper.to_insert_query_log(name, year, rank, 3, 1);
 
-            var result = transaction.make_transaction_with_log(1, query, log);
+            var result = transaction.make_transaction_with_log(1, query, log, 'INSERT');
             return (result instanceof Error) ? false : true;
         }
         catch (error) {
@@ -45,12 +48,12 @@ const db_functions = {
             
             if (year < 1980) {
                 log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
-                var result = transaction.make_transaction_with_log(2, query, log);
+                var result = transaction.make_transaction_with_log(2, query, log, 'INSERT');
                 return (result instanceof Error) ? false : true;
             }
             else {
                 log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
-                var result = transaction.make_transaction_with_log(3, query, log);
+                var result = transaction.make_transaction_with_log(3, query, log, 'INSERT');
                 return (result instanceof Error) ? false : true;
             }
         }
@@ -70,7 +73,7 @@ const db_functions = {
             else
                 log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
             
-            var result = transaction.make_transaction_with_log(1, query, log);
+            var result = transaction.make_transaction_with_log(1, query, log, 'UPDATE');
             return (result instanceof Error) ? false : true;
         }
         catch (error) {
@@ -79,18 +82,18 @@ const db_functions = {
 
             if (year < 1980) {
                 log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
-                var result = transaction.make_transaction_with_log(2, query, log);
+                var result = transaction.make_transaction_with_log(2, query, log, 'UPDATE');
                 return (result instanceof Error) ? false : true;
             }
             else {
                 log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
-                var result = transaction.make_transaction_with_log(3, query, log);
+                var result = transaction.make_transaction_with_log(3, query, log, 'UPDATE');
                 return (result instanceof Error) ? false : true;
             }
         }
     },
 
-    delete_query: async function (id) {
+    delete_query: async function (id, year) {
         // creates SQL statement for deleting row
         var query = queryHelper.to_delete_query(id);
         var log;
@@ -104,7 +107,7 @@ const db_functions = {
             else
                 log = queryHelper.to_delete_query_log(id, 3, 1);
 
-            var result = transaction.make_transaction_with_log(1, query, log);
+            var result = transaction.make_transaction_with_log(1, query, log, 'DELETE');
             return (result instanceof Error) ? false : true;
         }
         catch (error) {
@@ -113,12 +116,12 @@ const db_functions = {
 
             if (year < 1980) {
                 log = queryHelper.to_delete_query_log(id, 1, 2);
-                var result = transaction.make_transaction_with_log(2, query, log);
+                var result = transaction.make_transaction_with_log(2, query, log, 'DELETE');
                 return (result instanceof Error) ? false : true;
             }
             else {
                 log = queryHelper.to_delete_query_log(id, 1, 3);
-                var result = transaction.make_transaction_with_log(3, query, log);
+                var result = transaction.make_transaction_with_log(3, query, log, 'DELETE');
                 return (result instanceof Error) ? false : true;
             }
         }

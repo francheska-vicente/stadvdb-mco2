@@ -98,8 +98,28 @@
                     </th>
                     <th class="text-center">
                         <button data-id={{id}} class="btn btn-danger deleteBtn material-icons-outlined md-24 border"
-                            data-toggle="modal" id="delete-movie-btn">
-                            <span class="material-icons-outlined">delete_forever</span></button>
+                            data-bs-toggle="modal" id="{{id}}-delete-movie-btn" data-bs-target="#modal-{{id}}-delete">
+                            <span class="material-icons-outlined">delete_forever</span>
+                        </button>
+                        <div class="modal fade" id="modal-{{id}}-delete" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><strong>Delete this Movie</strong></h5>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <div class="fw-bold">Are you sure you want to delete this movie?</div> <br> This action cannot be reversed.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary me-auto" data-bs-toggle="modal"
+                                        data-bs-target="#modal-{{id}}" data-bs-dismiss="modal">Back</button>
+                                    <form action="/delete/{{id}}/{{year}}" method="post">
+                                        <button type="submit" class="btn btn-danger " data-bs-dismiss="modal">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </th>
                 </tr>
                 {{/each}}

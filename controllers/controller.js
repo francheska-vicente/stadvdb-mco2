@@ -29,10 +29,11 @@ const controller = {
             var query = req.query.query_holder.trim();
             
             if (query.split(" ")[0].toUpperCase () == 'SELECT') {
-                var queryChecker = query.split('FROM')[0].split(" ");
-                
+                var queryChecker = query.split('FROM')[0].split("\n").join(" ");
+
+                // console.log ("hello" + queryChecker [0] + " " + queryChecker[1] + "hello");
                 if (!queryChecker.includes("*\n") && !queryChecker.includes("*")) {
-                    queryChecker = queryChecker.join(',').split(',');
+                    queryChecker = queryChecker.split(" ").join(',').split(',');
                     var checker1 = queryChecker.includes("id");
                     var checker2 = queryChecker.includes("ID");
                     var checker3 = queryChecker.includes("Id");
@@ -41,7 +42,16 @@ const controller = {
                     if (!(checker1 || checker2 || checker3 || checker4)) {
                         query = query.substring(0, 6) + " id, " + query.substring(6, query.length); 
                     } 
+
+                    var position = query.search(/rank/i);
+                    if(position != -1) {
+                        if (query.charAt(position - 1) != '`') {
+                            query = query.substring (0, position) + '`rank`' + query.substring(position + 4, query.length);
+                        }
+                    }
                 }
+                
+                // console.log(query);
 
                 try {
                         result = await db.select_query(query);
@@ -104,12 +114,13 @@ const controller = {
                 }
         },
 
-        deleteMovie: async function (req, res) {
+        postDeleteMovie: async function (req, res) {
                 var id = req.body.id;
+                var year = req.body.year;
 
                 try {
-                        var result = await db.delete_query(id);
-                        // this means successful
+                        var result = await db.delete_query(id, year);
+                        res.redirect('/');
                 } catch (err) {
                         // this means fail; err holds the error message
                 }
