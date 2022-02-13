@@ -131,11 +131,17 @@ const controller = {
         var year = req.body['add-movie-year'];
         var rank = req.body['add-movie-rank'];
         try {
-                const result = await db.insert_query(name, parseFloat(rank), parseInt(year));
-            // this means successful
-        } catch (err) {
-            // this means fail; err holds the error message
-        }
+            const result = await db.insert_query(name, parseFloat(rank), parseInt(year)).then(value => {
+                if (value) {
+                    // insert successful
+                    // temporary: res.redirect()
+                    res.redirect('/');
+                }
+                else {
+                    // error oh no
+                }
+            });
+        } catch (err) {}
     }
 }
 
