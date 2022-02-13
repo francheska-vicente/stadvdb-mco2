@@ -239,6 +239,42 @@
                 {{/each}}
             </tbody>
         </table>
+
+        {{!-- PAGINATION --}}
+        <nav>
+            <ul class="pagination">
+                <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page=1">First</a>
+                </li>
+
+                <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page={{pageNumberPrev}}">Previous</a>
+                </li>
+
+                {{#ifNotEquals pageNumberCurr 1}}
+                <li class="page-item">
+                    <a class="page-link {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}" href="/?page={{pageNumberPrev}}">{{pageNumberPrev}}</a>
+                </li>
+                {{/ifNotEquals}}
+                
+                <li class="page-item active">
+                    <a class="page-link" href="/?page={{pageNumberCurr}}">{{pageNumberCurr}}</a>
+                </li>
+                {{#ifNotEquals pageNumberCurr 3883}}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{pageNumberNext}}">{{pageNumberNext}}</a>
+                </li>
+                {{/ifNotEquals}}
+
+                <li class="page-item {{#ifEquals pageNumberCurr 3883}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page={{pageNumberNext}}">Next</a>
+                </li>
+
+                <li class="page-item {{#ifEquals pageNumberCurr 3883}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page=3883">Last</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </body>
 
