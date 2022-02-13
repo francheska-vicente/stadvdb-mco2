@@ -111,6 +111,10 @@ const query_funcs = {
 
     to_select_for_update: function (id) {
         return `SELECT * FROM movies WHERE id=` + id + ` FOR UPDATE;`
-    }
+    },
+
+    to_select_for_shared: function (id) {
+        return `SELECT * FROM movies WHERE id=` + id + ` FOR SHARED;`
+    },
 }
 module.exports = query_funcs;

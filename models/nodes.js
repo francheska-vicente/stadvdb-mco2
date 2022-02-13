@@ -52,38 +52,12 @@ const node3 = mysql.createPool({
 });
 
 const nodes_funcs = {
-    attri: {
-        id: 'id',
-        name: 'name', 
-        year: 'year',
-        rank: 'rank'
-    },
-
     // starting a connection with the nodes
     connect_node: async function (node) {
         switch (node) {
             case 1: return await node1.getConnection();
             case 2: return await node2.getConnection();
             case 3: return await node3.getConnection();
-        }
-    },
-
-    // for executing a general query in MySQL
-    select_query_leader_node: async function (query) {
-        var rows = await Promise.all([node1.query(query)]);
-        return rows[0][0];
-    },
-
-    select_query_follower_node: async function (query) {
-        var rows = await Promise.all([node2.query(query), node3.query(query)]);
-        return rows[0][0].concat(rows[1][0]);
-    },
-
-    select_query_node: async function (node, query) {
-        switch (node) {
-            case 1: return await Promise.all([node1.query(query)]);
-            case 2: return await Promise.all([node2.query(query)]);
-            case 3: return await Promise.all([node3.query(query)]);
         }
     },
 
