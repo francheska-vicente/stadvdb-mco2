@@ -4,6 +4,7 @@ $(document).ready(function () {
     enableSearch();
     enableAddMovie();
     enableUpdateMovie();
+    initializeMovieModalFields();
 });
 
 /**
@@ -279,3 +280,26 @@ function enableUpdateMovie() {
         }
     });
 }
+
+/**
+ * Resets the values of the Add/Update Modal fields.
+ */
+function initializeMovieModalFields() {
+    $('.modal-insert').on('hidden.bs.modal', function () {
+        $('#add-movie-name, #add-movie-year, #add-movie-rank').val('');
+        resetField($('#add-movie-year'), $('#add-movie-error'));
+        resetField($('#add-movie-rank'), $('#add-movie-error'));
+        resetField($('#add-movie-name'), $('#add-movie-error'));
+        $('.add-movie-button').attr('disabled', true);
+    });
+
+    $('.modal-update').on('hidden.bs.modal', function () {
+        $('#update-movie-name').val($('#movie-name-copy').val());
+        $('#update-movie-year').val($('#movie-year-copy').val());
+        $('#update-movie-rank').val($('#movie-rank-copy').val());
+        resetField($('#udpate-movie-year'), $('#update-movie-error'));
+        resetField($('#update-movie-rank'), $('#update-movie-error'));
+        resetField($('#update-movie-name'), $('#update-movie-error'));
+        $('.update-movie-button').attr('disabled', true);
+    });
+}7
