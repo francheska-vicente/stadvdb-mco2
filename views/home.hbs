@@ -29,7 +29,7 @@
                 <div id="title" class="col-6">
                     <p class="h1 text-center">IMDb Movies</p>
                 </div>
-                 <figure>
+                <figure>
                     <blockquote class="blockquote">
                         <p class="text-center p-2 fst-italic fw-bolder">It's not the house that's haunted, it's your son.</p>
                     </blockquote>
@@ -76,7 +76,7 @@
                     data-bs-toggle="modal" id="insert-movie-btn" data-bs-target="#modal-insert">Add a movie</button>
                 {{!-- ADD A MOVIE(INSERT) MODAL --}}
                 <form action = "/add" method="post">
-                    <div class="modal fade" id="modal-insert" tabindex="-1">
+                    <div class="modal fade modal-insert" id="modal-insert" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header bg-warning border-dark">
@@ -87,7 +87,7 @@
                                     <div class="text-center fw-normal">Enter the movie's details (name,
                                         year, and rank) before
                                         clicking <strong>Add Movie</strong>. Discard entry by clicking the
-                                        <strong>Cancel</strong> button.
+                                        <strong>Cancel</strong> button
                                     </div>
                                     <div class="form-group my-3">
                                         <label for="add-movie-name">Movie Name</label>
@@ -146,7 +146,7 @@
                             <span class="material-icons-outlined">edit_note</span>
                         </button>
                         {{!-- UPDATE MODAL --}}
-                        <div class="modal fade" id="modal-{{id}}-update" tabindex="-1">
+                        <div class="modal fade modal-update" id="modal-{{id}}-update" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header bg-primary border-light">
@@ -205,7 +205,7 @@
                             <span class="material-icons-outlined">delete_forever</span>
                         </button>
                         {{!-- CONFIRM DELETE MODAL --}}
-                        <div class="modal fade" id="modal-{{id}}-delete" tabindex="-1">
+                        <div class="modal fade modal-delet" id="modal-{{id}}-delete" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header bg-danger border-light">
