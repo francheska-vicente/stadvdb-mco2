@@ -24,7 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'hbs');
 //set the file path containing the hbs files
 app.set('views', path.join(__dirname, 'views'));
-
+//set the file path containing the partial hbs files
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
 /* The page should only be accessible once the database is connected. */
 app.use('/', routes);
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {

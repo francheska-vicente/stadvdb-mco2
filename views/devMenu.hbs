@@ -1,0 +1,150 @@
+<html>
+
+<head>
+    <title> IMDb Movies </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+    {{!--
+    <script type="text/javascript" src="/js/validator.min.js"></script> --}}
+    <script src="/js/handlebars.min.js"></script>
+    <script type="text/javascript" src="/js/home.js"></script>
+    <link rel="icon" href="./images/Daco_1445791.png" type="image/x-icon">
+</head>
+
+<body style="background-color:#EE9595;" class="col-12 h-100 d-flex flex-column">
+    {{> navbar}}
+    <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
+        {{!-- HEADER --}}
+        <div class="rounded-3 col-12 mb-5 d-flex flex-row">
+            <div class="rounded-start col-6 p-3 movie-title-quote d-flex flex-column justify-content-center align-items-center"
+                style="background-color:#FFCDA3;">
+                <span class="material-icons md-48">movie_filter</span>
+                <div id="title" class="col-6">
+                    <p class="h1 text-center">IMDb Movies</p>
+                </div>
+                <figure>
+                    <blockquote class="blockquote">
+                        <p class="text-center p-2 fst-italic fw-bolder">It's not the house that's haunted, it's your
+                            son.</p>
+                    </blockquote>
+                    <figcaption class=" text-center blockquote-footer">
+                        Elise Rainier in <cite title="Source Title">Insidious</cite>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <div class="rounded-end col-6 movie-header">
+                <img src="/images/bg1.jpeg" class="rounded-end" alt="movies">
+            </div>
+        </div>
+        {{!-- SEARCH BAR --}}
+        <form method="get" action="/query-search/results">
+            <div class="form-floating border-primary mb-5 justify-content-center" id="query-area">
+                <textarea class="form-control" placeholder="Enter the query here..." id="query" style="height: 90px;"
+                    name="query_holder"></textarea>
+                <label for="query" class="">Query</label>
+                <div class="row col-12 m-0 d-flex flex-row">
+                    <div id="event-notes-help" class="col-6 px-0 form-text">
+                        <strong>Enter your query here.</strong> Only <strong>SELECT</strong>,
+                        <strong>INSERT</strong>, <strong>UPDATE</strong> and
+                        <strong>DELETE</strong> statements are allowed.
+                    </div>
+                    <div class="col-2 pe-2 pt-3 text-end text-danger fw-bolder" id="query-error"></div>
+                    <div class="col-4 px-0 pt-2">
+                        <button class="btn col-12 border-light border-2" id="search" type="submit"
+                            disabled>Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {{!-- TABLE HEADER --}}
+        <div class="col-12 d-flex flex-row">
+            <div id="title" class="col-4">
+                <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
+            </div>
+            <div id="movies-num-rows" class="col-5 position-relative">
+                <p class="h5 col-12 pb-0 fst-italic text-start position-absolute bottom-0 start-0">Showing {{resultlen}}
+                    row(s).</p>
+            </div>
+            <div class="btn-group col-3 d-flex position-relative mb-2" role="group"
+                aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-dark d-flex align-items-center" for="btnradio1">Node 1</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-dark d-flex align-items-center" for="btnradio2">Node 2</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-dark d-flex align-items-center" for="btnradio3">Node 3</label>
+            </div>
+        </div>
+
+        {{!-- TABLE --}}
+        <table class="table table-danger table-hover table-bordered table-striped border-dark border-2"
+            id="movies-table">
+            <thead class="table-dark">
+                <tr>
+                    {{#each uniqueKeys}}
+                    <th>{{this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each result}}
+                <tr>
+                    {{#each this}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        {{!-- PAGINATION --}}
+        <nav>
+            <ul class="pagination">
+                <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page=1">First</a>
+                </li>
+
+                <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page={{pageNumberPrev}}">Previous</a>
+                </li>
+
+                {{#ifNotEquals pageNumberCurr 1}}
+                <li class="page-item">
+                    <a class="page-link {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}"
+                        href="/?page={{pageNumberPrev}}">{{pageNumberPrev}}</a>
+                </li>
+                {{/ifNotEquals}}
+
+                <li class="page-item active">
+                    <a class="page-link" href="/?page={{pageNumberCurr}}">{{pageNumberCurr}}</a>
+                </li>
+                {{#ifNotEquals pageNumberCurr pageNumberLast}}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{pageNumberNext}}">{{pageNumberNext}}</a>
+                </li>
+                {{/ifNotEquals}}
+
+                <li class="page-item {{#ifEquals pageNumberCurr pageNumberLast}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page={{pageNumberNext}}">Next</a>
+                </li>
+
+                <li class="page-item {{#ifEquals pageNumberCurr pageNumberLast}}disabled{{/ifEquals}}">
+                    <a class="page-link" href="/?page={{pageNumberLast}}">Last</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+
+</html>
