@@ -5,25 +5,23 @@ const nodes = require('../models/nodes.js');
 const queryHelper = require('../helpers/queryHelper.js');
 
 const transactions_funcs = {
-    make_2transaction_with_log: async function (node, query, query2, log, type, id) {
+    insert_update_transaction_with_log: async function (node_to, query, update, node_from) {
         try {
-            let conn = await nodes.connect_node(node);
+            let conn = await nodes.connect_node(node_to);
             if (conn)
                 try {
                     await conn.beginTransaction();
 
-                    if (type === 'UPDATE' || type === 'DELETE')
-                        await conn.query(queryHelper.to_select_for_update(id));
-
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
-                    console.log('Executed query!');
+                    console.log('Executed ' + query);
 
-                    var result2 = await conn.query(query2);
-                    console.log('Executed query!');
-
+                    var log = queryHelper.to_update_query_log(result[0].insertId, '', '', '', node_from, 1);
                     var resultlog = await conn.query(log);
                     console.log('Created ' + log);
+
+                    var resultupdate = await conn.query(update);
+                    console.log('Executed ' + update);
 
                     await conn.commit();
                     await conn.release();
@@ -32,7 +30,7 @@ const transactions_funcs = {
                 catch (error) {
                     console.log(error)
                     console.log('Rolled back the data.');
-                    conn.rollback(node);
+                    conn.rollback(node_to);
                     conn.release();
                     return error;
                 }
