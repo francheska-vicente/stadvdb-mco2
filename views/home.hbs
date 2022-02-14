@@ -50,7 +50,7 @@
                     name="query_holder"></textarea>
                 <label for="query" class="">Query</label>
                 <div class="row col-12 m-0 d-flex flex-row">
-                    <div id="event-notes-help" class="col-8 px-0 form-text">Enter your SELECT query here. The box can be resized by
+                    <div id="event-notes-help" class="col-8 px-0 form-text">Enter your SELECT query here. Some MySQL clauses, such as UNION, DISTINCT, would not work in this query search box. The box can be resized by
                         dragging the lower-right corner.
                     </div>
                     <div class="col-2 pe-2 pt-3 text-end text-danger fw-bolder" id="query-error"></div>
@@ -256,7 +256,7 @@
                 <li class="page-item active">
                     <a class="page-link" href="/?page={{pageNumberCurr}}">{{pageNumberCurr}}</a>
                 </li>
-                {{#ifNotEquals pageNumberCurr 3883}}
+                {{#ifNotEquals pageNumberCurr pageNumberLast}}
                 <li class="page-item">
                     <a class="page-link" href="/?page={{pageNumberNext}}">{{pageNumberNext}}</a>
                 </li>
