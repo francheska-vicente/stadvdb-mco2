@@ -24,9 +24,9 @@ const controller = {
             return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
         }, []);
 
-        end = result.length;
-
         result.sort((a, b) => a.id - b.id);
+
+        end = result.length;
         resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
         
         var lastPage = Math.ceil(length / 100);
@@ -45,8 +45,16 @@ const controller = {
     },
 
     getQueryResults: async function (req, res) {
+        let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
+        let start = (pageNumber - 1) * 100;
+        let end = 100;
+
         var result = [];
         var query = req.query.query_holder.trim();
+
+        // for determining the page number
+        var queryCount = req.query.query_holder.trim();
+
 
         if (query.split(" ")[0].toUpperCase() == 'SELECT') {
             var queryChecker = query.split('FROM')[0].split("\n").join(" ");
@@ -71,7 +79,21 @@ const controller = {
                 }
             }
 
-            // console.log(query);
+                if (query.charAt(query.length -1) == ';') {
+                        query = query.substring (0, query.length - 1) + " LIMIT " + start + ", " + end + ";"
+                } else {
+                        query = query + " LIMIT " + start + ", " + end + ";"
+                }
+
+                queryCount = "SELECT COUNT(*) AS `count` FROM movies WHERE " + queryCount.split("WHERE")[1];
+                var arrLength = [];
+                arrLength = await db.count_query(queryCount);
+                var length = arrLength [0].count;
+        
+                if (arrLength.length > 1) {
+                        length = parseInt(arrLength [0].count) + parseInt(arrLength [0].count);
+                }
+
 
             try {
                 result = await db.select_query(query);
@@ -80,13 +102,19 @@ const controller = {
                     return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
                 }, []);
 
-                resultlen = result.length;
-                result = result.slice(0, 50);
+                end = result.length;
+                resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
+                
+                var lastPage = Math.ceil(length / 100);
 
                 var data = {
-                    uniqueKeys: uniqueKeys,
-                    result: result,
-                    resultlen: resultlen
+                        uniqueKeys: uniqueKeys,
+                        result: result,
+                        resultlen: resultlen,
+                        pageNumberCurr: pageNumber,
+                        pageNumberPrev: pageNumber - 1,
+                        pageNumberNext: pageNumber + 1,
+                        pageNumberLast: lastPage
                 };
                 
 
