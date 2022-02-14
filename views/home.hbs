@@ -31,7 +31,8 @@
                 </div>
                 <figure>
                     <blockquote class="blockquote">
-                        <p class="text-center p-2 fst-italic fw-bolder">It's not the house that's haunted, it's your son.</p>
+                        <p class="text-center p-2 fst-italic fw-bolder">It's not the house that's haunted, it's your
+                            son.</p>
                     </blockquote>
                     <figcaption class=" text-center blockquote-footer">
                         Elise Rainier in <cite title="Source Title">Insidious</cite>
@@ -43,24 +44,6 @@
                 <img src="/images/bg1.jpeg" class="rounded-end" alt="movies">
             </div>
         </div>
-        {{!-- SEARCH BAR --}}
-        <form method="get" action="/query-search/results">
-            <div class="form-floating border-primary mb-5 justify-content-center" id="query-area">
-                <textarea class="form-control" placeholder="Enter the query here..." id="query" style="height: 90px;"
-                    name="query_holder"></textarea>
-                <label for="query" class="">Query</label>
-                <div class="row col-12 m-0 d-flex flex-row">
-                    <div id="event-notes-help" class="col-8 px-0 form-text">Enter your SELECT query here. Some MySQL clauses, such as UNION, DISTINCT, would not work in this query search box. The box can be resized by
-                        dragging the lower-right corner.
-                    </div>
-                    <div class="col-2 pe-2 pt-3 text-end text-danger fw-bolder" id="query-error"></div>
-                    <div class="col-4 px-0 pt-2">
-                        <button class="btn col-12 border-light border-2" id="search" type="submit"
-                            disabled>Search</button>
-                    </div>
-                </div>
-            </div>
-        </form>
         {{!-- TABLE HEADER --}}
         <div class="col-12 d-flex flex-row">
             <div id="title" class="col-4">
@@ -75,7 +58,7 @@
                     class="btn col-4 btn-warning insertBtn position-absolute bottom-0 end-0 fw-bold border border-dark border-2"
                     data-bs-toggle="modal" id="insert-movie-btn" data-bs-target="#modal-insert">Add a movie</button>
                 {{!-- ADD A MOVIE(INSERT) MODAL --}}
-                <form action = "/add" method="post">
+                <form action="/add" method="post">
                     <div class="modal fade modal-insert" id="modal-insert" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -91,17 +74,18 @@
                                     </div>
                                     <div class="form-group my-3">
                                         <label for="add-movie-name">Movie Name</label>
-                                        <input type="text" class="form-control" id="add-movie-name" name="add-movie-name">
+                                        <input type="text" class="form-control" id="add-movie-name"
+                                            name="add-movie-name">
                                     </div>
                                     <div class="form-group my-3">
                                         <label for="add-movie-year">Year</label>
-                                        <input type="number" class="form-control" id="add-movie-year" name="add-movie-year"
-                                            min="1700" max="2099" step="1">
+                                        <input type="number" class="form-control" id="add-movie-year"
+                                            name="add-movie-year" min="1700" max="2099" step="1">
                                     </div>
                                     <div class="form-group my-3">
                                         <label for="add-movie-rank">Rank</label>
-                                        <input type="number" class="form-control" id="add-movie-rank" name="add-movie-rank"
-                                            step="any">
+                                        <input type="number" class="form-control" id="add-movie-rank"
+                                            name="add-movie-rank" step="any">
                                     </div>
                                     <strong>
                                         <div class="mx-5 p-3 text-center text-danger error" id="add-movie-error">
@@ -164,22 +148,23 @@
                                         </div>
                                         <div class="form-group my-3">
                                             <label for="update-movie-name">Movie Name</label>
-                                            <input type="text" class="form-control" id="update-movie-name" name="update-movie-name"
-                                                value="{{name}}">
+                                            <input type="text" class="form-control" id="update-movie-name"
+                                                name="update-movie-name" value="{{name}}">
                                             <input type="text" class="form-control" id="movie-name-copy"
                                                 name="movie-name-copy" value="{{name}}" hidden>
                                         </div>
                                         <div class="form-group my-3">
                                             <label for="update-movie-year">Year</label>
                                             <input type="number" class="form-control" id="update-movie-year"
-                                                name="update-movie-year" min="1700" max="2099" step="1" value="{{year}}">
+                                                name="update-movie-year" min="1700" max="2099" step="1"
+                                                value="{{year}}">
                                             <input type="number" class="form-control" id="movie-year-copy"
                                                 name="movie-year-copy" step="any" value="{{year}}" hidden>
                                         </div>
                                         <div class="form-group my-3">
                                             <label for="update-movie-rank">Rank</label>
-                                            <input type="number" class="form-control" id="update-movie-rank" name="update-movie-rank"
-                                                step="any" value="{{rank}}">
+                                            <input type="number" class="form-control" id="update-movie-rank"
+                                                name="update-movie-rank" step="any" value="{{rank}}">
                                             <input type="number" class="form-control" id="movie-rank-copy"
                                                 name="movie-rank-copy" step="any" value="{{rank}}" hidden>
                                         </div>
@@ -249,10 +234,11 @@
 
                 {{#ifNotEquals pageNumberCurr 1}}
                 <li class="page-item">
-                    <a class="page-link {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}" href="/?page={{pageNumberPrev}}">{{pageNumberPrev}}</a>
+                    <a class="page-link {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}"
+                        href="/?page={{pageNumberPrev}}">{{pageNumberPrev}}</a>
                 </li>
                 {{/ifNotEquals}}
-                
+
                 <li class="page-item active">
                     <a class="page-link" href="/?page={{pageNumberCurr}}">{{pageNumberCurr}}</a>
                 </li>
