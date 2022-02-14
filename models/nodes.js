@@ -14,6 +14,7 @@ const node1 = mysql.createPool({
     database: process.env.NAME1,
     connectTimeout: 5000,
     waitForConnections: true,
+    connectionLimit: 101,
     queueLimit: 0,
     ssl: {
         rejectUnauthorized: true,
@@ -29,6 +30,7 @@ const node2 = mysql.createPool({
     database: process.env.NAME2,
     connectTimeout: 5000,
     waitForConnections: true,
+    connectionLimit: 101,
     queueLimit: 0,
     ssl: {
         rejectUnauthorized: true,
@@ -44,6 +46,7 @@ const node3 = mysql.createPool({
     database: process.env.NAME3,
     connectTimeout: 5000,
     waitForConnections: true,
+    connectionLimit: 101,
     queueLimit: 0,
     ssl: {
         rejectUnauthorized: true,
