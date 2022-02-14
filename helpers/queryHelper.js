@@ -39,16 +39,16 @@ const query_funcs = {
 
     to_update_query_log: function (id, name, year, rank, node_to, node_from) {
         return `INSERT INTO log_table(type, node_to, node_from, done, id, name, year, \`rank\`) VALUES ('UPDATE', ` 
-            + node_to + `, ` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`
+            + node_to + `, ` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`;
     },
 
     to_delete_query_log: function (id, node_to, node_from) {
-        return `INSERT INTO log_table(type, node_to, node_from, done, id, name) VALUES ('DELETE', `
-            + node_to + `, ` + node_from + `, false, ` + id + `, NULL);`
+        return `INSERT INTO log_table(type, node_to, node_from, done, id) VALUES ('DELETE', `
+            + node_to + `, ` + node_from + `, false, ` + id + `);`;
     },
 
     to_finish_log: function (id) {
-        return `UPDATE log_table SET done=1 WHERE statement_id=` + id + `;`
+        return `UPDATE log_table SET done=1 WHERE statement_id=` + id + `;`;
     },
     
     to_retrieve_logs: function (node) {

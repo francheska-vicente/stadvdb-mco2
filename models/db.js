@@ -16,13 +16,15 @@ const db_functions = {
     
     count_query: async function (query) {
         try {
+            await nodes.connect_node(2);
+            await nodes.connect_node(3);
+
             var rows2 = await transaction.get_query_count(query, 2);
             var rows3 = await transaction.get_query_count(query, 3);
             return rows2[0].concat(rows3[0]);
         }
         catch (error) {
             console.log(error)
-            
             try {
                 console.log(`One or more follower nodes are down.`);
                 await nodes.connect_node(1);
@@ -39,11 +41,18 @@ const db_functions = {
         try {
             await nodes.connect_node(2);
             await nodes.connect_node(3);
+
+            var temp = query.split ("LIMIT");
+            var temp1 = temp [1].split(",");
+
+            query = temp [0] + " LIMIT " + (parseInt(temp1 [0])/2) + " , 50"; 
+            console.log (query);
             var rows2 = await transaction.make_transaction(2, query, 'SELECT', '');
             var rows3 = await transaction.make_transaction(3, query, 'SELECT', '');
-            return rows2[0][0].concat(rows3[0][0]);
+            return rows2[0].concat(rows3[0]);
         }
         catch (error) {
+            console.log(error)
             try {
                 console.log(`One or more follower nodes are down.`);
                 await nodes.connect_node(1);

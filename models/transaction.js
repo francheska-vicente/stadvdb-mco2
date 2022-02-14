@@ -33,6 +33,7 @@ const transactions_funcs = {
                     console.log(error)
                     console.log('Rolled back the data.');
                     conn.rollback(node);
+                    conn.release();
                     return error;
                 }
             else {
@@ -71,6 +72,7 @@ const transactions_funcs = {
                     console.log(error)
                     console.log('Rolled back the data.');
                     conn.rollback(node);
+                    conn.release();
                     return error;
                 }
             else {
@@ -112,6 +114,7 @@ const transactions_funcs = {
                     console.log(error)
                     console.log('Rolled back the data.');
                     conn.rollback(node);
+                    conn.release();
                     return error;
                 }
             else {
@@ -150,6 +153,7 @@ const transactions_funcs = {
                     console.log(error)
                     console.log('Rolled back the data.');
                     conn.rollback(node);
+                    conn.release();
                     return error;
                 }
             else {
@@ -186,6 +190,7 @@ const transactions_funcs = {
                     console.log(error)
                     console.log('Rolled back the data.');
                     conn.rollback(node);
+                    conn.release();
                     return error;
                 }
             else {
