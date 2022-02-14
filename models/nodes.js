@@ -14,6 +14,7 @@ const node1 = mysql.createPool({
     database: process.env.NAME1,
     connectTimeout: 5000,
     waitForConnections: true,
+    connectionLimit: 101,
     queueLimit: 0,
     ssl: {
         rejectUnauthorized: true,
@@ -29,6 +30,7 @@ const node2 = mysql.createPool({
     database: process.env.NAME2,
     connectTimeout: 5000,
     waitForConnections: true,
+    connectionLimit: 101,
     queueLimit: 0,
     ssl: {
         rejectUnauthorized: true,
@@ -44,6 +46,7 @@ const node3 = mysql.createPool({
     database: process.env.NAME3,
     connectTimeout: 5000,
     waitForConnections: true,
+    connectionLimit: 101,
     queueLimit: 0,
     ssl: {
         rejectUnauthorized: true,
@@ -61,8 +64,40 @@ const nodes_funcs = {
         }
     },
 
-    execute_query: async function (conn, query) {
-        return await conn.query(query);
+    ping_node: async function (node) {
+        switch (node) {
+            case 1: 
+                try { 
+                    let val = await node1.query('SELECT 1 + 1 AS solution'); 
+                    return val[0][0].solution;
+                }
+                catch (error) { console.log(error); }
+                break;
+
+            case 2: 
+                try {
+                    let val = await node2.query('SELECT 1 + 1 AS solution');
+                    return val[0][0].solution;
+                }
+                catch (error) { console.log(error); }
+                break;
+
+            case 3: 
+                try {
+                    let val = await node3.query('SELECT 1 + 1 AS solution');
+                    return val[0][0].solution;
+                }
+                catch (error) { console.log(error); }
+                break;
+        }
+    },
+
+    query_node: async function (node, query) {
+        switch (node) {
+            case 1: return await node1.query(query);
+            case 2: return await node2.query(query);
+            case 3: return await node3.query(query);
+        }
     }
 };
 

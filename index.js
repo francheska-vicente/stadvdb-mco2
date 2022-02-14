@@ -8,6 +8,8 @@ const handlebars_helper = require(`./views/hbs-helper.js`);
 const routes = require('./routes/routes.js');
 const db = require('./models/db.js');
 const repl = require('./models/replicator.js');
+const { ping_node } = require('./models/nodes.js');
+const { select_query } = require('./models/db.js');
 const app = express();
 
 //parse incoming requests with urlencoded payloads
@@ -30,13 +32,7 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 app.use('/', routes);
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     console.log(`Server is running at http://${hostname}:${port}`);
-    // db.insert_query(`Pia was here hehe`, 1979, 4.0).then(data => {
-    //     console.log(data);
-    // });
-    //sync.sync_leader_node();
-    //db.insert_query('raur', 1990, 4)
-    //sync.sync_follower_node(2);
-    //repl.replicate();
+    
 });
 
 

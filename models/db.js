@@ -1,61 +1,40 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const nodes = require('./nodes.js');
-const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
+const { ping_node, query_node } = require('./nodes.js');
+const { make_transaction } = require('./transaction.js');
 
 const db_functions = {
-    ping: async function (node) {
-        try {
-            await nodes.connect_node(node);
-            console.log(`Up!`);
-        }
-        catch (error) {
-            console.log(`Down!`);
-        }
-    },
-    
-    count_query: async function (query) {
-        try {
-            await nodes.connect_node(2);
-            await nodes.connect_node(3);
-            var rows2 = await transaction.get_query_count(query, 2);
-            var rows3 = await transaction.get_query_count(query, 3);
+    execute_query: async function (query) {
+        if (ping_node(2) && ping_node(3)) {
+            var rows2 = await query_node(2, query);
+            var rows3 = await query_node(3, query);
             return rows2[0].concat(rows3[0]);
         }
-        catch (error) {
-            console.log(error)
-            try {
-                console.log(`One or more follower nodes are down.`);
-                await nodes.connect_node(1);
-                var rows = await transaction.make_transaction(1, query, 'SELECT', '');
-                return rows[0];
-            }
-            catch (error) {
-                console.log(`All nodes are inaccessible.`);
-            }
-        } 
+        else if (ping_node(1)) {
+            console.log(`One or more follower nodes are down.`);
+            var rows = await query_node(1, query);
+            return rows[0];
+        }
+        else {
+            console.log(`All nodes are inaccessible.`);
+        }
     },
 
     select_query: async function (query) {
-        try {
-            await nodes.connect_node(2);
-            await nodes.connect_node(3);
-            var rows2 = await transaction.make_transaction(2, query, 'SELECT', '');
-            var rows3 = await transaction.make_transaction(3, query, 'SELECT', '');
+        if (ping_node(2) && ping_node(3)) {
+            var rows2 = await make_transaction(2, query, 'SELECT', '');
+            var rows3 = await make_transaction(3, query, 'SELECT', '');
             return rows2[0].concat(rows3[0]);
         }
-        catch (error) {
-            console.log(error)
-            try {
-                console.log(`One or more follower nodes are down.`);
-                await nodes.connect_node(1);
-                var rows = await transaction.make_transaction(1, query, 'SELECT', '');
-                return rows[0];
-            }
-            catch (error) {
-                console.log(`All nodes are inaccessible.`);
-            }
-        } 
+        else if (ping_node(1)) {
+            console.log(`One or more follower nodes are down.`);
+            var rows = await make_transaction(1, query, 'SELECT', '');
+            return rows[0];
+        }
+        else {
+            console.log(`All nodes are inaccessible.`);
+        }
     },
 
     insert_query: async function (name, rank, year) {
@@ -65,11 +44,11 @@ const db_functions = {
 
         try {
             // if central node is up, insert row to central node and insert log based on year
-            await nodes.connect_node(1);
+            await nodes.ping_node(1);
 
-            if (year < 1980)   
+            if (year < 1980)
                 log = queryHelper.to_insert_query_log(name, year, rank, 2, 1);
-            else 
+            else
                 log = queryHelper.to_insert_query_log(name, year, rank, 3, 1);
 
             var result = transaction.make_transaction_with_log(1, query, log, 'INSERT', '');
@@ -78,7 +57,7 @@ const db_functions = {
         catch (error) {
             // if central node is down, insert row to follower node based on year and insert log to central
             console.log(error)
-            
+
             if (year < 1980) {
                 log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
                 var result = transaction.make_transaction_with_log(2, query, log, 'INSERT', '');
@@ -92,37 +71,75 @@ const db_functions = {
         }
     },
 
-    update_query: async function (id, name, rank, year) {
+    update_query: async function (id, name, rank, old_year, new_year) {
         // creates SQL statement for updating row
-        var query = queryHelper.to_update_query(id, name, rank, year);
-        var log;
-        
+        var query = queryHelper.to_update_query(id, name, rank, new_year);
+        var log, log2;
+
         try {
             // if central node is up, insert row to central node and insert log based on year
-            await nodes.connect_node(1);
+            await nodes.ping_node(1);
 
-            if (year < 1980)
-                log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
-            else
-                log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
-            
-            var result = transaction.make_transaction_with_log(1, query, log, 'UPDATE', id);
-            return (result instanceof Error) ? false : true;
+            // from 2, to 3
+            if (new_year >= 1980 && old_year < 1980) {
+                log = queryHelper.to_delete_query_log(id, 2, 1);
+                log2 = queryHelper.to_insert_query_log(name, new_year, rank, 3, 1);
+                var result = transaction.make_transaction_with_log2(1, query, log, log2, 'UPDATE', id);
+                return (result instanceof Error) ? false : true;
+            }
+            // from 3, to 2
+            else if (new_year < 1980 && old_year >= 1980) {
+                log = queryHelper.to_delete_query_log(id, 3, 1);
+                log2 = queryHelper.to_insert_query_log(name, new_year, rank, 2, 1);
+                var result = transaction.make_transaction_with_log2(1, query, log, log2, 'UPDATE', id);
+                return (result instanceof Error) ? false : true;
+            }
+            // no change in year
+            else {
+                if (new_year < 1980)
+                    log = queryHelper.to_update_query_log(id, name, new_year, rank, 2, 1);
+                else
+                    log = queryHelper.to_update_query_log(id, name, new_year, rank, 3, 1);
+
+                var result = transaction.make_transaction_with_log(1, query, log, 'UPDATE', id);
+                return (result instanceof Error) ? false : true;
+            }
+
         }
         catch (error) {
             // if central node is down, insert row to follower node based on year
             console.log(error)
 
-            if (year < 1980) {
-                log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
-                var result = transaction.make_transaction_with_log(2, query, log, 'UPDATE', id);
+            // from 2, to 3
+            if (new_year >= 1980 && old_year < 1980) {
+                query = queryHelper.to_delete_query(id);
+                log = queryHelper.to_update_query_log(id, name, new_year, rank, 1, 2);
+                log2 = queryHelper.to_insert_query_log(name, new_year, rank, 3, 2);
+                var result = transaction.make_transaction_with_log2(2, query, log, log2, 'UPDATE', id);
                 return (result instanceof Error) ? false : true;
             }
+            // from 3, to 2
+            else if (new_year >= 1980 && old_year < 1980) {
+                query = queryHelper.to_delete_query(id);
+                log = queryHelper.to_update_query_log(id, name, new_year, rank, 1, 3);
+                log2 = queryHelper.to_insert_query_log(name, new_year, rank, 2, 3);
+                var result = transaction.make_transaction_with_log2(3, query, log, log2, 'UPDATE', id);
+                return (result instanceof Error) ? false : true;
+            }
+            // no change in year
             else {
-                log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
-                var result = transaction.make_transaction_with_log(3, query, log, 'UPDATE', id);
-                return (result instanceof Error) ? false : true;
+                if (year < 1980) {
+                    log = queryHelper.to_update_query_log(id, name, new_year, rank, 1, 2);
+                    var result = transaction.make_transaction_with_log(2, query, log, 'UPDATE', id);
+                    return (result instanceof Error) ? false : true;
+                }
+                else {
+                    log = queryHelper.to_update_query_log(id, new_year, year, rank, 1, 3);
+                    var result = transaction.make_transaction_with_log(3, query, log, 'UPDATE', id);
+                    return (result instanceof Error) ? false : true;
+                }
             }
+
         }
     },
 
@@ -133,7 +150,7 @@ const db_functions = {
 
         try {
             // if central node is up, insert row to central node and insert log based on year
-            await nodes.connect_node(1);
+            await nodes.ping_node(1);
 
             if (year < 1980)
                 log = queryHelper.to_delete_query_log(id, 2, 1);
