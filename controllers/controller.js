@@ -14,10 +14,8 @@ const controller = {
                         length = parseInt(arrLength[0].count) + parseInt(arrLength[1].count);
                 }
 
-
                 let query = "SELECT * FROM movies LIMIT " + start + ", " + end + ";";
-                console.log(query)
-
+                
                 var result = [];
                 result = await db.select_query(query);
 
@@ -30,7 +28,7 @@ const controller = {
                 end = result.length;
                 resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
 
-                var lastPage = Math.ceil(length / 200);
+                var lastPage = Math.ceil(length / 100);
 
                 var data = {
                         uniqueKeys: uniqueKeys,
