@@ -197,9 +197,9 @@ const controller = {
                         new_rank
                 } = req.body;
                 
-                var name = null;
-                var year = null;
-                var rank = null;
+                var name = '';
+                var year = '';
+                var rank = '';
 
 
                 if (old_name != new_name) {

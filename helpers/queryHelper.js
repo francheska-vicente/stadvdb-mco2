@@ -38,8 +38,38 @@ const query_funcs = {
     },
 
     to_update_query_log: function (id, name, year, rank, node_to, node_from) {
-        return `INSERT INTO log_table(type, node_to, node_from, done, id, name, year, \`rank\`) VALUES ('UPDATE', ` 
-            + node_to + `, ` + node_from + `, false, ` + id + `, '` + name + `', ` + year + `, ` + rank + `);`;
+        var query = `INSERT INTO log_table(type, node_to, node_from, done, id`;
+
+        if (name != '') {
+            query = query + ', name';
+        }
+
+        if (year != '') {
+            query = query + ', year';
+        }
+
+        if (rank != '') {
+            query = query + ', \`rank\`';
+        }
+
+        query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + id;
+
+        if (name != '') {
+            query = query + ', \'' + name + '\'';
+        }
+
+        if (year != '') {
+            query = query + ', ' + year;
+        }
+
+        if (rank != '') {
+            query = query + ', ' + rank;
+        }
+
+        query = query + ");";
+        console.log(query);
+
+        return  query;
     },
 
     to_delete_query_log: function (id, node_to, node_from) {
