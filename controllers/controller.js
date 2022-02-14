@@ -2,30 +2,20 @@ const db = require('../models/db.js');
 
 const controller = {
         getIndex: async function (req, res) {
-                let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
-                let start = (pageNumber - 1) * 100;
-                let end = 100;
-
-                let query = "SELECT * FROM movies;";
-                
                 var result = [];
+                var query = `SELECT * FROM movies;`
                 result = await db.select_query(query);
-
                 var uniqueKeys = result.reduce(function (acc, obj) {
                         return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
                 }, []);
-
                 result.sort((a, b) => a.id - b.id);
-                
-
+                resultlen = result.length;
+                result = result.slice(0, 50);
                 var data = {
                         uniqueKeys: uniqueKeys,
                         result: result,
-                        pageNumberCurr: pageNumber,
-                        pageNumberPrev: pageNumber - 1,
-                        pageNumberNext: pageNumber + 1,
+                        resultlen: resultlen
                 };
-
                 res.render('home', data);
         },
 

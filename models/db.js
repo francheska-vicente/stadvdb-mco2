@@ -19,25 +19,6 @@ const db_functions = {
         else {
             console.log(`All nodes are inaccessible.`);
         }
-
-
-
-        try {
-
-            
-        }
-        catch (error) {
-            console.log(error)
-            try {
-                
-                await nodes.ping_node(1);
-                
-                return rows[0];
-            }
-            catch (error) {
-                
-            }
-        }
     },
 
     insert_query: async function (name, rank, year) {
