@@ -5,7 +5,36 @@ $(document).ready(function () {
     enableAddMovie();
     enableUpdateMovie();
     initializeMovieModalFields();
+    submitEditForm();
 });
+
+function submitEditForm() {
+    $(".update-movie").on('submit', function (event) {
+        event.preventDefault();
+        console.log("hello");
+        const id = $(this).children('.id').val();
+
+        let data = {
+            id: id,
+            old_name: $("#movie-name-copy-" + id).val(),
+            new_name: $("#update-movie-name-" + id).val(),
+            old_year: $("#movie-year-copy-" + id).val(),
+            new_year: $("#update-movie-year-" + id).val(),
+            old_rank: $("#movie-rank-copy-" + id).val(),
+            new_rank: $("#update-movie-rank-" + id).val(),
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/edit/' + id,
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (result) {
+                window.location.href = '/'
+            }
+        });
+    });
+}
 
 /**
  * Checks if the input for movie name is valid.

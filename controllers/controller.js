@@ -186,34 +186,39 @@ const controller = {
                 }
         },
 
-        updateMovie: async function (req, res) {
-                var old_name = req.body.old_name;
-                var new_name = req.body.new_name;
-                var old_year = req.body.old_year;
-                var new_year = req.body.new_year;
-                var old_rank = req.body.old_rank;
-                var new_rank = req.body.new_rank;
+        postUpdateMovie: async function (req, res) {
+                const { id } = req.params;
+                const {
+                        old_name, 
+                        new_name,
+                        old_year,
+                        new_year,
+                        old_rank,
+                        new_rank
+                } = req.body;
+                
+                var name = null;
+                var year = null;
+                var rank = null;
 
-                var id = req.body.id;
-                var rank = '';
-                var name = '';
-                var year = '';
 
                 if (old_name != new_name) {
                         name = new_name;
                 }
 
                 if (old_year != new_year) {
-                        year = new_year;
-                }
+                        year = parseInt(new_year);
+                } 
 
                 if (old_rank != new_rank) {
-                        rank = new_rank;
-                }
+                        rank = parseFloat(new_rank);
+                } 
 
+                console.log("hello: " + name + year + rank);
                 try {
-                        var result = await db.update_query(id, name, rank, year);
+                        var result = await db.update_query(parseInt(id), name, rank, old_year, new_year);
                         // this means successful
+                        res.render('home', result);
                 } catch (err) {
                         // this means fail; err holds the error message
                 }
