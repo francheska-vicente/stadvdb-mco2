@@ -6,15 +6,7 @@ const controller = {
                 let start = (pageNumber - 1) * 100;
                 let end = 100;
 
-                var arrLength = [];
-                arrLength = await db.count_query("SELECT COUNT(*) AS `count` FROM movies;");
-                var length = arrLength[0].count;
-
-                if (arrLength.length > 1) {
-                        length = parseInt(arrLength[0].count) + parseInt(arrLength[1].count);
-                }
-
-                let query = "SELECT * FROM movies LIMIT " + start + ", " + end + ";";
+                let query = "SELECT * FROM movies;";
                 
                 var result = [];
                 result = await db.select_query(query);
@@ -25,19 +17,13 @@ const controller = {
 
                 result.sort((a, b) => a.id - b.id);
                 
-                end = result.length;
-                resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
-
-                var lastPage = Math.ceil(length / 100);
 
                 var data = {
                         uniqueKeys: uniqueKeys,
                         result: result,
-                        resultlen: resultlen,
                         pageNumberCurr: pageNumber,
                         pageNumberPrev: pageNumber - 1,
                         pageNumberNext: pageNumber + 1,
-                        pageNumberLast: lastPage
                 };
 
                 res.render('home', data);

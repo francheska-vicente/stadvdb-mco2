@@ -1,66 +1,41 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const nodes = require('./nodes.js');
-const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
+const { ping_node } = require('./nodes.js');
+const { make_transaction } = require('./transaction.js');
 
 const db_functions = {
-    ping: async function (node) {
-        try {
-            await nodes.connect_node(node);
-            console.log(`Up!`);
-        }
-        catch (error) {
-            console.log(`Down!`);
-        }
-    },
-    
-    count_query: async function (query) {
-        try {
-            await nodes.connect_node(2);
-            await nodes.connect_node(3);
-
-            var rows2 = await transaction.get_query_count(query, 2);
-            var rows3 = await transaction.get_query_count(query, 3);
-            return rows2[0].concat(rows3[0]);
-        }
-        catch (error) {
-            console.log(error)
-            try {
-                console.log(`One or more follower nodes are down.`);
-                await nodes.connect_node(1);
-                var rows = await transaction.get_query_count(query, 1);
-                return rows[0];
-            }
-            catch (error) {
-                console.log(`All nodes are inaccessible.`);
-            }
-        } 
-    },
-
     select_query: async function (query) {
-        try {
-            await nodes.connect_node(2);
-            await nodes.connect_node(3);
-
-            var temp = query.split ("LIMIT");
-            var temp1 = temp [1].split(",");
-
-            query = temp [0] + " LIMIT " + (parseInt(temp1 [0])/2) + " , 50"; 
-            console.log (query);
-            var rows2 = await transaction.make_transaction(2, query, 'SELECT', '');
-            var rows3 = await transaction.make_transaction(3, query, 'SELECT', '');
+        if (ping_node(2) && ping_node(3)) {
+            var rows2 = await make_transaction(2, query, 'SELECT', '');
+            var rows3 = await make_transaction(3, query, 'SELECT', '');
             return rows2[0].concat(rows3[0]);
+        }
+        else if (ping_node(1)) {
+            console.log(`One or more follower nodes are down.`);
+            var rows = await make_transaction(1, query, 'SELECT', '');
+            return rows[0];
+        }
+        else {
+            console.log(`All nodes are inaccessible.`);
+        }
+
+
+
+        try {
+
+            
         }
         catch (error) {
             console.log(error)
             try {
-                console.log(`One or more follower nodes are down.`);
-                await nodes.connect_node(1);
-                var rows = await transaction.make_transaction(1, query, 'SELECT', '');
+                
+                await nodes.ping_node(1);
+                
                 return rows[0];
             }
             catch (error) {
-                console.log(`All nodes are inaccessible.`);
+                
             }
         }
     },
@@ -72,7 +47,7 @@ const db_functions = {
 
         try {
             // if central node is up, insert row to central node and insert log based on year
-            await nodes.connect_node(1);
+            await nodes.ping_node(1);
 
             if (year < 1980)
                 log = queryHelper.to_insert_query_log(name, year, rank, 2, 1);
@@ -106,7 +81,7 @@ const db_functions = {
 
         try {
             // if central node is up, insert row to central node and insert log based on year
-            await nodes.connect_node(1);
+            await nodes.ping_node(1);
 
             // from 2, to 3
             if (new_year >= 1980 && old_year < 1980) {
@@ -178,7 +153,7 @@ const db_functions = {
 
         try {
             // if central node is up, insert row to central node and insert log based on year
-            await nodes.connect_node(1);
+            await nodes.ping_node(1);
 
             if (year < 1980)
                 log = queryHelper.to_delete_query_log(id, 2, 1);

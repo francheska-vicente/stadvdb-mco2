@@ -64,6 +64,34 @@ const nodes_funcs = {
         }
     },
 
+    ping_node: async function (node) {
+        switch (node) {
+            case 1: 
+                try { 
+                    let val = await node1.query('SELECT 1 + 1 AS solution'); 
+                    return val[0][0].solution;
+                }
+                catch (error) { console.log(error); }
+                break;
+
+            case 2: 
+                try {
+                    let val = await node2.query('SELECT 1 + 1 AS solution');
+                    return val[0][0].solution;
+                }
+                catch (error) { console.log(error); }
+                break;
+
+            case 3: 
+                try {
+                    let val = await node3.query('SELECT 1 + 1 AS solution');
+                    return val[0][0].solution;
+                }
+                catch (error) { console.log(error); }
+                break;
+        }
+    },
+
     execute_query: async function (conn, query) {
         return await conn.query(query);
     }
