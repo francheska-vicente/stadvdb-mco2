@@ -31,7 +31,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', routes);
 app.listen(process.env.PORT, process.env.HOSTNAME, function () {
     console.log(`Server is running at http://${hostname}:${port}`);
-    select_query(`SELECT * FROM movies`).then(val => {console.log(val)});
+    
 });
 
 
