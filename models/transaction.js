@@ -5,6 +5,33 @@ const nodes = require('../models/nodes.js');
 const queryHelper = require('../helpers/queryHelper.js');
 
 const transactions_funcs = {
+    get_query_count: async function (query, node) {
+        try {
+            let conn = await nodes.connect_node(node);
+            if (conn)
+                try {
+                    var result = await nodes.execute_query(conn, query);
+                    console.log('Executed query!');
+
+                    await conn.release();
+                    return result;
+                }
+                catch (error) {
+                    console.log(error)
+                    console.log('Rolled back the data.');
+                    return error;
+                }
+            else {
+                console.log('Unable to connect!');
+            }
+        }
+        catch (error) {
+            console.log(error);
+            console.log('Unable to connect!');
+            return error;
+        }
+    },
+
     make_transaction_with_log: async function (node, query, log, type, id) {
         try {
             let conn = await nodes.connect_node(node);

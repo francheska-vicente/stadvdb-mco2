@@ -4,6 +4,28 @@ const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
 
 const db_functions = {
+    count_query: async function (query) {
+        try {
+            await nodes.connect_node(2);
+            await nodes.connect_node(3);
+            var rows2 = await transaction.get_query_count(query, 2);
+            var rows3 = await transaction.get_query_count(query, 3);
+            return rows2[0][0].concat(rows3[0][0]);
+        }
+        catch (error) {
+            try {
+                console.log(`One or more follower nodes are down.`);
+                await nodes.connect_node(1);
+                var rows = await transaction.make_transaction(1, query, 'SELECT', '');
+                return rows[0];
+            }
+            catch (error) {
+                console.log(`All nodes are inaccessible.`);
+            }
+        } 
+    },
+
+
     select_query: async function (query) {
         try {
             await nodes.connect_node(2);
