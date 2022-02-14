@@ -24,8 +24,12 @@ const controller = {
             return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
         }, []);
 
+        end = result.length;
+
         result.sort((a, b) => a.id - b.id);
         resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
+        
+        var lastPage = Math.ceil(length / 100);
 
         var data = {
             uniqueKeys: uniqueKeys,
@@ -33,7 +37,8 @@ const controller = {
             resultlen: resultlen,
             pageNumberCurr: pageNumber,
             pageNumberPrev: pageNumber - 1,
-            pageNumberNext: pageNumber + 1
+            pageNumberNext: pageNumber + 1,
+            pageNumberLast: lastPage
         };
 
         res.render('home', data);
