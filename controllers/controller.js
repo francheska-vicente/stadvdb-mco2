@@ -29,8 +29,7 @@ const controller = {
                 end = result.length;
                 resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
 
-                var lastPage = Math.ceil(length / 200);
-                var lastPage = Math.ceil(length / 100);
+                var lastPage = Math.ceil(length / 200)
 
                 var data = {
                         uniqueKeys: uniqueKeys,
