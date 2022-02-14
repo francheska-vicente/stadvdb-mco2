@@ -92,8 +92,12 @@ const nodes_funcs = {
         }
     },
 
-    execute_query: async function (conn, query) {
-        return await conn.query(query);
+    query_node: async function (node, query) {
+        switch (node) {
+            case 1: return await node1.query(query);
+            case 2: return await node2.query(query);
+            case 3: return await node3.query(query);
+        }
     }
 };
 

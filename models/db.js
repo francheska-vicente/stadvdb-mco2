@@ -1,10 +1,26 @@
 const { NULL } = require('mysql/lib/protocol/constants/types');
 const nodes = require('./nodes.js');
 const queryHelper = require('../helpers/queryHelper.js');
-const { ping_node } = require('./nodes.js');
+const { ping_node, query_node } = require('./nodes.js');
 const { make_transaction } = require('./transaction.js');
 
 const db_functions = {
+    execute_query: async function (query) {
+        if (ping_node(2) && ping_node(3)) {
+            var rows2 = await query_node(2, query);
+            var rows3 = await query_node(3, query);
+            return rows2[0].concat(rows3[0]);
+        }
+        else if (ping_node(1)) {
+            console.log(`One or more follower nodes are down.`);
+            var rows = await query_node(1, query);
+            return rows[0];
+        }
+        else {
+            console.log(`All nodes are inaccessible.`);
+        }
+    },
+
     select_query: async function (query) {
         if (ping_node(2) && ping_node(3)) {
             var rows2 = await make_transaction(2, query, 'SELECT', '');

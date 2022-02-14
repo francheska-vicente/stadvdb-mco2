@@ -13,16 +13,16 @@ const transactions_funcs = {
                     await conn.beginTransaction();
 
                     if (type === 'UPDATE' || type === 'DELETE')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_update(id));
+                        await conn.query(queryHelper.to_select_for_update(id));
 
-                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
-                    var result = await nodes.execute_query(conn, query);
+                    await conn.query(`SET @@session.time_zone = "+08:00";`);
+                    var result = await conn.query(query);
                     console.log('Executed query!');
 
-                    var result2 = await nodes.execute_query(conn, query2);
+                    var result2 = await conn.query(query2);
                     console.log('Executed query!');
 
-                    var log = await nodes.execute_query(conn, log);
+                    var log = await conn.query(log);
                     console.log('Created log!');
 
                     await conn.commit();
@@ -55,13 +55,13 @@ const transactions_funcs = {
                     await conn.beginTransaction();
 
                     if (type === 'UPDATE' || type === 'DELETE')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_update(id));
+                        await conn.query(queryHelper.to_select_for_update(id));
 
-                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
-                    var result = await nodes.execute_query(conn, query);
+                    await conn.query(`SET @@session.time_zone = "+08:00";`);
+                    var result = await conn.query(query);
                     console.log('Executed ' + query);
 
-                    var result2 = await nodes.execute_query(conn, query2);
+                    var result2 = await conn.query(query2);
                     console.log('Executed ' + query);
 
                     await conn.commit();
@@ -94,16 +94,16 @@ const transactions_funcs = {
                     await conn.beginTransaction();
 
                     if (type === 'UPDATE' || type === 'DELETE')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_update(id));
+                        await conn.query(queryHelper.to_select_for_update(id));
 
-                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
-                    var result = await nodes.execute_query(conn, query);
+                    await conn.query(`SET @@session.time_zone = "+08:00";`);
+                    var result = await conn.query(query);
                     console.log('Executed ' + query);
 
-                    var log = await nodes.execute_query(conn, log);
+                    var log = await conn.query(log);
                     console.log('Created ' + log);
 
-                    var log = await nodes.execute_query(conn, log2);
+                    var log = await conn.query(log2);
                     console.log('Created ' + log);
 
                     await conn.commit();
@@ -136,13 +136,13 @@ const transactions_funcs = {
                     await conn.beginTransaction();
 
                     if (type === 'UPDATE' || type === 'DELETE')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_update(id));
+                        await conn.query(queryHelper.to_select_for_update(id));
 
-                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
-                    var result = await nodes.execute_query(conn, query);
+                    await conn.query(`SET @@session.time_zone = "+08:00";`);
+                    var result = await conn.query(query);
                     console.log('Executed ' + query);
 
-                    var log = await nodes.execute_query(conn, log);
+                    var log = await conn.query(log);
                     console.log('Created ' + log);
 
                     await conn.commit();
@@ -175,11 +175,11 @@ const transactions_funcs = {
                     await conn.beginTransaction();
 
                     if (type === 'UPDATE' || type === 'DELETE')
-                        await nodes.execute_query(conn, queryHelper.to_select_for_update(id));
+                        await conn.query(queryHelper.to_select_for_update(id));
 
-                    await nodes.execute_query(conn, `SET @@session.time_zone = "+08:00";`);
+                    await conn.query(`SET @@session.time_zone = "+08:00";`);
 
-                    var result = await nodes.execute_query(conn, query);
+                    var result = await conn.query(query);
                     console.log('Executed ' + query);
 
                     await conn.commit();
