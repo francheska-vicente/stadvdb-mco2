@@ -262,11 +262,11 @@
                 </li>
                 {{/ifNotEquals}}
 
-                <li class="page-item {{#ifEquals pageNumberCurr 3883}}disabled{{/ifEquals}}">
+                <li class="page-item {{#ifEquals pageNumberCurr pageNumberLast}}disabled{{/ifEquals}}">
                     <a class="page-link" href="/?page={{pageNumberNext}}">Next</a>
                 </li>
 
-                <li class="page-item {{#ifEquals pageNumberCurr 3883}}disabled{{/ifEquals}}">
+                <li class="page-item {{#ifEquals pageNumberCurr pageNumberLast}}disabled{{/ifEquals}}">
                     <a class="page-link" href="/?page={{pageNumberLast}}">Last</a>
                 </li>
             </ul>
