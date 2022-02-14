@@ -1,7 +1,7 @@
 const { DateTime } = require("luxon");
 
 const query_funcs = {
-    to_insert_query: function (name, year, rank) {
+    to_insert_query: function (name, rank, year) {
         return `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
     },
 
