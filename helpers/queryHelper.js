@@ -33,8 +33,21 @@ const query_funcs = {
     },
 
     to_insert_query_log: function (name, year, rank, node_to, node_from) {
-        return `INSERT INTO log_table(type, node_to, node_from, done, name, year, \`rank\`) VALUES ('INSERT', ` 
-            + node_to + `, ` + node_from + `, false, '` + name + `', ` + year + `, ` + rank + `);`
+        var query = `INSERT INTO log_table(type, node_to, node_from, done, name, year`;
+
+        if (rank != '') {
+            query = query + ', \`rank\`';
+        }
+
+        query = query + ") VALUES ('INSERT', " + node_to + ', ' + node_from + `, false, '` + name + `', ` + year;
+
+        if (rank != '') {
+            query = query + ', ' + rank;
+        }
+
+        query = query + ');';
+
+        return query;
     },
 
     to_update_query_log: function (id, name, year, rank, node_to, node_from) {

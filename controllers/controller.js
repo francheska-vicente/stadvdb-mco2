@@ -49,7 +49,7 @@ const controller = {
                 let end = 100;
 
                 var arrLength = [];
-                arrLength = await db.count_query("SELECT COUNT(*) AS `count` FROM movies;");
+                arrLength = await db.execute_query("SELECT COUNT(*) AS `count` FROM movies;");
                 var length = arrLength[0].count;
 
                 if (arrLength.length > 1) {
