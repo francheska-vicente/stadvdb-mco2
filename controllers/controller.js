@@ -11,8 +11,9 @@ const controller = {
                 var length = arrLength[0].count;
 
                 if (arrLength.length > 1) {
-                        length = parseInt(arrLength[0].count) + parseInt(arrLength[0].count);
+                        length = parseInt(arrLength[0].count) + parseInt(arrLength[1].count);
                 }
+
 
                 let query = "SELECT * FROM movies LIMIT " + start + ", " + end + ";";
                 console.log(query)
@@ -25,7 +26,7 @@ const controller = {
                 }, []);
 
                 result.sort((a, b) => a.id - b.id);
-
+                
                 end = result.length;
                 resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
 

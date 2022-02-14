@@ -27,7 +27,7 @@ const db_functions = {
             try {
                 console.log(`One or more follower nodes are down.`);
                 await nodes.connect_node(1);
-                var rows = await transaction.make_transaction(1, query, 'SELECT', '');
+                var rows = await transaction.get_query_count(query, 1);
                 return rows[0];
             }
             catch (error) {
