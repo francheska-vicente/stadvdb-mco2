@@ -70,7 +70,8 @@ const db_functions = {
 
     update_query: async function (id, name, rank, old_year, new_year) {
         // creates SQL statement for updating row
-        var query = queryHelper.to_update_query(id, name, rank, new_year);
+        var year = (old_year === new_year) ? '' : new_year;
+        var query = queryHelper.to_update_query(id, name, rank, year);
         var log, log2;
 
         // if central node is up, insert row to central node and insert log based on year
