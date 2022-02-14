@@ -20,9 +20,10 @@ const db_functions = {
             await nodes.connect_node(3);
             var rows2 = await transaction.get_query_count(query, 2);
             var rows3 = await transaction.get_query_count(query, 3);
-            return rows2[0][0].concat(rows3[0][0]);
+            return rows2[0].concat(rows3[0]);
         }
         catch (error) {
+            console.log(error)
             try {
                 console.log(`One or more follower nodes are down.`);
                 await nodes.connect_node(1);
