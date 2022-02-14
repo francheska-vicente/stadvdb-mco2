@@ -4,6 +4,16 @@ const transaction = require('./transaction.js');
 const queryHelper = require('../helpers/queryHelper.js');
 
 const db_functions = {
+    ping: async function (node) {
+        try {
+            await nodes.connect_node(node);
+            console.log(`Up!`);
+        }
+        catch (error) {
+            console.log(`Down!`);
+        }
+    },
+    
     count_query: async function (query) {
         try {
             await nodes.connect_node(2);
@@ -25,16 +35,16 @@ const db_functions = {
         } 
     },
 
-
     select_query: async function (query) {
         try {
             await nodes.connect_node(2);
             await nodes.connect_node(3);
             var rows2 = await transaction.make_transaction(2, query, 'SELECT', '');
             var rows3 = await transaction.make_transaction(3, query, 'SELECT', '');
-            return rows2[0][0].concat(rows3[0][0]);
+            return rows2[0].concat(rows3[0]);
         }
         catch (error) {
+            console.log(error)
             try {
                 console.log(`One or more follower nodes are down.`);
                 await nodes.connect_node(1);
