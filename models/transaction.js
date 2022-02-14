@@ -20,7 +20,7 @@ const transactions_funcs = {
                     var resultlog = await conn.query(log);
                     console.log('Created ' + log);
 
-                    var resultupdate = await conn.query(update);
+                    var resultupdate = await nodes.query_node(node_from, update);
                     console.log('Executed ' + update);
 
                     await conn.commit();
