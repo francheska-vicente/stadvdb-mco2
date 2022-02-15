@@ -153,35 +153,35 @@
                                             
                                             <div class="form-group my-3">
                                                 <label for="update-movie-name">Movie Name</label>
-                                                <input type="text" class="form-control" id="update-movie-name-{{id}}"
+                                                <input type="text" class="form-control update-movie-name" id="update-movie-name-{{id}}"
                                                     name="update-movie-name" value="{{name}}">
-                                                <input type="text" class="form-control" id="movie-name-copy-{{id}}"
+                                                <input type="text" class="form-control movie-name-copy" id="movie-name-copy-{{id}}"
                                                     name="movie-name-copy" value="{{name}}" hidden>
                                             </div>
                                             <div class="form-group my-3">
                                                 <label for="update-movie-year">Year</label>
-                                                <input type="number" class="form-control" id="update-movie-year-{{id}}"
+                                                <input type="number" class="form-control update-movie-year" id="update-movie-year-{{id}}"
                                                     name="update-movie-year" min="1700" max="2099" step="1"
                                                     value="{{year}}">
-                                                <input type="number" class="form-control" id="movie-year-copy-{{id}}"
+                                                <input type="number" class="form-control movie-year-copy" id="movie-year-copy-{{id}}"
                                                     name="movie-year-copy" step="any" value="{{year}}" hidden>
                                             </div>
                                             <div class="form-group my-3">
                                                 <label for="update-movie-rank">Rank</label>
-                                                <input type="number" class="form-control" id="update-movie-rank-{{id}}"
+                                                <input type="number" class="form-control update-movie-rank" id="update-movie-rank-{{id}}"
                                                     name="update-movie-rank" step="any" value="{{rank}}">
-                                                <input type="number" class="form-control" id="movie-rank-copy-{{id}}"
+                                                <input type="number" class="form-control movie-rank-copy" id="movie-rank-copy-{{id}}"
                                                     name="movie-rank-copy" step="any" value="{{rank}}" hidden>
                                             </div>
                                             <strong>
-                                                <div class="mx-5 p-3 text-center text-danger error" id="update-movie-error-{{id}}">
+                                                <div class="mx-5 p-3 text-center text-danger update-movie-error" id="update-movie-error-{{id}}">
                                                 </div>
                                             </strong>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary me-auto"
                                                 data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-primary update-movie-button" >Save
+                                            <button type="submit" class="btn btn-primary update-movie-button" disabled>Save
                                                 Changes</button>
                                         </div>
                                     </div>
