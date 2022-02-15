@@ -14,9 +14,9 @@ const sync_funcs = {
         try {
             logs2 = await query_node(2, queryHelper.to_retrieve_logs(1));
             logs3 = await query_node(3, queryHelper.to_retrieve_logs(1));
-
-            if (logs2[0][0]) logs = logs2[0][0];
-            if (logs3[0][0]) logs = logs.concat(logs3[0][0]);
+            if (logs2[0]) logs = logs2[0];
+            if (logs3[0] && logs) logs = logs.concat(logs3[0]);
+            else if (logs3[0]) logs = logs3[0];
 
             if (logs) {
                 logs.sort((a, b) => a.date.getTime() - b.date.getTime());
@@ -42,6 +42,7 @@ const sync_funcs = {
                             var result = await transaction.make_2transaction(logs[i].node_to, query, query2, 'DELETE', id);
                             return (result instanceof Error) ? false : true;
                     }
+                    console.log('Synced to Node 1');
                 }
             }
 
@@ -55,7 +56,7 @@ const sync_funcs = {
         let logs = [];
         try {
             logs = await query_node(1, queryHelper.to_retrieve_logs(node));
-            logs = logs[0][0];
+            logs = logs[0];
 
             if (logs) {
                 for (let i = 0; i < logs.length; i++) {
@@ -68,7 +69,8 @@ const sync_funcs = {
                         case 'DELETE':
                             query = queryHelper.to_delete_query(logs[i].id); break;
                     }
-                    var result = await transaction.make_2transaction(logs[i].node_to, query, queryHelper.to_finish_log(logs[i].statement_id), '', '');
+                    var result = await transaction.insert_update_transaction(logs[i].node_to, query, queryHelper.to_finish_log(logs[i].statement_id), logs[i].node_from);
+                    console.log('Synced to Node ' + node);
                     return (result instanceof Error) ? false : true;
                 }
             }
