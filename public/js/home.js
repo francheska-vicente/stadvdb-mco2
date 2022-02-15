@@ -25,12 +25,15 @@ function submitUpdateMovieForm() {
             new_rank: $("#update-movie-rank-" + id).val(),
         };
 
+        $("#modal-loading").modal("show");
+
         $.ajax({
             type: 'PUT',
             url: '/edit/' + id,
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (result) {
+                $("#modal-loading").modal("hide");
                 if (result.status) {
                     $('.status-msg').text(result.msg);
                     $("#modal-success").modal("show");
@@ -48,16 +51,17 @@ function submitUpdateMovieForm() {
  */
 function submitAddMovieForm() {
     $(".add-movie").on('submit', function (event) {
-        console.log('weeeeeeee')
         event.preventDefault();
         let data = {
             name: $("#add-movie-name").val(),
             year: $("#add-movie-year").val(),
             rank: $("#add-movie-rank").val(),
         };
-        console.log(data)
+
+        $("#modal-loading").modal("show");
+
         $.post('/add', data, function (result) {
-            console.log(result)
+            $("#modal-loading").modal("hide");
             if (result.status) {
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");
@@ -76,7 +80,9 @@ function submitDeleteMovieForm(id, year) {
     var x = '/delete/' + id + '/' + year;
     $(".modal-delete").on('submit', function (event) {
         event.preventDefault();
+        $("#modal-loading").modal("show");
         $.post(x, function (result) {
+            $("#modal-loading").modal("hide");
             if (result.status) {
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");
@@ -94,7 +100,9 @@ function submitQuerySearch() {
         let data = {
             queryholder: $('#queryholder').val()
         }
+        $("#modal-loading").modal("show");
         $.post('/query-search/results', data, function (result) {
+            $("#modal-loading").modal("hide");
             if (result.status) {
                 $('.status-msg').text(result.msg);
                 $('.okay-btn').attr('href', '/devMenu');
