@@ -45,6 +45,42 @@ const transactions_funcs = {
         }
     },
 
+    insert_update_transaction: async function (node_to, query, update, node_from) {
+        try {
+            let conn = await nodes.connect_node(node_to);
+            if (conn)
+                try {
+                    await conn.beginTransaction();
+
+                    await conn.query(`SET @@session.time_zone = "+08:00";`);
+                    var result = await conn.query(query);
+                    console.log('Executed ' + query);
+
+                    var resultupdate = await nodes.query_node(node_from, update);
+                    console.log('Executed ' + update);
+
+                    await conn.commit();
+                    await conn.release();
+                    return result;
+                }
+                catch (error) {
+                    console.log(error)
+                    console.log('Rolled back the data.');
+                    conn.rollback(node_to);
+                    conn.release();
+                    return error;
+                }
+            else {
+                console.log('Unable to connect!');
+            }
+        }
+        catch (error) {
+            console.log(error);
+            console.log('Unable to connect!');
+            return error;
+        }
+    },
+
     make_2transaction: async function (node, query, query2, type, id) {
         try {
             let conn = await nodes.connect_node(node);
