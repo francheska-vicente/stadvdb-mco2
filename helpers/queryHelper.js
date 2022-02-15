@@ -122,6 +122,41 @@ const query_funcs = {
         return  query;
     },
 
+    to_update_query_id_log: function (new_id, old_id) {
+        var query = `INSERT INTO log_table(type, node_to, node_from, done, id`;
+
+        if (name != '' && name != null) {
+            query = query + ', name';
+        }
+
+        if (year != '' && year != null) {
+            query = query + ', year';
+        }
+
+        if (rank != '' && rank != null) {
+            query = query + ', \`rank\`';
+        }
+
+        query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + id;
+
+        if (name != '' && name != null) {
+            query = query + ', \'' + name + '\'';
+        }
+
+        if (year != '' && year != null) {
+            query = query + ', ' + year;
+        }
+
+        if (rank != '' && rank != null) {
+            query = query + ', ' + rank;
+        }
+
+        query = query + ");";
+        console.log(query);
+
+        return query;
+    },
+
     to_delete_query_log: function (id, node_to, node_from) {
         return `INSERT INTO log_table(type, node_to, node_from, done, id) VALUES ('DELETE', `
             + node_to + `, ` + node_from + `, false, ` + id + `);`;
