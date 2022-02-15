@@ -32,7 +32,13 @@ function submitUpdateMovieForm() {
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (result) {
-                window.location.href = '/'
+                if(result.status) {
+                    $('.status-msg').text(result.msg);
+                    $("#modal-success").modal("show");
+                } else {
+                    $('.status-msg').text(result.msg);
+                    $("#modal-failed").modal("show");
+                }
             }
         });
     });
@@ -56,10 +62,45 @@ function submitAddMovieForm() {
         };
 
         $.post('/add', json, function (result) {
-            window.location.href = '/'
+            if(result.status) {
+                $('.status-msg').text(result.msg);
+                $("#modal-success").modal("show");
+            } else {
+                $('.status-msg').text(result.msg);
+                $("#modal-failed").modal("show");
+            }
         });
     });
 }
+
+/**
+ * Submits the new movie entry to the database
+ */
+//  function submitDeleteMovieForm() {
+//     $(".modal-delete").on('submit', function (event) {
+//         event.preventDefault();
+
+//         let data = {
+//             name: $("#add-movie-name").val(),
+//             year: $("#add-movie-year").val(),
+//             rank: $("#add-movie-rank").val(),
+//         };
+
+//         let json = {
+//             data: JSON.stringify(data),
+//         };
+
+//         $.post('/add', json, function (result) {
+//             if(result.status) {
+//                 $('.status-msg').text(result.msg);
+//                 $("#modal-success").modal("show");
+//             } else {
+//                 $('.status-msg').text(result.msg);
+//                 $("#modal-failed").modal("show");
+//             }
+//         });
+//     });
+// }
 
 /**
  * Checks if the input for movie name is valid.
@@ -283,7 +324,7 @@ function enableUpdateMovie() {
                 ayear: $(cyear).val().trim(),
                 arank: $(crank).val().trim()
             }
-            
+
             if(input.aname == copy.aname && input.ayear == copy.ayear && input.arank == copy.arank) {
                 resetField($(iname), $(error));
                 resetField($(iyear), $(error));

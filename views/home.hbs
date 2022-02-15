@@ -21,6 +21,8 @@
 
 <body style="background-color:#EE9595;" class="col-12 h-100 d-flex flex-column">
     {{> navbar}}
+    {{> successModal}}
+    {{> failedModal}}
     <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
         {{!-- HEADER --}}
         <div class="rounded-3 col-12 mb-5 d-flex flex-row">
@@ -184,8 +186,8 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary me-auto"
                                                 data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" data-bs-dismiss="modal" class="btn btn-primary" id="update-movie-button-{{id}}"
-                                                disabled>Save
+                                            <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
+                                                id="update-movie-button-{{id}}" disabled>Save
                                                 Changes</button>
                                         </div>
                                     </div>
@@ -200,7 +202,7 @@
                             <span class="material-icons-outlined">delete_forever</span>
                         </button>
                         {{!-- CONFIRM DELETE MODAL --}}
-                        <div class="modal fade modal-delet" id="modal-{{id}}-delete" tabindex="-1">
+                        <div class="modal fade modal-delete" id="modal-{{id}}-delete" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header bg-danger border-light">
