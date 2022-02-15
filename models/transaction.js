@@ -96,10 +96,9 @@ const transactions_funcs = {
 
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
-                    console.log('Executed ' + query);
-
+                    console.log('Executed ' + query + ' at Node ' + node);
                     var resultupdate = await nodes.query_node(node_from, update);
-                    console.log('Executed ' + update);
+                    console.log('Executed ' + update + ' at Node ' + node_from);
 
                     await conn.commit();
                     await conn.release();
@@ -135,7 +134,7 @@ const transactions_funcs = {
 
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
-                    console.log('Executed ' + query);
+                    console.log('Executed ' + query  + ' at Node ' + node);
 
                     var resultlog = await conn.query(log);
                     console.log('Created ' + log);
