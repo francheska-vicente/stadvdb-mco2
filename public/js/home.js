@@ -90,14 +90,11 @@ function submitDeleteMovieForm(id, year) {
 
 function submitQuerySearch() {
     $(".query-search").on('submit', function (event) {
-        console.log('huhhuhu')
         event.preventDefault();
         let data = {
             queryholder: $('#queryholder').val()
         }
-        console.log("rawr" + data.queryholder)
-        $.get('/query-search/results', data, function (result) {
-            console.log('hahsahsahsha')
+        $.post('/query-search/results', data, function (result) {
             if (result.status) {
                 $('.status-msg').text(result.msg);
                 $('.okay-btn').attr('href', '/devMenu');
