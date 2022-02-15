@@ -5,24 +5,35 @@ const query_funcs = {
         return `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
     },
 
+    to_insert_query_with_id: function (id, name, rank, year) {
+        return `INSERT INTO movies (id, name, \`rank\`,  year) VALUES ('` + id + `', '` + name + `', ` + rank + `, ` + year + `);`
+    },
+
     to_update_query: function (id, name, rank, year) {
         var query = `UPDATE movies SET`;
 
-        if (name != '') {
+        if (name != '' && name != null) {
             query = query + ` name = '` + name + `'`;
 
-            if (rank != '') {
+            if (rank != '' && rank != null) {
                 query = query + `, \`rank\` = ` + rank;
 
-                if (year != '') {
+                if (year != '' && year != null) {
                     query = query + `, year = ` + year;
                 }
-            } else if (year != '') {
+            } else if (year != '' && year != null) {
                 query = query + `, year = ` + year;
             }
         } else {
-            query = query + ` \`rank\` = ` + rank;
-            query = query + `year = ` + year;
+            if (rank != '' && rank != null) {
+                query = query + ` \`rank\` = ` + rank;
+
+                if (year != '' && year != null) {
+                    query = query + `, year = ` + year;
+                }
+            } else if (year != '' && year != null) {
+                query = query + ` year = ` + year;
+            }
         }
 
         return query + ` WHERE id = ` + id + `;`;
@@ -33,15 +44,23 @@ const query_funcs = {
     },
 
     to_insert_query_log: function (name, year, rank, node_to, node_from) {
-        var query = `INSERT INTO log_table(type, node_to, node_from, done, name, year`;
+        var query = `INSERT INTO log_table(type, node_to, node_from, done, name`;
 
-        if (rank != '') {
+        if (year != '' && year != null) {
+            query = query + ", year"
+        }
+
+        if (rank != '' && rank != null) {
             query = query + ', \`rank\`';
         }
 
-        query = query + ") VALUES ('INSERT', " + node_to + ', ' + node_from + `, false, '` + name + `', ` + year;
+        query = query + ") VALUES ('INSERT', " + node_to + ', ' + node_from + `, false, '` + name;
 
-        if (rank != '') {
+        if (year != '' && year != null) {
+            query = query + ", " + year;
+        }
+
+        if (rank != '' && rank != null) {
             query = query + ', ' + rank;
         }
 
@@ -53,13 +72,13 @@ const query_funcs = {
     to_insert_query_log_with_id: function (id, name, year, rank, node_to, node_from) {
         var query = `INSERT INTO log_table(type, id, node_to, node_from, done, name, year`;
 
-        if (rank != '') {
+        if (rank != '' && rank != null) {
             query = query + ', \`rank\`';
         }
 
         query = query + ") VALUES ('INSERT', " + id + ', ' + node_to + ', ' + node_from + `, false, '` + name + `', ` + year;
 
-        if (rank != '') {
+        if (rank != '' && rank != null) {
             query = query + ', ' + rank;
         }
 
@@ -71,29 +90,29 @@ const query_funcs = {
     to_update_query_log: function (id, name, year, rank, node_to, node_from) {
         var query = `INSERT INTO log_table(type, node_to, node_from, done, id`;
 
-        if (name != '') {
+        if (name != '' && name != null) {
             query = query + ', name';
         }
 
-        if (year != '') {
+        if (year != '' && year != null) {
             query = query + ', year';
         }
 
-        if (rank != '') {
+        if (rank != '' && rank != null) {
             query = query + ', \`rank\`';
         }
 
         query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + id;
 
-        if (name != '') {
+        if (name != '' && name != null) {
             query = query + ', \'' + name + '\'';
         }
 
-        if (year != '') {
+        if (year != '' && year != null) {
             query = query + ', ' + year;
         }
 
-        if (rank != '') {
+        if (rank != '' && rank != null) {
             query = query + ', ' + rank;
         }
 
