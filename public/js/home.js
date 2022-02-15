@@ -49,18 +49,17 @@ function submitUpdateMovieForm() {
 function submitAddMovieForm() {
     $(".add-movie").on('submit', function (event) {
         event.preventDefault();
-
         let data = {
             name: $("#add-movie-name").val(),
             year: $("#add-movie-year").val(),
             rank: $("#add-movie-rank").val(),
         };
 
-        let json = {
-            data: JSON.stringify(data),
-        };
+        // let json = {
+        //     data: data),
+        // };
 
-        $.post('/add', json, function (result) {
+$.post('/add', data, function (result) {
             if(result.status) {
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");

@@ -259,10 +259,9 @@ const controller = {
     },
 
     postInsertMovie: async function (req, res) {
-        var name = req.body['add-movie-name'];
-        var year = req.body['add-movie-year'];
-        var rank = req.body['add-movie-rank'];
-
+        var name = req.body.name;
+        var year = req.body.year;
+        var rank = req.body.rank;
         if (rank == '') {
             rank = 'null';
         } else {
