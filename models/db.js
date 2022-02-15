@@ -5,13 +5,20 @@ const { ping_node, query_node } = require('./nodes.js');
 const { make_transaction, make_transaction_with_log, make_transaction_with_log2 } = require('./transaction.js');
 
 const db_functions = {
+    execute_query_debug: async function (node, query) {
+        if (await ping_node(node)) {
+            var rows = await query_node(node, query);
+            return rows[0];
+        }
+    },
+
     execute_query: async function (query) {
-        if (ping_node(2) && ping_node(3)) {
+        if (await ping_node(2) && await ping_node(3)) {
             var rows2 = await query_node(2, query);
             var rows3 = await query_node(3, query);
             return rows2[0].concat(rows3[0]);
         }
-        else if (ping_node(1)) {
+        else if (await ping_node(1)) {
             console.log(`One or more follower nodes are down.`);
             var rows = await query_node(1, query);
             return rows[0];
@@ -22,12 +29,12 @@ const db_functions = {
     },
 
     select_query: async function (query) {
-        if (ping_node(2) && ping_node(3)) {
+        if (await ping_node(2) && await ping_node(3)) {
             var rows2 = await make_transaction(2, query, 'SELECT', '');
             var rows3 = await make_transaction(3, query, 'SELECT', '');
             return rows2[0].concat(rows3[0]);
         }
-        else if (ping_node(1)) {
+        else if (await ping_node(1)) {
             console.log(`One or more follower nodes are down.`);
             var rows = await make_transaction(1, query, 'SELECT', '');
             return rows[0];
@@ -43,7 +50,7 @@ const db_functions = {
         var log;
 
         // if central node is up, insert row to central node and insert log based on year
-        if (ping_node(1)) {
+        if (await ping_node(1)) {
             if (year < 1980)
                 log = queryHelper.to_insert_query_log(name, year, rank, 2, 1);
             else
@@ -75,7 +82,7 @@ const db_functions = {
         var log, log2;
 
         // if central node is up, insert row to central node and insert log based on year
-        if (ping_node(1)) {
+        if (await ping_node(1)) {
             // from 2, to 3
             if (new_year >= 1980 && old_year < 1980) {
                 log = queryHelper.to_delete_query_log(id, 2, 1);
@@ -142,7 +149,7 @@ const db_functions = {
         var log;
 
         // if central node is up, delete row from central node and insert log based on year
-        if (ping_node(1)) {
+        if (await ping_node(1)) {
             if (year < 1980)
                 log = queryHelper.to_delete_query_log(id, 2, 1);
             else
