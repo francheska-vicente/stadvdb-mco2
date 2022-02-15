@@ -167,7 +167,6 @@ const controller = {
                         pageNumberLast: lastPage
                     };
 
-
                     res.render('home', data);
                 } catch (err) {
                     console.log("Error in the given MySQL query.");
@@ -211,6 +210,10 @@ const controller = {
 
         if (old_rank != new_rank) {
             rank = parseFloat(new_rank);
+        }
+
+        if ((old_year >= 1980 && new_year < 1980) || (old_year < 1980 && new_year >= 1980)) {
+                name = new_name;
         }
 
         console.log("hello: " + name + year + rank);
