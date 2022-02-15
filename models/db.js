@@ -93,9 +93,9 @@ const db_functions = {
             // no change in year
             else {
                 if (new_year < 1980)
-                    log = queryHelper.to_update_query_log(id, name, new_year, rank, 2, 1);
+                    log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
                 else
-                    log = queryHelper.to_update_query_log(id, name, new_year, rank, 3, 1);
+                    log = queryHelper.to_update_query_log(id, name, year, rank, 3, 1);
 
                 var result = make_transaction_with_log(1, query, log, 'UPDATE', id);
                 return (result instanceof Error) ? false : true;
@@ -123,12 +123,12 @@ const db_functions = {
             // no change in year
             else {
                 if (year < 1980) {
-                    log = queryHelper.to_update_query_log(id, name, new_year, rank, 1, 2);
+                    log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
                     var result = make_transaction_with_log(2, query, log, 'UPDATE', id);
                     return (result instanceof Error) ? false : true;
                 }
                 else {
-                    log = queryHelper.to_update_query_log(id, new_year, year, rank, 1, 3);
+                    log = queryHelper.to_update_query_log(id, name, year, rank, 1, 3);
                     var result = make_transaction_with_log(3, query, log, 'UPDATE', id);
                     return (result instanceof Error) ? false : true;
                 }
