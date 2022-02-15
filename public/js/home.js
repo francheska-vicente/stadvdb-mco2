@@ -48,14 +48,16 @@ function submitUpdateMovieForm() {
  */
 function submitAddMovieForm() {
     $(".add-movie").on('submit', function (event) {
+        console.log('weeeeeeee')
         event.preventDefault();
         let data = {
             name: $("#add-movie-name").val(),
             year: $("#add-movie-year").val(),
             rank: $("#add-movie-rank").val(),
         };
-
+        console.log(data)
         $.post('/add', data, function (result) {
+            console.log(result)
             if (result.status) {
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");

@@ -244,14 +244,14 @@ const controller = {
             var result = await db.delete_query(id, year);
             var data = {
                 result: result,
-                status: 'success',
+                status: true,
                 msg: 'Success! Movie has been deleted!'
             };
             res.send(data);
         } catch (err) {
             // this means fail; err holds the error message
             var data = {
-                status: 'failed',
+                status: false,
                 msg: 'Oh no! Deleting a movie failed.'
             }
             res.send(data);
@@ -269,24 +269,22 @@ const controller = {
         }
 
         try {
-            const result = await db.insert_query(name, rank, parseInt(year)).then(value => {
-                if (value) {
-                    var data = {
-                        result: result,
-                        status: 'success',
-                        msg: 'Success! Movie has been added!'
-                    };
-                    res.send(data);
+            const result = await db.insert_query(name, rank, parseInt(year))
+            if (result) {
+                var data = {
+                    result: result,
+                    status: true,
+                    msg: 'Success! Movie has been added!'
+                };
+                res.send(data);
+            }
+            else {
+                var data = {
+                    status: false,
+                    msg: 'Oh no! Insert transaction failed.'
                 }
-                else {
-                    // error oh no
-                    var data = {
-                        status: 'failed',
-                        msg: 'Oh no! Insert transaction failed.'
-                    }
-                    res.send(data);
-                }
-            });
+                res.send(data);
+            }
         } catch (err) { }
     }
 }
