@@ -15,7 +15,6 @@ function submitEditForm() {
         const id = $(this).children('.id').val();
 
         let data = {
-            id: id,
             old_name: $("#movie-name-copy-" + id).val(),
             new_name: $("#update-movie-name-" + id).val(),
             old_year: $("#movie-year-copy-" + id).val(),

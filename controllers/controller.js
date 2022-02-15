@@ -201,6 +201,9 @@ const controller = {
                 var year = '';
                 var rank = '';
 
+                console.log (old_name + " " + new_name);
+                console.log (old_rank + " " + new_rank);
+                console.log (old_year + " " + new_year);
 
                 if (old_name != new_name) {
                         name = new_name;
@@ -216,7 +219,7 @@ const controller = {
 
                 console.log("hello: " + name + year + rank);
                 try {
-                        var result = await db.update_query(parseInt(id), name, rank, old_year, new_year);
+                        var result = await db.update_query(parseInt(id), name, rank, parseInt(old_year), parseInt(new_year));
                         // this means successful
                         res.render('home', result);
                 } catch (err) {
