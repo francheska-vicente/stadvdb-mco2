@@ -51,13 +51,13 @@ const query_funcs = {
     },
 
     to_insert_query_log_with_id: function (id, name, year, rank, node_to, node_from) {
-        var query = `INSERT INTO log_table(type, node_to, node_from, done, name, year`;
+        var query = `INSERT INTO log_table(type, id, node_to, node_from, done, name, year`;
 
         if (rank != '') {
             query = query + ', \`rank\`';
         }
 
-        query = query + ") VALUES ('INSERT', " + node_to + ', ' + node_from + `, false, '` + name + `', ` + year;
+        query = query + ") VALUES ('INSERT', " + id + ', ' + node_to + ', ' + node_from + `, false, '` + name + `', ` + year;
 
         if (rank != '') {
             query = query + ', ' + rank;
