@@ -131,18 +131,18 @@ function validateMovieRank(input) {
         return [true, '']
 }
 
-/**
- * Checks if the input for SELECT query is valid. 
+/** 
+ * Dev Menu: Checks if the input for SELECT query is valid. 
  * @param       input - SELECT query input
  * @returns     result: [validity(boolean), error message(string)] 
  */
 function validateQuery(input) {
-    var substr = input.substring(0, 6);
+    var substr = input.substring(0, 7);
     substr = substr.toUpperCase();
-    if (!input)
+    if (!input.trim())
         return [true, '']
     else {
-        if (substr == 'SELECT')
+        if (substr == 'SELECT ' || substr == 'UPDATE ' || substr == 'DELETE ' || substr == 'INSERT ')
             return [true, '']
         else
             return [false, 'Invalid SELECT query.']
@@ -219,17 +219,17 @@ function resetField(inputField, errorField) {
 
 
 /**
- * Enables the search button for the query input whenever the input is valid.
+ * Dev Menu: Enables the search button for the query input whenever the input is valid.
  */
 function enableSearch() {
     $('#query').on('change', function () {
-        var query = $('#query').val().trim();
+        var query = $('#query').val();
         var result = validateQuery(query);
 
         if (result[0]) {
             resetField($('#query'), $('#query-error'))
             $('#search').attr('disabled', !result[0]);
-            if (!query)
+            if (!query.trim())
                 $('#search').attr('disabled', result[0]);
         }
         else {
