@@ -23,6 +23,7 @@
     {{> navbar}}
     {{> successModal}}
     {{> failedModal}}
+    {{> loadingModal}}
     <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
         <div id="title" class="col-6">
             <p class="h1"><strong>Developer Menu</strong></p>
@@ -31,13 +32,13 @@
         {{!-- SEARCH BAR --}}
         <form class="query-search my-3">
             <div class="btn-group col-3 d-flex position-relative mb-2" role="group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="1" autocomplete="off" checked>
                 <label class="btn btn-outline-dark d-flex align-items-center" for="btnradio1">Node 1</label>
 
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="2" autocomplete="off">
                 <label class="btn btn-outline-dark d-flex align-items-center" for="btnradio2">Node 2</label>
 
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" value="3" autocomplete="off">
                 <label class="btn btn-outline-dark d-flex align-items-center" for="btnradio3">Node 3</label>
             </div>
             <div class="col-6 px-0 form-text">
