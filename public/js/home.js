@@ -55,11 +55,11 @@ function submitAddMovieForm() {
             year: $("#add-movie-year").val(),
             rank: $("#add-movie-rank").val(),
         };
-
+        
         let json = {
             data: JSON.stringify(data),
         };
-
+        
         $.post('/add', json, function (result) {
             if(result.status) {
                 $('.status-msg').text(result.msg);
@@ -75,21 +75,10 @@ function submitAddMovieForm() {
 /**
  * Submits the new movie entry to the database
  */
-//  function submitDeleteMovieForm() {
+// function submitDeleteMovieForm() {
 //     $(".modal-delete").on('submit', function (event) {
 //         event.preventDefault();
-
-//         let data = {
-//             name: $("#add-movie-name").val(),
-//             year: $("#add-movie-year").val(),
-//             rank: $("#add-movie-rank").val(),
-//         };
-
-//         let json = {
-//             data: JSON.stringify(data),
-//         };
-
-//         $.post('/add', json, function (result) {
+//         $.post(function (result) {
 //             if(result.status) {
 //                 $('.status-msg').text(result.msg);
 //                 $("#modal-success").modal("show");
