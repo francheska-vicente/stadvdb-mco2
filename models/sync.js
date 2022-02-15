@@ -69,9 +69,7 @@ const sync_funcs = {
             if (logs2[0]) logs = logs2[0];
             if (logs3[0] && logs) logs = logs.concat(logs3[0]);
             else if (logs3[0]) logs = logs3[0];
-
-            console.log(logs)
-
+            
             if (logs) {
                 for (let i = 0; i < logs.length; i++) {
                     if (await ping_node(logs[i].node_to)) {
