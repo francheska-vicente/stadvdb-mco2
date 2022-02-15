@@ -32,14 +32,14 @@ const sync_funcs = {
 
                         case 'UPDATE':
                             query = queryHelper.to_update_query(logs[i].id, logs[i].name, logs[i].rank, logs[i].year);
-                            var query2 = queryHelper.to_finish_log(logs[i].statement_id);
-                            var result = await transaction.make_2transaction(logs[i].node_to, query, query2, 'UPDATE', id);
+                            var update = queryHelper.to_finish_log(logs[i].statement_id);
+                            var result = await transaction.make_2transaction(logs[i].node_to, query, update, 'UPDATE', logs[i].id, logs[i].node_from);
                             return (result instanceof Error) ? false : true;
 
                         case 'DELETE':
                             query = queryHelper.to_delete_query(logs[i].id);
-                            var query2 = queryHelper.to_finish_log(logs[i].statement_id);
-                            var result = await transaction.make_2transaction(logs[i].node_to, query, query2, 'DELETE', id);
+                            var update = queryHelper.to_finish_log(logs[i].statement_id);
+                            var result = await transaction.make_2transaction(logs[i].node_to, query, update, 'DELETE', logs[i].id, logs[i].node_from);
                             return (result instanceof Error) ? false : true;
                     }
                     console.log('Synced to Node 1');
