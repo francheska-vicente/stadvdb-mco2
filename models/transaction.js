@@ -45,15 +45,12 @@ const transactions_funcs = {
         }
     },
 
-    insert_update_transaction: async function (node_to, query, update, node_from, type, id) {
+    insert_update_transaction: async function (node_to, query, update, node_from) {
         try {
             let conn = await nodes.connect_node(node_to);
             if (conn)
                 try {
                     await conn.beginTransaction();
-
-                    if (type === 'UPDATE' || type === 'DELETE')
-                        await conn.query(queryHelper.to_select_for_update(id));
 
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
