@@ -54,7 +54,7 @@ const query_funcs = {
             query = query + ', \`rank\`';
         }
 
-        query = query + ") VALUES ('INSERT', " + node_to + ', ' + node_from + `, false, '` + name;
+        query = query + ") VALUES ('INSERT', " + node_to + ', ' + node_from + `, false, '` + name + `'`;
 
         if (year != '' && year != null) {
             query = query + ", " + year;
