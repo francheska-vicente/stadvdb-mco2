@@ -10,9 +10,10 @@ const replicator_funcs = {
         console.log('Scheduling replication!')
         cron.schedule('*/1 * * * * *', () => {
             console.log('Starting replication!')
-            console.log(is_replicating_1);
-            console.log(is_replicating_2);
-            console.log(is_replicating_3);
+            if (is_replicating_1) console.log('Node 1 currently replicating!');
+            if (is_replicating_2) console.log('Node 2 currently replicating!');
+            if (is_replicating_3) console.log('Node 3 currently replicating!');
+
             if (!is_replicating_1)
                 try {
                     is_replicating_1 = true;
@@ -20,7 +21,8 @@ const replicator_funcs = {
                     if (result) is_replicating_1 = false;
                 }
                 catch (error) {
-                    console.log(error);
+                    //console.log(error);
+                    console.log('Failed to connect to node 1!');
                 }
 
             if (!is_replicating_2)
@@ -30,7 +32,8 @@ const replicator_funcs = {
                     if (result) is_replicating_2 = false;
                 }
                 catch (error) {
-                    console.log(error);
+                    //console.log(error);
+                    console.log('Failed to connect to node 2!');
                 }
                 
             if (!is_replicating_3)
@@ -40,7 +43,8 @@ const replicator_funcs = {
                     if (result) is_replicating_3 = false;
                 }
                 catch (error) {
-                    console.log(error);
+                    //console.log(error);
+                    console.log('Failed to connect to node 3!');
                 }
         });
     }

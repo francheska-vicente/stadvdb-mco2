@@ -71,7 +71,7 @@ const nodes_funcs = {
                     let val = await node1.query('SELECT 1 + 1 AS solution'); 
                     return val[0][0].solution;
                 }
-                catch (error) { console.log(error); }
+                catch (error) { console.log('Failed to connect to node 1!'); }
                 break;
 
             case 2: 
@@ -79,7 +79,7 @@ const nodes_funcs = {
                     let val = await node2.query('SELECT 1 + 1 AS solution');
                     return val[0][0].solution;
                 }
-                catch (error) { console.log(error); }
+                catch (error) { console.log('Failed to connect to node 2!'); }
                 break;
 
             case 3: 
@@ -87,7 +87,7 @@ const nodes_funcs = {
                     let val = await node3.query('SELECT 1 + 1 AS solution');
                     return val[0][0].solution;
                 }
-                catch (error) { console.log(error); }
+                catch (error) { console.log('Failed to connect to node 3!'); }
                 break;
         }
     },
