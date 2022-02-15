@@ -8,7 +8,7 @@ let is_replicating_3 = false;
 const replicator_funcs = {
     replicate: async function () {
         console.log('Scheduling replication!')
-        cron.schedule('*/5 * * * * *', () => {
+        cron.schedule('*/1 * * * * *', () => {
             console.log('Starting replication!')
             console.log(is_replicating_1);
             console.log(is_replicating_2);
