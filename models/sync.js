@@ -46,9 +46,11 @@ const sync_funcs = {
                 }
             }
 
+            return true;
         }
         catch (error) {
             console.log(error)
+            return false; 
         }
     },
 
@@ -74,6 +76,7 @@ const sync_funcs = {
                     return (result instanceof Error) ? false : true;
                 }
             }
+            return true;
         }
         catch (error) {
             console.log(error)
