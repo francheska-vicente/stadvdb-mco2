@@ -73,7 +73,7 @@ const sync_funcs = {
                         case 'DELETE':
                             query = queryHelper.to_delete_query(logs[i].id); break;
                     }
-                    var result = await transaction.insert_update_transaction(logs[i].node_to, query, queryHelper.to_finish_log(logs[i].statement_id), logs[i].node_from);
+                    var result = await transaction.insert_update_transaction(logs[i].node_to, query, queryHelper.to_finish_log(logs[i].statement_id), logs[i].node_from, logs[i].type, logs[i].id);
                     console.log('Synced to Node ' + node);
                     return (result instanceof Error) ? false : true;
                 }
