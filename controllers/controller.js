@@ -46,7 +46,7 @@ const controller = {
         let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
         let start = (pageNumber - 1) * 100;
         let end = 100;
-
+        console.log('devmenu devmenu')
         var arrLength = [];
         arrLength = await db.execute_query("SELECT COUNT(*) AS `count` FROM movies;");
         var length = arrLength[0].count;
@@ -85,102 +85,69 @@ const controller = {
         res.render('devMenu', data);
     },
 
-    getQueryResults: async function (req, res) {
-        let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
-        let start = (pageNumber - 1) * 100;
-        let end = 100;
+    postQueryResults: async function (req, res) {
+        var query = req.body.queryholder.trim();
+        if (query.substring(0, 6).toUpperCase() == 'SELECT') {
+            let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
+            let start = (pageNumber - 1) * 200;
+            let end = 200;
+            var arrLength = [];
 
-        var result = [];
-        var query = req.query.query_holder.trim();
+            var result = [];
+            try {
+                result = await db.select_query(query);
+                console.log("length: " + result.length);
 
-        // for determining the page number
-        var queryCount = req.query.query_holder.trim();
+                var uniqueKeys = result.reduce(function (acc, obj) {
+                    return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
+                }, []);
 
-        if (query.split(" ")[0].toUpperCase() == 'SELECT') {
-            var distinctChecker = query.search(/distinct/i);
+                result = result.slice(start, start + end);
+                end = result.length;
+                resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
 
-            if (distinctChecker == -1) {
-                var queryChecker = query.split('FROM')[0].split("\n").join(" ");
+                var lastPage = Math.ceil(length / 200)
 
-                // console.log ("hello" + queryChecker [0] + " " + queryChecker[1] + "hello");
-                if (!queryChecker.includes("*\n") && !queryChecker.includes("*")) {
-                    queryChecker = queryChecker.split(" ").join(',').split(',');
-                    var checker1 = queryChecker.includes("id");
-                    var checker2 = queryChecker.includes("ID");
-                    var checker3 = queryChecker.includes("Id");
-                    var checker4 = checker = queryChecker.includes("iD");
+                var data = {
+                    uniqueKeys: uniqueKeys,
+                    result: result,
+                    resultlen: resultlen,
+                    pageNumberCurr: pageNumber,
+                    pageNumberPrev: pageNumber - 1,
+                    pageNumberNext: pageNumber + 1,
+                    pageNumberLast: lastPage,
+                    status: true,
+                    msg: 'Successfully executed the query!'
 
-                    if (!(checker1 || checker2 || checker3 || checker4)) {
-                        query = query.substring(0, 6) + " id, " + query.substring(6, query.length);
-                    }
+                };
+                res.send(data);
+            } catch (err) {
+                var data = {
+                    status: false,
+                    msg: 'Oh no! Failed to excute the query!'
 
-                    var position = query.search(/rank/i);
-                    if (position != -1) {
-                        if (query.charAt(position - 1) != '`') {
-                            query = query.substring(0, position) + '`rank`' + query.substring(position + 4, query.length);
-                        }
-                    }
-                }
-
-                if (query.charAt(query.length - 1) == ';') {
-                    query = query.substring(0, query.length - 1) + " LIMIT " + start + ", " + end + ";"
-                } else {
-                    query = query + " LIMIT " + start + ", " + end + ";"
-                }
-
-                var temp = queryCount.split("WHERE");
-
-                if (temp.length > 1) {
-                    queryCount = "SELECT COUNT(*) AS `count` FROM movies WHERE " + temp[1];
-                } else {
-                    queryCount = "SELECT COUNT(*) AS `count` FROM movies;";
-                }
-
-                var arrLength = [];
-                arrLength = await db.count_query(queryCount);
-                var length = arrLength[0].count;
-
-                if (arrLength.length > 1) {
-                    length = parseInt(arrLength[0].count) + parseInt(arrLength[0].count);
-                }
-
-
-                try {
-                    result = await db.select_query(query);
-
-                    var uniqueKeys = result.reduce(function (acc, obj) {
-                        return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
-                    }, []);
-
-                    end = result.length;
-                    resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
-
-                    var lastPage = Math.ceil(length / 100);
-
-                    var data = {
-                        uniqueKeys: uniqueKeys,
-                        result: result,
-                        resultlen: resultlen,
-                        pageNumberCurr: pageNumber,
-                        pageNumberPrev: pageNumber - 1,
-                        pageNumberNext: pageNumber + 1,
-                        pageNumberLast: lastPage
-                    };
-
-                    res.render('home', data);
-                } catch (err) {
-                    console.log("Error in the given MySQL query.");
-                    res.render('home', err);
-                }
-            } else {
-                console.log('Query not allowed.');
-                var error = "Only SELECT queries can be executed."
-                res.render('home', error);
+                };
+                res.send(data);
             }
         } else {
-            console.log('Query not allowed.');
-            var error = "Only SELECT queries can be executed."
-            res.render('home', error);
+            try {
+                // kapag hindi select query, wala namang irereturn na table satin, so 
+                // probably return a successful message chuchu lang
+                result = await db.execute_query(query);
+                var data = {
+                    result: result,
+                    status: true,
+                    msg: 'Successfully executed the query!'
+
+                };
+                res.send(data);
+            } catch (err) {
+                var data = {
+                    status: false,
+                    msg: 'Oh no! Failed to excute the query!'
+                };
+                res.send(data);
+            }
         }
     },
 
@@ -213,7 +180,7 @@ const controller = {
         }
 
         if ((old_year >= 1980 && new_year < 1980) || (old_year < 1980 && new_year >= 1980)) {
-                name = new_name;
+            name = new_name;
         }
 
         console.log("hello: " + name + year + rank);
@@ -244,14 +211,14 @@ const controller = {
             var result = await db.delete_query(id, year);
             var data = {
                 result: result,
-                status: 'success',
+                status: true,
                 msg: 'Success! Movie has been deleted!'
             };
             res.send(data);
         } catch (err) {
             // this means fail; err holds the error message
             var data = {
-                status: 'failed',
+                status: false,
                 msg: 'Oh no! Deleting a movie failed.'
             }
             res.send(data);
@@ -269,24 +236,22 @@ const controller = {
         }
 
         try {
-            const result = await db.insert_query(name, rank, parseInt(year)).then(value => {
-                if (value) {
-                    var data = {
-                        result: result,
-                        status: 'success',
-                        msg: 'Success! Movie has been added!'
-                    };
-                    res.send(data);
+            const result = await db.insert_query(name, rank, parseInt(year))
+            if (result) {
+                var data = {
+                    result: result,
+                    status: true,
+                    msg: 'Success! Movie has been added!'
+                };
+                res.send(data);
+            }
+            else {
+                var data = {
+                    status: false,
+                    msg: 'Oh no! Insert transaction failed.'
                 }
-                else {
-                    // error oh no
-                    var data = {
-                        status: 'failed',
-                        msg: 'Oh no! Insert transaction failed.'
-                    }
-                    res.send(data);
-                }
-            });
+                res.send(data);
+            }
         } catch (err) { }
     }
 }

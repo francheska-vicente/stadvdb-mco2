@@ -48,14 +48,16 @@ function submitUpdateMovieForm() {
  */
 function submitAddMovieForm() {
     $(".add-movie").on('submit', function (event) {
+        console.log('weeeeeeee')
         event.preventDefault();
         let data = {
             name: $("#add-movie-name").val(),
             year: $("#add-movie-year").val(),
             rank: $("#add-movie-rank").val(),
         };
-
+        console.log(data)
         $.post('/add', data, function (result) {
+            console.log(result)
             if (result.status) {
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");
@@ -84,6 +86,26 @@ function submitDeleteMovieForm(id, year) {
             }
         });
     });
+}
+
+function submitQuerySearch() {
+    $(".query-search").on('submit', function (event) {
+        event.preventDefault();
+        let data = {
+            queryholder: $('#queryholder').val()
+        }
+        $.post('/query-search/results', data, function (result) {
+            if (result.status) {
+                $('.status-msg').text(result.msg);
+                $('.okay-btn').attr('href', '/devMenu');
+                $("#modal-success").modal("show");
+            } else {
+                $('.status-msg').text(result.msg);
+                $('.okay-btn').attr('href', '/devMenu');
+                $("#modal-failed").modal("show");
+            }
+        });
+    });    
 }
 
 /**
@@ -126,18 +148,18 @@ function validateMovieRank(input) {
         return [true, '']
 }
 
-/**
- * Checks if the input for SELECT query is valid. 
+/** 
+ * Dev Menu: Checks if the input for SELECT query is valid. 
  * @param       input - SELECT query input
  * @returns     result: [validity(boolean), error message(string)] 
  */
 function validateQuery(input) {
-    var substr = input.substring(0, 6);
+    var substr = input.substring(0, 7);
     substr = substr.toUpperCase();
-    if (!input)
+    if (!input.trim())
         return [true, '']
     else {
-        if (substr == 'SELECT')
+        if (substr == 'SELECT ' || substr == 'UPDATE ' || substr == 'DELETE ' || substr == 'INSERT ')
             return [true, '']
         else
             return [false, 'Invalid SELECT query.']
@@ -214,21 +236,21 @@ function resetField(inputField, errorField) {
 
 
 /**
- * Enables the search button for the query input whenever the input is valid.
+ * Dev Menu: Enables the search button for the query input whenever the input is valid.
  */
 function enableSearch() {
-    $('#query').on('change', function () {
-        var query = $('#query').val().trim();
+    $('#queryholder').on('change', function () {
+        var query = $('#queryholder').val();
         var result = validateQuery(query);
-
+        console.log(query)
         if (result[0]) {
-            resetField($('#query'), $('#query-error'))
+            resetField($('#queryholder'), $('#query-error'))
             $('#search').attr('disabled', !result[0]);
-            if (!query)
+            if (!query.trim())
                 $('#search').attr('disabled', result[0]);
         }
         else {
-            displayError($('#query'), $('#query-error'), result[1])
+            displayError($('#queryholder'), $('#query-error'), result[1])
             $('#search').attr('disabled', !result[0]);
         }
     });

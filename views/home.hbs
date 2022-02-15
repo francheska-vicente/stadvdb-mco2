@@ -61,8 +61,8 @@
                     class="btn col-4 btn-warning insertBtn position-absolute bottom-0 end-0 fw-bold border border-dark border-2"
                     data-bs-toggle="modal" id="insert-movie-btn" data-bs-target="#modal-insert">Add a movie</button>
                 {{!-- ADD A MOVIE(INSERT) MODAL --}}
-                <form class="add-movie">
-                    <div class="modal fade modal-insert" id="modal-insert" tabindex="-1">
+                <div class="modal fade modal-insert" id="modal-insert" tabindex="-1">
+                    <form class="add-movie">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header bg-warning border-dark">
@@ -104,8 +104,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -220,7 +220,8 @@
                                         <button type="button" class="btn btn-secondary me-auto" data-bs-toggle="modal"
                                             data-bs-target="#modal-{{id}}" data-bs-dismiss="modal">Back</button>
                                         <form>
-                                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" onclick="submitDeleteMovieForm({{id}},{{year}})">Delete</button>
+                                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
+                                                onclick="submitDeleteMovieForm({{id}},{{year}})">Delete</button>
                                         </form>
                                     </div>
                                 </div>

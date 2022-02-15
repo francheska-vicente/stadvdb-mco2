@@ -21,6 +21,8 @@
 
 <body style="background-color:#EE9595;" class="col-12 h-100 d-flex flex-column">
     {{> navbar}}
+    {{> successModal}}
+    {{> failedModal}}
     <div class="rounded-3 m-5 p-5 flex-fill bg-light d-flex flex-column justify-content-center">
         {{!-- HEADER --}}
         <div class="rounded-3 col-12 mb-5 d-flex flex-row">
@@ -46,11 +48,11 @@
             </div>
         </div>
         {{!-- SEARCH BAR --}}
-        <form method="get" action="/query-search/results">
+        <form class="query-search">
             <div class="form-floating border-primary mb-5 justify-content-center" id="query-area">
-                <textarea class="form-control" placeholder="Enter the query here..." id="query" style="height: 90px;"
-                    name="query_holder"></textarea>
-                <label for="query" class="">Query</label>
+                <textarea class="form-control" placeholder="Enter the query here..." id="queryholder" style="height: 90px;"
+                    name="queryholder"></textarea>
+                <label for="queryholder" class="">Query</label>
                 <div class="row col-12 m-0 d-flex flex-row">
                     <div id="event-notes-help" class="col-6 px-0 form-text">
                         <strong>Enter your query here.</strong> Only <strong>SELECT</strong>,
@@ -59,7 +61,7 @@
                     </div>
                     <div class="col-2 pe-2 pt-3 text-end text-danger fw-bolder" id="query-error"></div>
                     <div class="col-4 px-0 pt-2">
-                        <button class="btn col-12 border-light border-2" id="search" type="submit"
+                        <button class="btn col-12 border-light border-2" id="search" type="submit" onclick="submitQuerySearch()"
                             disabled>Search</button>
                     </div>
                 </div>
