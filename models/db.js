@@ -86,7 +86,7 @@ const db_functions = {
             // from 3, to 2
             else if (new_year < 1980 && old_year >= 1980) {
                 log = queryHelper.to_delete_query_log(id, 3, 1);
-                log2 = queryHelper.to_insert_query_log_with_id(name, new_year, rank, 2, 1);
+                log2 = queryHelper.to_insert_query_log_with_id(id, name, new_year, rank, 2, 1);
                 var result = make_transaction_with_log2(1, query, log, log2, 'UPDATE', id);
                 return (result instanceof Error) ? false : true;
             }

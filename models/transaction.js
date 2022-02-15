@@ -138,7 +138,7 @@ const transactions_funcs = {
                     console.log('Created ' + log);
 
                     var resultlog = await conn.query(log2);
-                    console.log('Created ' + log);
+                    console.log('Created ' + log2);
 
                     await conn.commit();
                     await conn.release();
