@@ -308,12 +308,12 @@ function initializeMovieModalFields() {
     });
 
     $('.modal-update').on('hidden.bs.modal', function () {
-        $('#update-movie-name').val($('#movie-name-copy').val());
-        $('#update-movie-year').val($('#movie-year-copy').val());
-        $('#update-movie-rank').val($('#movie-rank-copy').val());
-        resetField($('#udpate-movie-year'), $('#update-movie-error'));
-        resetField($('#update-movie-rank'), $('#update-movie-error'));
-        resetField($('#update-movie-name'), $('#update-movie-error'));
+        $('.update-movie-name').val($('.movie-name-copy').val());
+        $('.update-movie-year').val($('.movie-year-copy').val());
+        $('.update-movie-rank').val($('.movie-rank-copy').val());
+        resetField($('.udpate-movie-year'), $('.update-movie-error'));
+        resetField($('.update-movie-rank'), $('.update-movie-error'));
+        resetField($('.update-movie-name'), $('.update-movie-error'));
         $('.update-movie-button').attr('disabled', true);
     });
 } 7
