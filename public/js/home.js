@@ -97,23 +97,36 @@ function submitDeleteMovieForm(id, year) {
 function submitQuerySearch() {
     $(".query-search").on('submit', function (event) {
         event.preventDefault();
+        //$("#modal-loading").modal("show");
+
         let data = {
-            queryholder: $('#queryholder').val()
+            queryholder: $('#queryholder').val(),
+            node: $('input[name=btnradio]:checked').val()
         }
-        $("#modal-loading").modal("show");
-        $.post('/query-search/results', data, function (result) {
-            $("#modal-loading").modal("hide");
-            if (result.status) {
-                $('.status-msg').text(result.msg);
-                $('.okay-btn').attr('href', '/devMenu');
-                $("#modal-success").modal("show");
-            } else {
-                $('.status-msg').text(result.msg);
-                $('.okay-btn').attr('href', '/devMenu');
-                $("#modal-failed").modal("show");
-            }
-        });
-    });    
+
+        // if select, redirect to dev menu with select query
+        if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
+            $.get('/devMenu', data);
+        }
+
+        // else, perform cud operation and return results
+        else {
+            $.post('/query-search/results', data, function (result) {
+                console.log(result)
+                $("#modal-loading").modal("hide");
+                if (result.status) {
+                    $('.status-msg').text(result.msg);
+                    $("#modal-success").modal("show");
+                } else {
+                    $('.status-msg').text(result.msg);
+                    $("#modal-failed").modal("show");
+                }
+            });
+        }
+
+
+
+    });
 }
 
 /**
