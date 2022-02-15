@@ -5,15 +5,17 @@ $(document).ready(function () {
     enableAddMovie();
     enableUpdateMovie();
     initializeMovieModalFields();
-    submitEditForm();
+    submitUpdateMovieForm();
+    submitAddMovieForm();
 });
 
-function submitEditForm() {
+/**
+ * Submits the old and updated movie details to the database
+ */
+function submitUpdateMovieForm() {
     $(".update-movie").on('submit', function (event) {
         event.preventDefault();
-        console.log("hello");
         const id = $(this).children('.id').val();
-
         let data = {
             id: id,
             old_name: $("#movie-name-copy-" + id).val(),
@@ -32,6 +34,29 @@ function submitEditForm() {
             success: function (result) {
                 window.location.href = '/'
             }
+        });
+    });
+}
+
+/**
+ * Submits the new movie entry to the database
+ */
+function submitAddMovieForm() {
+    $(".add-movie").on('submit', function (event) {
+        event.preventDefault();
+
+        let data = {
+            name: $("#add-movie-name").val(),
+            year: $("#add-movie-year").val(),
+            rank: $("#add-movie-rank").val(),
+        };
+
+        let json = {
+            data: JSON.stringify(data),
+        };
+
+        $.post('/add', json, function (result) {
+            window.location.href = '/'
         });
     });
 }
@@ -236,63 +261,75 @@ function enableAddMovie() {
  * The Update Movie button remains disabled if there are no changes.
  */
 function enableUpdateMovie() {
-    $('.update-movie-name, .update-movie-year, .update-movie-rank').on('change', function () {
-        var input = {
-            aname: $('.update-movie-name').val().trim(),
-            ayear: $('.update-movie-year').val().trim(),
-            arank: $('.update-movie-rank').val().trim()
-        }
-        var copy = {
-            aname: $('.movie-name-copy').val().trim(),
-            ayear: $('.movie-year-copy').val().trim(),
-            arank: $('.movie-rank-copy').val().trim()
-        }
-        
-        if(input.aname == copy.aname && input.ayear == copy.ayear && input.arank == copy.arank) {
-            resetField($('.update-movie-year'), $('.update-movie-error'));
-            resetField($('.update-movie-rank'), $('.update-movie-error'));
-            resetField($('.update-movie-name'), $('.update-movie-error'));
-            $('.update-movie-button').attr('disabled', true);
-        }
-        else {
-            var result = validateMovieEntry(input.aname, input.ayear, input.arank);
-            $('.update-movie-button').attr('disabled', !result[0]);
-        
-            if (!result[0]) {
-                if (result[1] == 'Movie name cannot be empty.' || !input.aname) {
-                    displayError(
-                        $('.update-movie-name'),
-                        $('.update-movie-error'),
-                        result[1]
-                    );
-                    $('.update-movie-year').removeClass('is-invalid');
-                    $('.update-movie-rank').removeClass('is-invalid');
-                } else if (result[1] == 'Invalid year.') {
-                    displayError(
-                        $('.update-movie-year'),
-                        $('.update-movie-error'),
-                        result[1]
-                    );
-                    $('.update-movie-name').removeClass('is-invalid');
-                    $('.update-movie-rank').removeClass('is-invalid');
-                } else {
-                    displayError(
-                        $('.update-movie-rank'),
-                        $('.update-movie-error'),
-                        result[1]
-                    );
-                    $('.update-movie-name').removeClass('is-invalid');
-                    $('.update-movie-year').removeClass('is-invalid');
-                }
-            } else {
-                resetField($('.update-movie-year'), $('.update-movie-error'));
-                resetField($('.update-movie-rank'), $('.update-movie-error'));
-                resetField($('.update-movie-name'), $('.update-movie-error'));
-                if (!input.aname)
-                    $('.update-movie-button').attr('disabled', result[0]);
+    $('.updateBtn').click(function() {
+        const movieid = $(this).attr('data-id');
+        var iname = '#update-movie-name-' + movieid;
+        var iyear = '#update-movie-year-' + movieid;
+        var irank = '#update-movie-rank-' + movieid;
+        var cname = '#movie-name-copy-' + movieid;
+        var cyear = '#movie-year-copy-' + movieid;
+        var crank = '#movie-rank-copy-' + movieid;
+        var error = '#update-movie-error-' + movieid;
+        var updatebtn = '#update-movie-button-' + movieid;
+        var x = iname + ',' + iyear + ',' + irank;
+        $(x).on('change', function () {
+            var input = {
+                aname: $(iname).val().trim(),
+                ayear: $(iyear).val().trim(),
+                arank: $(irank).val().trim()
             }
-        }
-    });
+            var copy = {
+                aname: $(cname).val().trim(),
+                ayear: $(cyear).val().trim(),
+                arank: $(crank).val().trim()
+            }
+            
+            if(input.aname == copy.aname && input.ayear == copy.ayear && input.arank == copy.arank) {
+                resetField($(iname), $(error));
+                resetField($(iyear), $(error));
+                resetField($(irank), $(error));
+                $(updatebtn).attr('disabled', true);
+            }
+            else {
+                var result = validateMovieEntry(input.aname, input.ayear, input.arank);
+                $(updatebtn).attr('disabled', !result[0]);
+            
+                if (!result[0]) {
+                    if (result[1] == 'Movie name cannot be empty.' || !input.aname) {
+                        displayError(
+                            $(iname),
+                            $(error),
+                            result[1]
+                        );
+                        $(iyear).removeClass('is-invalid');
+                        $(irank).removeClass('is-invalid');
+                    } else if (result[1] == 'Invalid year.') {
+                        displayError(
+                            $(iyear),
+                            $(error),
+                            result[1]
+                        );
+                        $(iname).removeClass('is-invalid');
+                        $(irank).removeClass('is-invalid');
+                    } else {
+                        displayError(
+                            $(irank),
+                            $(error),
+                            result[1]
+                        );
+                        $(iname).removeClass('is-invalid');
+                        $(iyear).removeClass('is-invalid');
+                    }
+                } else {
+                    resetField($(iyear), $(error));
+                    resetField($(irank), $(error));
+                    resetField($(iname), $(error));
+                    if (!input.aname)
+                        $(updatebtn).attr('disabled', result[0]);
+                }
+            }
+        });
+    })
 }
 
 /**
@@ -306,14 +343,24 @@ function initializeMovieModalFields() {
         resetField($('#add-movie-name'), $('#add-movie-error'));
         $('.add-movie-button').attr('disabled', true);
     });
-
     $('.modal-update').on('hidden.bs.modal', function () {
-        $('.update-movie-name').val($('.movie-name-copy').val());
-        $('.update-movie-year').val($('.movie-year-copy').val());
-        $('.update-movie-rank').val($('.movie-rank-copy').val());
-        resetField($('.udpate-movie-year'), $('.update-movie-error'));
-        resetField($('.update-movie-rank'), $('.update-movie-error'));
-        resetField($('.update-movie-name'), $('.update-movie-error'));
-        $('.update-movie-button').attr('disabled', true);
-    });
-} 7
+        $('.update-movie').each(function() {
+            const movieid = $(this).children('.id').val();
+            var iname = '#update-movie-name-' + movieid;
+            var iyear = '#update-movie-year-' + movieid;
+            var irank = '#update-movie-rank-' + movieid;
+            var cname = '#movie-name-copy-' + movieid;
+            var cyear = '#movie-year-copy-' + movieid;
+            var crank = '#movie-rank-copy-' + movieid;
+            var error = '#update-movie-error-' + movieid;
+            var updatebtn = '#update-movie-button-' + movieid;
+                $(iname).val($(cname).val());
+                $(iyear).val($(cyear).val());
+                $(irank).val($(crank).val());
+                resetField($(iyear), $(error));
+                resetField($(irank), $(error));
+                resetField($(iname), $(error));
+                $(updatebtn).attr('disabled', true);
+        });
+    })
+}
