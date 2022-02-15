@@ -85,11 +85,8 @@ const controller = {
         res.render('devMenu', data);
     },
 
-    getQueryResults: async function (req, res) {
-        var query1 = JSON.stringify(req.body);
-        console.log('skupbapbap ' +query1);
-        var query = query1.queryholder.trim();
-        console.log('hehehe ' + query)
+    postQueryResults: async function (req, res) {
+        var query = req.body.queryholder.trim();
         if (query.substring(0, 6).toUpperCase() == 'SELECT') {
             let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
             let start = (pageNumber - 1) * 200;
