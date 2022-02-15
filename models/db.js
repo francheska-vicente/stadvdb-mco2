@@ -85,6 +85,7 @@ const db_functions = {
         if (await ping_node(1)) {
             // from 2, to 3
             if (new_year >= 1980 && old_year < 1980) {
+                console.log('aaaaaaa')
                 log = queryHelper.to_delete_query_log(id, 2, 1);
                 log2 = queryHelper.to_insert_query_log_with_id(id, name, new_year, rank, 3, 1);
                 var result = make_transaction_with_log2(1, query, log, log2, 'UPDATE', id);
@@ -92,6 +93,7 @@ const db_functions = {
             }
             // from 3, to 2
             else if (new_year < 1980 && old_year >= 1980) {
+                console.log('bbbbbb')
                 log = queryHelper.to_delete_query_log(id, 3, 1);
                 log2 = queryHelper.to_insert_query_log_with_id(id, name, new_year, rank, 2, 1);
                 var result = make_transaction_with_log2(1, query, log, log2, 'UPDATE', id);
@@ -99,6 +101,7 @@ const db_functions = {
             }
             // no change in year
             else {
+                console.log('cccccc')
                 if (new_year < 1980)
                     log = queryHelper.to_update_query_log(id, name, year, rank, 2, 1);
                 else
@@ -113,6 +116,7 @@ const db_functions = {
         else {
             // from 2, to 3
             if (new_year >= 1980 && old_year < 1980) {
+                console.log('dddddd')
                 query = queryHelper.to_delete_query(id);
                 log = queryHelper.to_update_query_log(id, name, new_year, rank, 1, 2);
                 log2 = queryHelper.to_insert_query_log_with_id(id, name, new_year, rank, 3, 2);
@@ -120,7 +124,8 @@ const db_functions = {
                 return (result instanceof Error) ? false : true;
             }
             // from 3, to 2
-            else if (new_year >= 1980 && old_year < 1980) {
+            else if (new_year < 1980 && old_year >= 1980) {
+                console.log('eeeeee')
                 query = queryHelper.to_delete_query(id);
                 log = queryHelper.to_update_query_log(id, name, new_year, rank, 1, 3);
                 log2 = queryHelper.to_insert_query_log_with_id(id, name, new_year, rank, 2, 3);
@@ -129,6 +134,7 @@ const db_functions = {
             }
             // no change in year
             else {
+                console.log('ffffff')
                 if (year < 1980) {
                     log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
                     var result = make_transaction_with_log(2, query, log, 'UPDATE', id);
