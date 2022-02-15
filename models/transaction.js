@@ -81,9 +81,9 @@ const transactions_funcs = {
         }
     },
 
-    make_2transaction: async function (node, query, query2, type, id) {
+    make_2transaction: async function (node_to, query, update, type, id, node_from) {
         try {
-            let conn = await nodes.connect_node(node);
+            let conn = await nodes.connect_node(node_to);
             if (conn)
                 try {
                     await conn.beginTransaction();
@@ -95,8 +95,8 @@ const transactions_funcs = {
                     var result = await conn.query(query);
                     console.log('Executed ' + query);
 
-                    var result2 = await conn.query(query2);
-                    console.log('Executed ' + query);
+                    var resultupdate = await nodes.query_node(node_from, update);
+                    console.log('Executed ' + update);
 
                     await conn.commit();
                     await conn.release();
