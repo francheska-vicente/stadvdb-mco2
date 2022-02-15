@@ -43,34 +43,32 @@ const controller = {
     },
 
     getDevMenu: async function (req, res) {
+        let query = (req.query.queryholder) ? req.query.queryholder.trim() : "SELECT * FROM movies;";
         let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
-        let start = (pageNumber - 1) * 100;
-        let end = 100;
-        console.log('devmenu devmenu')
+        let start = (pageNumber - 1) * 200;
+        let end = 200;
         var arrLength = [];
+
         arrLength = await db.execute_query("SELECT COUNT(*) AS `count` FROM movies;");
         var length = arrLength[0].count;
 
         if (arrLength.length > 1) {
-            length = parseInt(arrLength[0].count) + parseInt(arrLength[0].count);
+            length = parseInt(arrLength[0].count) + parseInt(arrLength[1].count);
         }
-
-        let query = "SELECT * FROM movies LIMIT " + start + ", " + end + ";";
-        console.log(query)
 
         var result = [];
         result = await db.select_query(query);
+        console.log("length: " + result.length);
 
         var uniqueKeys = result.reduce(function (acc, obj) {
             return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
         }, []);
-
         result.sort((a, b) => a.id - b.id);
-
+        result = result.slice(start, start + end);
         end = result.length;
         resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
 
-        var lastPage = Math.ceil(length / 100);
+        var lastPage = Math.ceil(length / 200)
 
         var data = {
             uniqueKeys: uniqueKeys,
@@ -82,73 +80,18 @@ const controller = {
             pageNumberLast: lastPage
         };
 
-        res.render('devMenu', data);
+        res.render('devMenu', {result : result});
     },
 
     postQueryResults: async function (req, res) {
-        var query = req.body.queryholder.trim();
-        if (query.substring(0, 6).toUpperCase() == 'SELECT') {
-            let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
-            let start = (pageNumber - 1) * 200;
-            let end = 200;
-            var arrLength = [];
-
-            var result = [];
-            try {
-                result = await db.select_query(query);
-                console.log("length: " + result.length);
-
-                var uniqueKeys = result.reduce(function (acc, obj) {
-                    return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
-                }, []);
-
-                result = result.slice(start, start + end);
-                end = result.length;
-                resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
-
-                var lastPage = Math.ceil(length / 200)
-
-                var data = {
-                    uniqueKeys: uniqueKeys,
-                    result: result,
-                    resultlen: resultlen,
-                    pageNumberCurr: pageNumber,
-                    pageNumberPrev: pageNumber - 1,
-                    pageNumberNext: pageNumber + 1,
-                    pageNumberLast: lastPage,
-                    status: true,
-                    msg: 'Successfully executed the query!'
-
-                };
-                res.send(data);
-            } catch (err) {
-                var data = {
-                    status: false,
-                    msg: 'Oh no! Failed to excute the query!'
-
-                };
-                res.send(data);
-            }
-        } else {
-            try {
-                // kapag hindi select query, wala namang irereturn na table satin, so 
-                // probably return a successful message chuchu lang
-                result = await db.execute_query(query);
-                var data = {
-                    result: result,
-                    status: true,
-                    msg: 'Successfully executed the query!'
-
-                };
-                res.send(data);
-            } catch (err) {
-                var data = {
-                    status: false,
-                    msg: 'Oh no! Failed to excute the query!'
-                };
-                res.send(data);
-            }
-        }
+        let query = req.body.queryholder.trim();
+        let node = parseInt(req.body.node);
+        let result = await db.execute_query_debug(node, query);
+        let data = {
+            status: result,
+            msg: 'Query successful.'
+        };
+        res.send(data)
     },
 
     postUpdateMovie: async function (req, res) {
