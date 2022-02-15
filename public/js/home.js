@@ -75,20 +75,21 @@ function submitAddMovieForm() {
 /**
  * Submits the new movie entry to the database
  */
-// function submitDeleteMovieForm() {
-//     $(".modal-delete").on('submit', function (event) {
-//         event.preventDefault();
-//         $.post(function (result) {
-//             if(result.status) {
-//                 $('.status-msg').text(result.msg);
-//                 $("#modal-success").modal("show");
-//             } else {
-//                 $('.status-msg').text(result.msg);
-//                 $("#modal-failed").modal("show");
-//             }
-//         });
-//     });
-// }
+function submitDeleteMovieForm(id, year) {
+    var x = '/delete/' + id + '/' + year;
+    $(".modal-delete").on('submit', function (event) {
+        event.preventDefault();
+        $.post(x ,function (result) {
+            if(result.status) {
+                $('.status-msg').text(result.msg);
+                $("#modal-success").modal("show");
+            } else {
+                $('.status-msg').text(result.msg);
+                $("#modal-failed").modal("show");
+            }
+        });
+    });
+}
 
 /**
  * Checks if the input for movie name is valid.

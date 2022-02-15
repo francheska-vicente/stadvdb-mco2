@@ -219,9 +219,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary me-auto" data-bs-toggle="modal"
                                             data-bs-target="#modal-{{id}}" data-bs-dismiss="modal">Back</button>
-                                        <form action="/delete/{{id}}/{{year}}" method="post">
-                                            <button type="submit" class="btn btn-danger"
-                                                data-bs-dismiss="modal">Delete</button>
+                                        <form>
+                                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" onclick="submitDeleteMovieForm({{id}},{{year}})">Delete</button>
                                         </form>
                                     </div>
                                 </div>
