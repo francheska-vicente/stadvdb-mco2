@@ -217,6 +217,10 @@ const controller = {
                         rank = parseFloat(new_rank);
                 } 
 
+                if ((old_year >= 1980 && new_year < 1980) || (old_year < 1980 && new_year >= 1980)) {
+                        name = new_name;
+                }
+
                 console.log("hello: " + name + year + rank);
                 try {
                         var result = await db.update_query(parseInt(id), name, rank, parseInt(old_year), parseInt(new_year));
