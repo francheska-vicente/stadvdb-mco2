@@ -88,6 +88,29 @@ function submitDeleteMovieForm(id, year) {
     });
 }
 
+function submitQuerySearch() {
+    $(".query-search").on('submit', function (event) {
+        console.log('huhhuhu')
+        event.preventDefault();
+        let data = {
+            queryholder: $('#queryholder').val()
+        }
+        console.log("rawr" + data.queryholder)
+        $.get('/query-search/results', data, function (result) {
+            console.log('hahsahsahsha')
+            if (result.status) {
+                $('.status-msg').text(result.msg);
+                $('.okay-btn').attr('href', '/devMenu');
+                $("#modal-success").modal("show");
+            } else {
+                $('.status-msg').text(result.msg);
+                $('.okay-btn').attr('href', '/devMenu');
+                $("#modal-failed").modal("show");
+            }
+        });
+    });    
+}
+
 /**
  * Checks if the input for movie name is valid.
  * 
@@ -219,18 +242,18 @@ function resetField(inputField, errorField) {
  * Dev Menu: Enables the search button for the query input whenever the input is valid.
  */
 function enableSearch() {
-    $('#query').on('change', function () {
-        var query = $('#query').val();
+    $('#queryholder').on('change', function () {
+        var query = $('#queryholder').val();
         var result = validateQuery(query);
-
+        console.log(query)
         if (result[0]) {
-            resetField($('#query'), $('#query-error'))
+            resetField($('#queryholder'), $('#query-error'))
             $('#search').attr('disabled', !result[0]);
             if (!query.trim())
                 $('#search').attr('disabled', result[0]);
         }
         else {
-            displayError($('#query'), $('#query-error'), result[1])
+            displayError($('#queryholder'), $('#query-error'), result[1])
             $('#search').attr('disabled', !result[0]);
         }
     });
