@@ -5,6 +5,10 @@ const query_funcs = {
         return `INSERT INTO movies (name, \`rank\`,  year) VALUES ('` + name + `', ` + rank + `, ` + year + `);`
     },
 
+    to_insert_query_with_id: function (id, name, rank, year) {
+        return `INSERT INTO movies (id, name, \`rank\`,  year) VALUES ('` + id + `', '` + name + `', ` + rank + `, ` + year + `);`
+    },
+
     to_update_query: function (id, name, rank, year) {
         var query = `UPDATE movies SET`;
 
