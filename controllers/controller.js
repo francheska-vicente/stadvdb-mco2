@@ -94,18 +94,6 @@ const controller = {
         }
     },
 
-    postQueryResults: async function (req, res) {
-        let query = req.body.queryholder.trim();
-        let node = parseInt(req.body.node);
-        let result = await db.execute_query_debug(node, query);
-        console.log(result)
-        let data = {
-            status: result,
-            msg: result ? 'Query failed.' : 'Query successful.'
-        };
-        res.send(data)
-    },
-
     postUpdateMovie: async function (req, res) {
         const { id } = req.params;
         const {

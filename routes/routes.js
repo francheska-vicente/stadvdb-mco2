@@ -4,7 +4,6 @@ const app = express.Router();
 
 app.get('/', controller.getIndex);
 app.get('/devMenu', controller.getDevMenu);
-app.post('/query-search/results', controller.postQueryResults);
 app.post('/devMenu/select', controller.postQuerySelect);
 app.post('/delete/:id/:year', controller.postDeleteMovie);
 app.post('/add', controller.postInsertMovie);

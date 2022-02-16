@@ -154,29 +154,6 @@ function submitQuerySearch() {
                 }
             });
         }
-
-        // else, perform cud operation and return results
-        else {
-            $.post('/query-search/results', data, function (result) {
-                console.log(result)
-                if (result.status) {
-                    $('#movies-num-rows-p').text('')
-                    $('#temp').empty();
-                    $('.status-msg').text(result.msg);
-                    $("#modal-success").modal("show");
-                    $(".okay-btn").attr("href", "/devMenu");
-                } else {
-                    $('#movies-num-rows-p').text('')
-                    $('#temp').empty();
-                    $('.status-msg').text(result.msg);
-                    $("#modal-failed").modal("show");
-                    $(".okay-btn").attr("href", "/devMenu");
-                }
-            });
-        }
-
-
-
     });
 }
 
