@@ -76,11 +76,18 @@ const sync_funcs = {
                         let query;
                         switch (logs[i].type) {
                             case 'INSERT':
-                                if (logs[i].new_id) query = queryHelper.to_insert_query_with_id(logs[i].new_id, logs[i].name, logs[i].rank, logs[i].year);
-                                else query = queryHelper.to_insert_query(logs[i].name, logs[i].rank, logs[i].year);
+                                if (logs[i].new_id) 
+                                    query = queryHelper.to_insert_query_with_id(logs[i].new_id, logs[i].name, logs[i].rank, logs[i].year);
+                                else 
+                                    query = queryHelper.to_insert_query(logs[i].name, logs[i].rank, logs[i].year);
                                 break;
                             case 'UPDATE':
-                                query = queryHelper.to_update_query(logs[i].id, logs[i].name, logs[i].rank, logs[i].year); break;
+                                if (logs[i].new_id) 
+                                    query = queryHelper.to_update_query_id_log(logs[i].new_id, logs[i].name, logs[i].rank, logs[i].year);
+                                else 
+                                    query = queryHelper.to_update_query(logs[i].id, logs[i].name, logs[i].rank, logs[i].year); break;
+                                break;
+                                
                             case 'DELETE':
                                 query = queryHelper.to_delete_query(logs[i].id); break;
                         }
