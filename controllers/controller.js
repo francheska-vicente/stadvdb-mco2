@@ -89,7 +89,8 @@ const controller = {
         var result = [];
         result = await db.execute_query_debug(node, query);
         
-        let start = (pageNumber - 1) * 200;
+        if (result) {
+            let start = (pageNumber - 1) * 200;
         let end = (result.length < 200) ? result.length : 200;
 
         var uniqueKeys = result.reduce(function (acc, obj) {
@@ -119,11 +120,13 @@ const controller = {
                     table : table, 
                     pagination : pagination
                 }
-                console.log(html.resultlen)
-                console.log(pagination)
                 if (!err) res.send(html);
             });
         });
+        }
+        else {
+            res.send(false);
+        }
     },
 
     postQueryResults: async function (req, res) {

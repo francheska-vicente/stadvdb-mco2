@@ -100,16 +100,21 @@ function getQuerySearch(page) {
         node: $('#node').text(),
         pageNumber: page
     }
-    $("#modal-loading").modal("show");
 
     // if select, redirect to dev menu with select query
     if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
         $.post('/devMenu/select', data, function (result) {
-            $('#movies-num-rows-p').text('Showing ' + result.resultlen + ' row(s).')
-            $('#temp').empty();
-            $('#temp').append(result.table);
-            $('#temp').append(result.pagination);
-            $("#modal-loading").modal("hide");
+            if (result) {
+                $('#movies-num-rows-p').text('Showing ' + result.resultlen + ' row(s).')
+                $('#temp').empty();
+                $('#temp').append(result.table);
+                $('#temp').append(result.pagination);
+            }
+            else {
+                $('.status-msg').text('Query failed.');
+                $("#modal-failed").modal("show");
+                $(".okay-btn").attr("href", "#");
+            }
         });
     }
 }
@@ -117,7 +122,7 @@ function getQuerySearch(page) {
 function submitQuerySearch() {
     $(".query-search").on('submit', function (event) {
         event.preventDefault();
-        
+
         let data = {
             queryholder: $('#queryholder').val(),
             node: $('input[name=btnradio]:checked').val(),
@@ -126,13 +131,18 @@ function submitQuerySearch() {
 
         // if select, redirect to dev menu with select query
         if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
-            $("#modal-loading").modal("show");
             $.post('/devMenu/select', data, function (result) {
-                $('#movies-num-rows-p').text('Showing '+ result.resultlen +' row(s).')
-                $('#temp').empty();
-                $('#temp').append(result.table);
-                $('#temp').append(result.pagination);
-                $("#modal-loading").modal("hide");
+                if (result) {
+                    $('#movies-num-rows-p').text('Showing ' + result.resultlen + ' row(s).')
+                    $('#temp').empty();
+                    $('#temp').append(result.table);
+                    $('#temp').append(result.pagination);
+                }
+                else {
+                    $('.status-msg').text('Query failed.');
+                    $("#modal-failed").modal("show");
+                    $(".okay-btn").attr("href", "/devMenu");
+                }
             });
         }
 
