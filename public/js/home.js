@@ -61,13 +61,17 @@ function submitAddMovieForm() {
         $("#modal-loading").modal("show");
 
         $.post('/add', data, function (result) {
-            $("#modal-loading").modal("hide");
             if (result.status) {
+                $("#modal-loading").modal().hide();
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");
+                $("#modal-loading").modal("hide");
+
             } else {
+                $("#modal-loading").modal().hide();
                 $('.status-msg').text(result.msg);
                 $("#modal-failed").modal("show");
+                $("#modal-loading").modal("hide");
             }
         });
     });
