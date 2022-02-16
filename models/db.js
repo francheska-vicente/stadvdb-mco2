@@ -134,7 +134,7 @@ const db_functions = {
             }
             // no change in year
             else {
-                if (year < 1980) {
+                if (new_year < 1980) {
                     log = queryHelper.to_update_query_log(id, name, year, rank, 1, 2);
                     var result = make_transaction_with_log(2, query, log, 'UPDATE', id);
                     return (result instanceof Error) ? false : true;
