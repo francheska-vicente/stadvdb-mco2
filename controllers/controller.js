@@ -133,9 +133,10 @@ const controller = {
         let query = req.body.queryholder.trim();
         let node = parseInt(req.body.node);
         let result = await db.execute_query_debug(node, query);
+        console.log(result)
         let data = {
-            status: (result instanceof Error) ? false : true,
-            msg: (result instanceof Error) ? 'Query failed.' : 'Query successful.'
+            status: result,
+            msg: result ? 'Query failed.' : 'Query successful.'
         };
         res.send(data)
     },
