@@ -53,13 +53,13 @@
             <div id="title" class="col-4">
                 <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
             </div>
-            <div id="movies-num-rows" class="col-4 position-relative">
+            <div id="movies-num-rows" class="col-6 position-relative">
                 <p class="h5 col-12 pb-0 fst-italic text-start position-absolute bottom-0 start-0">Showing {{resultlen}}
                     row(s).</p>
             </div>
-            <div id="insert-btn" class="col-4 d-flex position-relative mb-2">
+            <div id="insert-btn" class="col-2 d-flex position-relative mb-2">
                 <button
-                    class="btn col-4 btn-warning insertBtn position-absolute bottom-0 end-0 fw-bold border border-dark border-2"
+                    class="btn col-12 btn-warning insertBtn position-absolute bottom-0 end-0 fw-bold border border-dark border-2"
                     data-bs-toggle="modal" id="insert-movie-btn" data-bs-target="#modal-insert">Add a movie</button>
                 {{!-- ADD A MOVIE(INSERT) MODAL --}}
                 <div class="modal fade modal-insert" id="modal-insert" tabindex="-1">
@@ -236,7 +236,7 @@
 
         {{!-- PAGINATION --}}
         <nav>
-            <ul class="pagination">
+            <ul class="pagination justify-content-center">
                 <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
                     <a class="page-link" href="/?page=1">First</a>
                 </li>
