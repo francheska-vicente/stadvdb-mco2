@@ -136,34 +136,10 @@ const query_funcs = {
         return  query;
     },
 
-    to_update_query_id_log: function (new_id, old_id) {
-        var query = `INSERT INTO log_table(type, node_to, node_from, done, id`;
+    to_update_query_id_log: function (new_id, old_id, node_to, node_from) {
+        var query = `INSERT INTO log_table(type, node_to, node_from, done, id, new_id`;
 
-        if (name != '' && name != null) {
-            query = query + ', name';
-        }
-
-        if (year != '' && year != null) {
-            query = query + ', year';
-        }
-
-        if (rank != '' && rank != null) {
-            query = query + ', \`rank\`';
-        }
-
-        query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + id;
-
-        if (name != '' && name != null) {
-            query = query + ', \'' + name + '\'';
-        }
-
-        if (year != '' && year != null) {
-            query = query + ', ' + year;
-        }
-
-        if (rank != '' && rank != null) {
-            query = query + ', ' + rank;
-        }
+        query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + old_id, ", " + new_id;
 
         query = query + ");";
         console.log(query);
