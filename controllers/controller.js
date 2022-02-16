@@ -43,32 +43,25 @@ const controller = {
     },
 
     getDevMenu: async function (req, res) {
-        let query = (req.query.queryholder) ? req.query.queryholder.trim() : "SELECT * FROM movies;";
-        let pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
+        let query = "SELECT * FROM movies;";
+        let node = 1;
+        let pageNumber = 1;
+
         let start = (pageNumber - 1) * 200;
         let end = 200;
-        var arrLength = [];
-
-        arrLength = await db.execute_query("SELECT COUNT(*) AS `count` FROM movies;");
-        var length = arrLength[0].count;
-
-        if (arrLength.length > 1) {
-            length = parseInt(arrLength[0].count) + parseInt(arrLength[1].count);
-        }
 
         var result = [];
-        result = await db.select_query(query);
-        console.log("length: " + result.length);
+        result = await db.execute_query_debug(node, query);
 
         var uniqueKeys = result.reduce(function (acc, obj) {
             return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
         }, []);
-        result.sort((a, b) => a.id - b.id);
+        
+        resultlen = (start + 1) + " to " + (start + end) + " out of " + result.length;
+        var lastPage = Math.ceil(result.length / 200)
         result = result.slice(start, start + end);
-        end = result.length;
-        resultlen = (start + 1) + " to " + (start + end) + " out of " + length;
 
-        var lastPage = Math.ceil(length / 200)
+        
 
         var data = {
             uniqueKeys: uniqueKeys,
@@ -80,7 +73,55 @@ const controller = {
             pageNumberLast: lastPage
         };
 
-        res.render('devMenu', {result : result});
+        console.log(data)
+
+        res.render('devMenu', data);
+    },
+
+    postQuerySelect: async function (req, res) {
+        let query = req.body.queryholder.trim();
+        let node = parseInt(req.body.node);
+        let pageNumber = parseInt(req.body.pageNumber);
+        
+
+        var result = [];
+        result = await db.execute_query_debug(node, query);
+        
+        let start = (pageNumber - 1) * 200;
+        let end = (result.length < 200) ? result.length : 200;
+
+        var uniqueKeys = result.reduce(function (acc, obj) {
+            return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
+        }, []);
+
+        resultlen = (start + 1) + " to " + (start + end) + " out of " + result.length;
+        var lastPage = Math.ceil(result.length / 200)
+        result = result.slice(start, start + end);
+
+        let data = {
+            query: query,
+            node: node,
+            uniqueKeys: uniqueKeys,
+            result: result,
+            resultlen: resultlen,
+            pageNumberCurr: pageNumber,
+            pageNumberPrev: pageNumber - 1,
+            pageNumberNext: pageNumber + 1,
+            pageNumberLast: lastPage
+        };
+        
+        res.render('partials/table', data, function (err, table) {
+            res.render('partials/pagination', data, function (err, pagination) {
+                let html = {
+                    resultlen: resultlen,
+                    table : table, 
+                    pagination : pagination
+                }
+                console.log(html.resultlen)
+                console.log(pagination)
+                if (!err) res.send(html);
+            });
+        });
     },
 
     postQueryResults: async function (req, res) {
@@ -88,7 +129,7 @@ const controller = {
         let node = parseInt(req.body.node);
         let result = await db.execute_query_debug(node, query);
         let data = {
-            status: result,
+            result: result,
             msg: 'Query successful.'
         };
         res.send(data)

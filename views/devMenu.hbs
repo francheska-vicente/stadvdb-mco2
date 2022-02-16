@@ -70,69 +70,19 @@
                 <p class="h1 fw-bolder text-left">IMDb Movies Record</p>
             </div>
             <div id="movies-num-rows" class="col-5 position-relative">
-                <p class="h5 col-12 pb-0 fst-italic text-start position-absolute bottom-0 start-0">Showing {{resultlen}}
+                <p id="movies-num-rows-p" class="h5 col-12 pb-0 fst-italic text-start position-absolute bottom-0 start-0">Showing {{resultlen}}
                     row(s).</p>
             </div>
 
         </div>
 
+    <div id="temp">
         {{!-- TABLE --}}
-        <table class="table table-danger table-hover table-bordered table-striped border-dark border-2"
-            id="movies-table">
-            <thead class="table-dark">
-                <tr>
-                    {{#each uniqueKeys}}
-                    <th>{{this}}</th>
-                    {{/each}}
-                </tr>
-            </thead>
-            <tbody>
-                {{#each result}}
-                <tr>
-                    {{#each this}}
-                    <td>{{this}}</td>
-                    {{/each}}
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        {{> table}}
 
         {{!-- PAGINATION --}}
-        <nav>
-            <ul class="pagination">
-                <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
-                    <a class="page-link" href="/?page=1">First</a>
-                </li>
-
-                <li class="page-item {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}">
-                    <a class="page-link" href="/?page={{pageNumberPrev}}">Previous</a>
-                </li>
-
-                {{#ifNotEquals pageNumberCurr 1}}
-                <li class="page-item">
-                    <a class="page-link {{#ifEquals pageNumberCurr 1}}disabled{{/ifEquals}}"
-                        href="/?page={{pageNumberPrev}}">{{pageNumberPrev}}</a>
-                </li>
-                {{/ifNotEquals}}
-
-                <li class="page-item active">
-                    <a class="page-link" href="/?page={{pageNumberCurr}}">{{pageNumberCurr}}</a>
-                </li>
-                {{#ifNotEquals pageNumberCurr pageNumberLast}}
-                <li class="page-item">
-                    <a class="page-link" href="/?page={{pageNumberNext}}">{{pageNumberNext}}</a>
-                </li>
-                {{/ifNotEquals}}
-
-                <li class="page-item {{#ifEquals pageNumberCurr pageNumberLast}}disabled{{/ifEquals}}">
-                    <a class="page-link" href="/?page={{pageNumberNext}}">Next</a>
-                </li>
-
-                <li class="page-item {{#ifEquals pageNumberCurr pageNumberLast}}disabled{{/ifEquals}}">
-                    <a class="page-link" href="/?page={{pageNumberLast}}">Last</a>
-                </li>
-            </ul>
-        </nav>
+        {{> pagination}}
+    </div>
     </div>
 </body>
 

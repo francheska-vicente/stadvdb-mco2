@@ -94,6 +94,24 @@ function submitDeleteMovieForm(id, year) {
     });
 }
 
+function getQuerySearch(page) {
+    let data = {
+        queryholder: $('#query').text(),
+        node: $('#node').text(),
+        pageNumber: page
+    }
+
+    // if select, redirect to dev menu with select query
+    if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
+        $.post('/devMenu/select', data, function (result) {
+            $('#movies-num-rows-p').text('Showing ' + result.resultlen + ' row(s).')
+            $('#temp').empty();
+            $('#temp').append(result.table);
+            $('#temp').append(result.pagination);
+        });
+    }
+}
+
 function submitQuerySearch() {
     $(".query-search").on('submit', function (event) {
         event.preventDefault();
@@ -101,12 +119,18 @@ function submitQuerySearch() {
 
         let data = {
             queryholder: $('#queryholder').val(),
-            node: $('input[name=btnradio]:checked').val()
+            node: $('input[name=btnradio]:checked').val(),
+            pageNumber: 1
         }
 
         // if select, redirect to dev menu with select query
         if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
-            $.get('/devMenu', data);
+            $.post('/devMenu/select', data, function (result) {
+                $('#movies-num-rows-p').text('Showing '+ result.resultlen +' row(s).')
+                $('#temp').empty();
+                $('#temp').append(result.table);
+                $('#temp').append(result.pagination);
+            });
         }
 
         // else, perform cud operation and return results
