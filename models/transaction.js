@@ -5,7 +5,7 @@ const nodes = require('../models/nodes.js');
 const queryHelper = require('../helpers/queryHelper.js');
 
 const transactions_funcs = {
-    insert_transaction_with_log: async function (node_to, query, name, rank, year) {
+    insert_transaction_with_log: async function (node_to, query, name, rank, year, node_from) {
         try {
             let conn = await nodes.connect_node(node_to);
             if (conn)
@@ -16,7 +16,7 @@ const transactions_funcs = {
                     var result = await conn.query(query);
                     console.log('Executed ' + query + ' at Node ' + node_to);
 
-                    var log = queryHelper.to_insert_query_log_with_id(result[0].insertId, name, year, rank, 1, node_to);
+                    var log = queryHelper.to_insert_query_log_with_id(result[0].insertId, name, year, rank, node_from, node_to);
                     var resultlog = await conn.query(log);
                     console.log('Created ' + log + ' at Node ' + node_to);
 

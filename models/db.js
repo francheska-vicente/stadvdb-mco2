@@ -57,24 +57,20 @@ const db_functions = {
         // if central node is up, insert row to central node and insert log based on year
         if (await ping_node(1)) {
             if (year < 1980)
-                log = queryHelper.to_insert_query_log(name, year, rank, 2, 1);
+                var result = insert_transaction_with_log(1, query, name, rank, year, 2);
             else
-                log = queryHelper.to_insert_query_log(name, year, rank, 3, 1);
-
-            var result = make_transaction_with_log(1, query, log, 'INSERT', '');
+                var result = insert_transaction_with_log(1, query, name, rank, year, 3);
             return (result instanceof Error) ? false : true;
         }
 
         // if central node is down, insert row to follower node based on year and insert log to central
         else {
             if (year < 1980) {
-                log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
-                var result = insert_transaction_with_log(2, query, name, rank, year);
+                var result = insert_transaction_with_log(2, query, name, rank, year, 1);
                 return (result instanceof Error) ? false : true;
             }
             else {
-                log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
-                var result = insert_transaction_with_log(3, query, log, 'INSERT', '');
+                var result = insert_transaction_with_log(3, query, name, rank, year, 1);
                 return (result instanceof Error) ? false : true;
             }
         }
