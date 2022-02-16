@@ -100,6 +100,7 @@ function getQuerySearch(page) {
         node: $('#node').text(),
         pageNumber: page
     }
+    $("#modal-loading").modal("show");
 
     // if select, redirect to dev menu with select query
     if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
@@ -108,6 +109,7 @@ function getQuerySearch(page) {
             $('#temp').empty();
             $('#temp').append(result.table);
             $('#temp').append(result.pagination);
+            $("#modal-loading").modal("hide");
         });
     }
 }
@@ -115,8 +117,7 @@ function getQuerySearch(page) {
 function submitQuerySearch() {
     $(".query-search").on('submit', function (event) {
         event.preventDefault();
-        //$("#modal-loading").modal("show");
-
+        
         let data = {
             queryholder: $('#queryholder').val(),
             node: $('input[name=btnradio]:checked').val(),
@@ -125,11 +126,13 @@ function submitQuerySearch() {
 
         // if select, redirect to dev menu with select query
         if (data.queryholder.substring(0, 6).toUpperCase() == 'SELECT') {
+            $("#modal-loading").modal("show");
             $.post('/devMenu/select', data, function (result) {
                 $('#movies-num-rows-p').text('Showing '+ result.resultlen +' row(s).')
                 $('#temp').empty();
                 $('#temp').append(result.table);
                 $('#temp').append(result.pagination);
+                $("#modal-loading").modal("hide");
             });
         }
 
@@ -137,13 +140,14 @@ function submitQuerySearch() {
         else {
             $.post('/query-search/results', data, function (result) {
                 console.log(result)
-                $("#modal-loading").modal("hide");
                 if (result.status) {
                     $('.status-msg').text(result.msg);
                     $("#modal-success").modal("show");
+                    $(".okay-btn").attr("href", "/devMenu");
                 } else {
                     $('.status-msg').text(result.msg);
                     $("#modal-failed").modal("show");
+                    $(".okay-btn").attr("href", "/devMenu");
                 }
             });
         }

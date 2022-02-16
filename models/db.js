@@ -7,8 +7,13 @@ const { make_transaction, make_transaction_with_log, make_transaction_with_log2 
 const db_functions = {
     execute_query_debug: async function (node, query) {
         if (await ping_node(node)) {
-            var rows = await query_node(node, query);
-            return rows[0];
+            try {
+                var rows = await query_node(node, query);
+                return rows[0];
+            }
+            catch (error) {
+                return false;
+            }
         }
     },
 

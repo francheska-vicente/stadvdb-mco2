@@ -64,6 +64,8 @@ const controller = {
         
 
         var data = {
+            query: query,
+            node: node,
             uniqueKeys: uniqueKeys,
             result: result,
             resultlen: resultlen,
@@ -129,8 +131,8 @@ const controller = {
         let node = parseInt(req.body.node);
         let result = await db.execute_query_debug(node, query);
         let data = {
-            result: result,
-            msg: 'Query successful.'
+            status: (result instanceof Error) ? false : true,
+            msg: (result instanceof Error) ? 'Query failed.' : 'Query successful.'
         };
         res.send(data)
     },
