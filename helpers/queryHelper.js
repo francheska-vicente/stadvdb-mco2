@@ -9,7 +9,7 @@ const query_funcs = {
         return `INSERT INTO movies (id, name, \`rank\`,  year) VALUES ('` + id + `', '` + name + `', ` + rank + `, ` + year + `);`
     },
 
-    to_update_query: function (id, name, rank, year, new_id) {
+    to_update_query: function (id, name, rank, year) {
         var query = `UPDATE movies SET`;
 
         if (name != '' && name != null) {
@@ -33,8 +33,6 @@ const query_funcs = {
                 }
             } else if (year != '' && year != null) {
                 query = query + ` year = ` + year;
-            } else if (new_id != '' && new_id != null) {
-                query = query + ` new_id = ` + new_id;
             }
         }
 
@@ -120,10 +118,6 @@ const query_funcs = {
 
         if (rank != '' && rank != null) {
             query = query + ', ' + rank;
-        }
-
-        if (new_id != '' && new_id != null) {
-            query = query + ', ' + new_id;
         }
 
         query = query + ");";

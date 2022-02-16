@@ -138,9 +138,8 @@ const controller = {
             name = new_name;
         }
 
-        console.log("hello: " + name + year + rank);
         try {
-            var result = await db.update_query(parseInt(id), name, rank, old_year, new_year);
+            var result = await db.update_query(parseInt(id), name, rank, parseInt(old_year), parseInt(new_year));
             var data = {
                 result: result,
                 status: true,

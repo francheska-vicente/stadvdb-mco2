@@ -165,6 +165,7 @@ const transactions_funcs = {
     },
 
     make_transaction_with_log: async function (node, query, log, type, id) {
+        console.log('yooo')
         try {
             let conn = await nodes.connect_node(node);
             if (conn)
