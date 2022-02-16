@@ -16,7 +16,7 @@ const transactions_funcs = {
                     var result = await conn.query(query);
                     console.log('Executed ' + query);
 
-                    var log = queryHelper.to_update_query_id_log(result[0].insertId, old_id);
+                    var log = queryHelper.to_update_query_id_log(result[0].insertId, old_id, node_to, node_from);
                     var resultlog = await conn.query(log);
                     console.log('Created ' + log);
 

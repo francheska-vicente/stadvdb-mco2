@@ -93,7 +93,7 @@ const query_funcs = {
         return query;
     },
 
-    to_update_query_log: function (id, name, year, rank, node_to, node_from, new_id) {
+    to_update_query_log: function (id, name, year, rank, node_to, node_from) {
         var query = `INSERT INTO log_table(type, node_to, node_from, done, id`;
 
         if (name != '' && name != null) {
@@ -106,10 +106,6 @@ const query_funcs = {
 
         if (rank != '' && rank != null) {
             query = query + ', \`rank\`';
-        }
-
-        if (new_id != '' && new_id != null) {
-            query = query + ', new_id';
         }
 
         query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + id;
