@@ -75,19 +75,19 @@ const query_funcs = {
 
     to_insert_query_log_with_id: function (id, name, year, rank, node_to, node_from) {
         var query = `INSERT INTO log_table(type, id, node_to, node_from, done, name, year`;
-        console.log('0 ' + name);
+
         if (rank != '' && rank != null) {
             query = query + ', \`rank\`';
         }
-        console.log('1 ' + query);
+
         query = query + ") VALUES ('INSERT', " + id + ', ' + node_to + ', ' + node_from + `, false, '` + name + `', ` + year;
-        console.log('2 ' + query);
+
         if (rank != '' && rank != null) {
             query = query + ', ' + rank;
         }
-        console.log('3 ' + query);
+
         query = query + ');';
-        console.log('4 ' + query);
+
         return query;
     },
 
