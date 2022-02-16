@@ -107,7 +107,7 @@ const transactions_funcs = {
                 catch (error) {
                     console.log(error)
                     console.log('Rolled back the data.');
-                    conn.rollback(node);
+                    conn.rollback(node_to);
                     conn.release();
                     return error;
                 }
