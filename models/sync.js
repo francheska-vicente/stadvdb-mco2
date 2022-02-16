@@ -76,7 +76,7 @@ const sync_funcs = {
                         let query;
                         switch (logs[i].type) {
                             case 'INSERT':
-                                if (logs[i].id) query = queryHelper.to_insert_query_with_id(logs[i].id, logs[i].name, logs[i].rank, logs[i].year);
+                                if (logs[i].new_id) query = queryHelper.to_insert_query_with_id(logs[i].new_id, logs[i].name, logs[i].rank, logs[i].year);
                                 else query = queryHelper.to_insert_query(logs[i].name, logs[i].rank, logs[i].year);
                                 break;
                             case 'UPDATE':
