@@ -28,7 +28,7 @@ const sync_funcs = {
                             if (await ping_node(logs[i].node_to)) {
                                 query = queryHelper.to_insert_query(logs[i].name, logs[i].rank, logs[i].year);
                                 var update = queryHelper.to_finish_log(logs[i].statement_id);
-                                var result = await transaction.insert_update_transaction_with_log(logs[i].node_to, query, update, logs[i].node_from);
+                                var result = await transaction.insert_update_transaction_with_log(logs[i].node_to, query, update, logs[i].node_from, logs[i].id);
                                 return (result instanceof Error) ? false : true;
                             }
                         case 'UPDATE':
