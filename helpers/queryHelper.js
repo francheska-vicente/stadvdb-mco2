@@ -9,7 +9,7 @@ const query_funcs = {
         return `INSERT INTO movies (id, name, \`rank\`,  year) VALUES ('` + id + `', '` + name + `', ` + rank + `, ` + year + `);`
     },
 
-    to_update_query: function (id, name, rank, year) {
+    to_update_query: function (id, name, rank, year, new_id) {
         var query = `UPDATE movies SET`;
 
         if (name != '' && name != null) {
@@ -33,10 +33,16 @@ const query_funcs = {
                 }
             } else if (year != '' && year != null) {
                 query = query + ` year = ` + year;
+            } else if (new_id != '' && new_id != null) {
+                query = query + ` new_id = ` + new_id;
             }
         }
 
         return query + ` WHERE id = ` + id + `;`;
+    },
+
+    to_update_id_query: function (new_id, old_id) {
+        return 'UPDATE movies SET id = ' + new_id + ' WHERE id = ' + old_id;
     },
 
     to_delete_query: function (id) {
@@ -87,7 +93,7 @@ const query_funcs = {
         return query;
     },
 
-    to_update_query_log: function (id, name, year, rank, node_to, node_from) {
+    to_update_query_log: function (id, name, year, rank, node_to, node_from, new_id) {
         var query = `INSERT INTO log_table(type, node_to, node_from, done, id`;
 
         if (name != '' && name != null) {
@@ -102,6 +108,10 @@ const query_funcs = {
             query = query + ', \`rank\`';
         }
 
+        if (new_id != '' && new_id != null) {
+            query = query + ', new_id';
+        }
+
         query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + id;
 
         if (name != '' && name != null) {
@@ -114,6 +124,10 @@ const query_funcs = {
 
         if (rank != '' && rank != null) {
             query = query + ', ' + rank;
+        }
+
+        if (new_id != '' && new_id != null) {
+            query = query + ', ' + new_id;
         }
 
         query = query + ");";
