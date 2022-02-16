@@ -43,41 +43,7 @@ const controller = {
     },
 
     getDevMenu: async function (req, res) {
-        let query = "SELECT * FROM movies;";
-        let node = 1;
-        let pageNumber = 1;
-
-        let start = (pageNumber - 1) * 200;
-        let end = 200;
-
-        var result = [];
-        result = await db.execute_query_debug(node, query);
-
-        var uniqueKeys = result.reduce(function (acc, obj) {
-            return acc.concat(Object.keys(obj).filter(key => acc.indexOf(key) === -1));
-        }, []);
-        
-        resultlen = (start + 1) + " to " + (start + end) + " out of " + result.length;
-        var lastPage = Math.ceil(result.length / 200)
-        result = result.slice(start, start + end);
-
-        
-
-        var data = {
-            query: query,
-            node: node,
-            uniqueKeys: uniqueKeys,
-            result: result,
-            resultlen: resultlen,
-            pageNumberCurr: pageNumber,
-            pageNumberPrev: pageNumber - 1,
-            pageNumberNext: pageNumber + 1,
-            pageNumberLast: lastPage
-        };
-
-        console.log(data)
-
-        res.render('devMenu', data);
+        res.render('devMenu');
     },
 
     postQuerySelect: async function (req, res) {
@@ -85,7 +51,6 @@ const controller = {
         let node = parseInt(req.body.node);
         let pageNumber = parseInt(req.body.pageNumber);
         
-
         var result = [];
         result = await db.execute_query_debug(node, query);
         
