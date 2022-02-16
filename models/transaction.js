@@ -14,11 +14,11 @@ const transactions_funcs = {
 
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
-                    console.log('Executed ' + query);
+                    console.log('Executed ' + query + ' at Node ' + node_to);
 
                     var log = queryHelper.to_insert_query_log_with_id(result[0].insertId, name, year, rank, 1, node_to);
                     var resultlog = await conn.query(log);
-                    console.log('Created ' + log);
+                    console.log('Created ' + log + ' at Node ' + node_to);
 
                     await conn.commit();
                     await conn.release();
@@ -51,11 +51,12 @@ const transactions_funcs = {
 
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
-                    console.log('Executed ' + query);
+                    console.log('Executed ' + query + ' at Node ' + node_to);
 
                     var log = queryHelper.to_update_query_id_log(result[0].insertId, old_id, node_from, node_to);
+                    console.log(log)
                     var resultlog = await conn.query(log);
-                    console.log('Created ' + log);
+                    console.log('Created ' + log + ' at Node ' + node_to);
 
                     var resultupdate = await nodes.query_node(node_from, update);
                     console.log('Executed ' + update);
@@ -94,7 +95,7 @@ const transactions_funcs = {
 
                     await conn.query(`SET @@session.time_zone = "+08:00";`);
                     var result = await conn.query(query);
-                    console.log('Executed ' + query);
+                    console.log('Executed ' + query + ' at Node ' + node_to);
 
                     var resultupdate = await nodes.query_node(node_from, update);
                     console.log('Executed ' + update);
