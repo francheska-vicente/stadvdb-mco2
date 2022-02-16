@@ -69,12 +69,12 @@ const db_functions = {
         else {
             if (year < 1980) {
                 log = queryHelper.to_insert_query_log(name, year, rank, 1, 2);
-                var result = make_transaction_with_log(2, query, log, 'INSERT', '');
+                var result = insert_transaction_with_log(2, query, name, rank, year);
                 return (result instanceof Error) ? false : true;
             }
             else {
                 log = queryHelper.to_insert_query_log(name, year, rank, 1, 3);
-                var result = make_transaction_with_log(3, query, log, 'INSERT', '');
+                var result = insert_transaction_with_log(3, query, log, 'INSERT', '');
                 return (result instanceof Error) ? false : true;
             }
         }
