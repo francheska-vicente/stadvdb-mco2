@@ -138,9 +138,9 @@ const query_funcs = {
 
     to_update_query_id_log: function (new_id, old_id, node_to, node_from) {
         var query = `INSERT INTO log_table(type, node_to, node_from, done, id, new_id`;
-
-        query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + old_id, ", " + new_id;
-
+        
+        query = query + ") VALUES ('UPDATE', " + node_to + ", " + node_from + ", false, " + old_id + ", " + new_id;
+        
         query = query + ");";
         console.log(query);
 
