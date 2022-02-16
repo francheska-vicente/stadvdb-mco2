@@ -42,12 +42,15 @@ textarea {
 }
 
 /* Pagination */
+.pagination > li > button,
 .pagination > li > a
 {
     background-color: white;
     color: black;
 }
 
+.pagination > li > button:focus,
+.pagination > li > button:hover,
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
@@ -58,14 +61,16 @@ textarea {
     border-color: #ddd;
 }
 
-.pagination > .active > a
+.pagination > .active > a,
+.pagination > .active > button
 {
     color: white;
     background-color: black !Important;
     border: solid 1px black !Important;
 }
 
-.pagination > .active > a:hover
+.pagination > .active > a:hover,
+.pagination > .active > button:hover
 {
     background-color: black !Important;
     border: solid 1px black;
