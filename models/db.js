@@ -2,7 +2,7 @@ const { NULL } = require('mysql/lib/protocol/constants/types');
 const nodes = require('./nodes.js');
 const queryHelper = require('../helpers/queryHelper.js');
 const { ping_node, query_node } = require('./nodes.js');
-const { make_transaction, make_transaction_with_log, make_transaction_with_log2 } = require('./transaction.js');
+const { make_transaction, make_transaction_with_log, make_transaction_with_log2, insert_transaction_with_log } = require('./transaction.js');
 
 const db_functions = {
     execute_query_debug: async function (node, query) {
