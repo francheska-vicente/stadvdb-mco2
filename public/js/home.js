@@ -33,11 +33,14 @@ function submitUpdateMovieForm() {
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (result) {
-                $("#modal-loading").modal("hide");
                 if (result.status) {
+                    $("#modal-loading").modal().hide();
+                    $("#modal-loading").modal("hide");  
                     $('.status-msg').text(result.msg);
-                    $("#modal-success").modal("show");
+                    $("#modal-success").modal("show");  
                 } else {
+                    $("#modal-loading").modal().hide();
+                    $("#modal-loading").modal("hide");  
                     $('.status-msg').text(result.msg);
                     $("#modal-failed").modal("show");
                 }
@@ -63,15 +66,14 @@ function submitAddMovieForm() {
         $.post('/add', data, function (result) {
             if (result.status) {
                 $("#modal-loading").modal().hide();
+                $("#modal-loading").modal("hide");  
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");
-                $("#modal-loading").modal("hide");
-
             } else {
                 $("#modal-loading").modal().hide();
+                $("#modal-loading").modal("hide");  
                 $('.status-msg').text(result.msg);
                 $("#modal-failed").modal("show");
-                $("#modal-loading").modal("hide");
             }
         });
     });
@@ -86,11 +88,14 @@ function submitDeleteMovieForm(id, year) {
         event.preventDefault();
         $("#modal-loading").modal("show");
         $.post(x, function (result) {
-            $("#modal-loading").modal("hide");
             if (result.status) {
+                $("#modal-loading").modal().hide();
+                $("#modal-loading").modal("hide");  
                 $('.status-msg').text(result.msg);
                 $("#modal-success").modal("show");
             } else {
+                $("#modal-loading").modal().hide();
+                $("#modal-loading").modal("hide");  
                 $('.status-msg').text(result.msg);
                 $("#modal-failed").modal("show");
             }
@@ -477,4 +482,21 @@ function initializeMovieModalFields() {
             $(updatebtn).attr('disabled', true);
         });
     })
+}
+
+/**
+ * Function for setting a node (radio button)
+ */
+function setNode() {
+    $('.node-btn').on('change', function () {
+        if (document.getElementById('btnradio1').checked) {
+
+        }
+        if (document.getElementById('btnradio2').checked) {
+
+        }
+        if (document.getElementById('btnradio3').checked) {
+
+        }
+    });
 }
