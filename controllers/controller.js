@@ -124,6 +124,7 @@ const controller = {
 
         if ((old_year >= 1980 && new_year < 1980) || (old_year < 1980 && new_year >= 1980)) {
             name = new_name;
+            rank = parseFloat(new_rank);
         }
 
         try {
