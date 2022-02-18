@@ -208,7 +208,7 @@ function validateQuery(input) {
     if (!input.trim())
         return [true, '']
     else {
-        if (substr == 'SELECT ' || substr == 'UPDATE ' || substr == 'DELETE ' || substr == 'INSERT ')
+        if (substr == 'SELECT ')
             return [true, '']
         else
             return [false, 'Invalid SELECT query.']
